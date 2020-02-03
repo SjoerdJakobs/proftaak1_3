@@ -38,7 +38,7 @@ public abstract class FrameworkProgram extends Application
         primaryStage.setTitle("Hello Animation");
         primaryStage.show();
 
-        Init();
+        this.Init();
 
         new AnimationTimer() {
             long last = -1;
