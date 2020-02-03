@@ -2,18 +2,13 @@ package Data;
 
 import java.util.ArrayList;
 
-public class StudentClass {
+public class SchoolClass {
     private String name;
     private ArrayList<Student> students;
 
-    public StudentClass(String name){
+    public SchoolClass(String name){
         this.name = name;
         this.students = new ArrayList<>();
-    }
-
-    
-    public void addStudent(String name){
-        this.students.add(new Student(name, this));
     }
 
     public void addStudent(Student student){
