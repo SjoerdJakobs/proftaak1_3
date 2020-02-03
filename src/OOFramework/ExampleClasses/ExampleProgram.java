@@ -19,9 +19,9 @@ public class ExampleProgram extends FrameworkProgram
      * execution order: 1
      */
     @Override
-    protected void Start()
+    protected void Init()
     {
-        super.Start();
+        super.Init();
 
         System.out.println("Hello World!");
 
