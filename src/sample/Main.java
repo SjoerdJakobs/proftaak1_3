@@ -10,9 +10,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
+import javafx.*;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -25,6 +27,7 @@ public class Main extends Application {
 
     private int rows = 8;
     private int columns = 12;
+    private int fontSize=15;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -39,10 +42,13 @@ public class Main extends Application {
         borderPane.setRight(canvas);
         borderPane.setLeft(vBox);
 
+        vBox.setSpacing((1080-rows*fontSize)/rows);
 
-        String[] rowLabels = {"unos","dos","tres", "quadros", "vijf"};
+        String[] rowLabels = {"unos","dos","tres", "quadros", "vijf", "zes", "seven", "eight", "nein", "tin"};
 
         for (int i = 0; i < rowLabels.length && i < this.rows; i++) {
+            Label label = new Label(rowLabels[i]);
+            label.setFont(new Font(fontSize));
             this.vBox.getChildren().add(new Label(rowLabels[i]));
         }
 
