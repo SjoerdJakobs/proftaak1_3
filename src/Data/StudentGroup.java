@@ -2,11 +2,11 @@ package Data;
 
 import java.util.ArrayList;
 
-public class SchoolClass {
+public class StudentGroup {
     private String name;
     private ArrayList<Student> students;
 
-    public SchoolClass(String name){
+    public StudentGroup(String name){
         this.name = name;
         this.students = new ArrayList<>();
     }

@@ -3,13 +3,13 @@ package Data;
 import OOFramework.FrameworkProgram;
 
 public class Student extends Person {
-    private SchoolClass schoolClass;
+    private StudentGroup studentGroup;
 
-    public Student(FrameworkProgram frameworkProgram, String name, SchoolClass schoolClass) {
+    public Student(FrameworkProgram frameworkProgram, String name, StudentGroup studentGroup) {
         super(frameworkProgram, name);
-        this.schoolClass = schoolClass;
+        this.studentGroup = studentGroup;
     }
 
     // Getters and Setters
-    public SchoolClass getSchoolClass() { return this.schoolClass; }
+    public StudentGroup getStudentGroup() { return this.studentGroup; }
 }
