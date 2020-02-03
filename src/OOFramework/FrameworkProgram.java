@@ -11,15 +11,13 @@ import org.jfree.fx.FXGraphics2D;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class FrameworkProgram extends Application
 {
-    private final AtomicBoolean running = new AtomicBoolean(false);
-    private final AtomicBoolean paused  = new AtomicBoolean(false);
+    private boolean running = false;
+    private boolean paused  = false;
 
-    private final AtomicReference<ArrayList<BaseObject>> objects = new AtomicReference<>(new ArrayList<BaseObject>());
+    private ArrayList<BaseObject> objects = new ArrayList<BaseObject>();
 
     private ArrayList<StandardObject> inputObjects  = new ArrayList<StandardObject>();
     private ArrayList<StandardObject> mainObjects   = new ArrayList<StandardObject>();
@@ -93,7 +91,7 @@ public abstract class FrameworkProgram extends Application
 
         draw(g2d);
 
-        Iterator<BaseObject> it = objects.get().iterator();
+        Iterator<BaseObject> it = objects.iterator();
         while (it.hasNext()) {
             BaseObject bo = it.next();
             if (bo.ShouldDestruct()) {
@@ -113,7 +111,7 @@ public abstract class FrameworkProgram extends Application
 
     protected void Start()
     {
-        running.set(true);
+        this.running = true;
     }
 
     protected void AddToLoop()
@@ -123,23 +121,23 @@ public abstract class FrameworkProgram extends Application
 
     protected void ExitProgram()
     {
-        running.set(false);
+        this.running = false;
     }
 
 
-    public AtomicBoolean isRunning()
+    public boolean isRunning()
     {
-        return running;
+        return this.running;
     }
 
-    public AtomicBoolean isPaused()
+    public boolean isPaused()
     {
-        return paused;
+        return this.paused;
     }
 
-    public AtomicReference<ArrayList<BaseObject>> getObjects()
+    public ArrayList<BaseObject> getObjects()
     {
-        return objects;
+        return this.objects;
     }
 
     public ArrayList<StandardObject> getInputObjects()

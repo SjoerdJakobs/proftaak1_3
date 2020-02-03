@@ -1,36 +1,31 @@
 package OOFramework;
 
-import OOFramework.FrameworkProgram;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
 public abstract class BaseObject
 {
     /**
      * should this object be active
      */
-    private final AtomicBoolean active = new AtomicBoolean(false);
+    private boolean active = false;
 
     /**
      * is this object actually active
      */
-    private final AtomicBoolean activated = new AtomicBoolean(false);
+    private boolean activated = false;
 
     /**
      * should this object be destroyed
      */
-    private final AtomicBoolean shouldDestruct = new AtomicBoolean(false);
+    private boolean shouldDestruct = false;
 
     /**
      * this is the program that contains this object
      */
-    private final AtomicReference<FrameworkProgram> frameworkProgram = new AtomicReference<FrameworkProgram>();
+    private FrameworkProgram frameworkProgram;
 
     protected BaseObject(FrameworkProgram frameworkProgram, boolean startsActivated)
     {
         //System.out.println("base");
-        this.frameworkProgram.set(frameworkProgram);
+        this.frameworkProgram = frameworkProgram;
         this.setShouldDestruct(false);
         this.Start();
 
@@ -43,7 +38,7 @@ public abstract class BaseObject
             this.setActivated(false);
         }
 
-        frameworkProgram.getObjects().get().add(this);
+        frameworkProgram.getObjects().add(this);
     }
 
     /**
@@ -95,41 +90,41 @@ public abstract class BaseObject
 
     public boolean isActive()
     {
-        return active.get();
+        return this.active;
     }
 
     public void setActive(boolean m_active)
     {
-        this.active.set(m_active);
+        this.active = m_active;
     }
 
     public boolean isActivated()
     {
-        return activated.get();
+        return this.activated;
     }
 
     public void setActivated(boolean activated)
     {
-        this.activated.set(activated);
+        this.activated = activated;
     }
 
     public boolean ShouldDestruct()
     {
-        return shouldDestruct.get();
+        return this.shouldDestruct;
     }
 
     public void setShouldDestruct(boolean shouldDestruct)
     {
-        this.shouldDestruct.set(shouldDestruct);
+        this.shouldDestruct = shouldDestruct;
     }
 
     public FrameworkProgram getFrameworkProgram()
     {
-        return frameworkProgram.get();
+        return this.frameworkProgram;
     }
 
     public void setFrameworkProgram(FrameworkProgram frameworkProgram)
     {
-        this.frameworkProgram.set(frameworkProgram);
+        this.frameworkProgram = frameworkProgram;
     }
 }
