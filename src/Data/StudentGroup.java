@@ -15,6 +15,10 @@ public class StudentGroup {
         this.students.add(student);
     }
 
+    public void removeStudent(Student student){
+        this.students.remove(student);
+    }
+
     public Student getStudent(String name){
         for (Student student : this.students){
             if(student.equals(name)) {

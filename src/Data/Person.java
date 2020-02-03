@@ -3,7 +3,7 @@ package Data;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 
-public class Person extends StandardObject {
+public abstract class Person extends StandardObject {
     private String name;
 
     protected Person(FrameworkProgram frameworkProgram, String name) {
