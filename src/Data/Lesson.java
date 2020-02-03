@@ -18,4 +18,46 @@ public class Lesson {
         this.endTime = endTime;
         this.classRoom = classRoom;
     }
+
+    // Getter and Setters
+
+    public StudentGroup getStudentGroup() {
+        return studentGroup;
+    }
+
+    public void setStudentGroup(StudentGroup studentGroup) {
+        this.studentGroup = studentGroup;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public LocalTime getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(LocalTime beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public ClassRoom getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(ClassRoom classRoom) {
+        this.classRoom = classRoom;
+    }
 }
