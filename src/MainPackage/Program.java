@@ -24,6 +24,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Program extends FrameworkProgram
 {
@@ -33,10 +34,11 @@ public class Program extends FrameworkProgram
 
     private int rows = 8;
     private int columns = 12;
-    private int fontSize=15;
-    Agenda agenda;
-    int vertStepsize=0;
-    int horStepsize=0;
+    private int fontSize = 15;
+    private Agenda agenda;
+    private ArrayList<ClassRoom> rooms;
+    int vertStepsize = 0;
+    int horStepsize = 0;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -59,11 +61,21 @@ public class Program extends FrameworkProgram
 
         String[] rowLabels = {"unos","dos","tres", "quadros", "vijf", "zes", "seven", "eight", "nein", "tin"};
 
-        for (int i = 0; i < rowLabels.length && i < this.rows; i++) {
-            Label label = new Label(rowLabels[i]);
+
+//        for (int i = 0; i < rowLabels.length && i < this.rows; i++) {
+//            Label label = new Label(rowLabels[i]);
+//            label.setFont(new Font(fontSize));
+//            this.vBox.getChildren().add(new Label(rowLabels[i]));
+//        }
+
+        this.vBox.getChildren().add(new Label());
+        for (int i = 0; i < this.rooms.size() && i < this.rows; i++) {
+            Label label = new Label(this.rooms.get(i).getRoomName());
             label.setFont(new Font(fontSize));
-            this.vBox.getChildren().add(new Label(rowLabels[i]));
+            this.vBox.getChildren().add(label);
         }
+
+
 
 
         mainPane.setCenter(borderPane);
@@ -105,7 +117,9 @@ public class Program extends FrameworkProgram
             g2d.setColor(new Color((int) (Math.random() * 0x1000000)));
             double factorBegin = (agenda.getLessons().get(i).getBeginTime().getHour()-8)+(agenda.getLessons().get(i).getBeginTime().getMinute()/60.0);
             double factorEnd = (agenda.getLessons().get(i).getEndTime().getHour()-8)+(agenda.getLessons().get(i).getEndTime().getMinute()/60.0);
-            Rectangle2D shape = new Rectangle2D.Double(vertStepsize * factorBegin, 0, vertStepsize*(factorEnd-factorBegin), horStepsize);
+            Rectangle2D shape = new Rectangle2D.Double(vertStepsize * factorBegin, horStepsize * 6, vertStepsize*(factorEnd-factorBegin), horStepsize);
+            // DOOR MIDDEL VAN DE Y COORDINAAT TE STELLEN ALS DE horStepsize KAN JE DE POSITIE VAN DE VAKJES BEINVLOEDEN VAN DE VERTICALE POSITIE,
+            // DOOR HET TE VERMENIGVULDIGEN VOOR WELKE RIJ JE HET WILT HEBBEN.
             g2d.draw(shape);
             g2d.fill(shape);
 
@@ -116,6 +130,12 @@ public class Program extends FrameworkProgram
     protected void Init() {
         super.Init();
         agenda= new Agenda();
+        this.rooms = new ArrayList<ClassRoom>();
+        for(int i = 1; i <= 6; i++){
+
+            ClassRoom classRoom = new ClassRoom("LA30" + i);
+            this.rooms.add(classRoom);
+        }
         Teacher teacher = new Teacher(this, "Johan");
         System.out.println("Hallo");
 
