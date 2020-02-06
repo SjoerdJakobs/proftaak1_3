@@ -12,6 +12,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static OOFramework.Modules.CONSTANTS.*;
+
 public abstract class FrameworkProgram extends Application
 {
     private boolean running = false;
@@ -26,16 +28,15 @@ public abstract class FrameworkProgram extends Application
     private double deltaTime = 0;
 
     protected Stage stage;
-    protected double angle = 0.0;
     protected Canvas canvas;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        canvas = new Canvas(1920, 1080);
+        canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
         primaryStage.setScene(new Scene(new Group(canvas)));
-        primaryStage.setTitle("Hello Animation");
+        primaryStage.setTitle(TITLE);
         primaryStage.show();
 
         this.Init();
@@ -53,13 +54,7 @@ public abstract class FrameworkProgram extends Application
     }
 
     public void draw(FXGraphics2D g2d) {
-        g2d.setBackground(Color.white);
-        g2d.clearRect(0,0,1920,1080);
-        //AffineTransform tx = new AffineTransform();
-        //tx.translate(1920/2, 1080/2);
-        //tx.rotate(angle);
-        //tx.translate(200, 0);
-        //g2d.fill(tx.createTransformedShape(new Rectangle2D.Double(-50,-50,100,100)));
+
     }
 
     long lastTime = System.nanoTime();
@@ -85,11 +80,13 @@ public abstract class FrameworkProgram extends Application
         for (StandardObject object : mainObjects) {
             object.MainLoop(deltaTime);
         }
+        //clear the screen
+        g2d.setBackground(Color.white);
+        g2d.clearRect(0,0,1920,1080);
+
         for (StandardObject object : renderObjects) {
             object.RenderLoop(deltaTime);
         }
-
-        draw(g2d);
 
         Iterator<BaseObject> it = objects.iterator();
         while (it.hasNext()) {
@@ -133,6 +130,14 @@ public abstract class FrameworkProgram extends Application
     public boolean isPaused()
     {
         return this.paused;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 
     public ArrayList<BaseObject> getObjects()
