@@ -60,13 +60,13 @@ public enum DataLoader {
 
     public void writeAllDataIO(){
 
-
+        //need to implement the code for writing a file
     }
 
 
     public void readAllDataIO(){
 
-
+        //need to implement the code for reading a file and setting the right values
     }
 
 }
