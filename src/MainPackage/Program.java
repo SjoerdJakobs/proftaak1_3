@@ -136,7 +136,7 @@ public class Program extends FrameworkProgram
             ClassRoom classRoom = new ClassRoom("LA30" + i);
             this.rooms.add(classRoom);
         }
-        Teacher teacher = new Teacher(this, "Johan");
+        Teacher teacher = new Teacher();
         System.out.println("Hallo");
 
         for(int i=0; i<5; i++){
