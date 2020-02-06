@@ -7,9 +7,6 @@ import org.jfree.fx.FXGraphics2D;
 
 public class Program extends FrameworkProgram
 {
-    //student variable for example
-    ExampleStudent Student;
-    ExampleStudent Student2;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -26,10 +23,6 @@ public class Program extends FrameworkProgram
     @Override
     protected void Init() {
         super.Init();
-
-        // create new student for example
-        Student = new ExampleStudent(this, 6 );
-        Student2 = new ExampleStudent(this, 9 );
     }
 
     @Override
