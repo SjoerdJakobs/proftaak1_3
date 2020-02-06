@@ -151,7 +151,6 @@ public class Program extends FrameworkProgram
             System.out.println(agenda.getLessons().get(i).getBeginTime()+ " " + agenda.getLessons().get(i).getEndTime());
         }
 
-
     }
 
     @Override

@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 public class StudentGroup {
     private String name;
-    private ArrayList<Student> students;
+    private ArrayList<StudentData> studentData;
 
     public StudentGroup(String name){
         this.name = name;
-        this.students = new ArrayList<>();
+        this.studentData = new ArrayList<>();
     }
 
-    public void addStudent(Student student){
-        this.students.add(student);
+    public void addStudent(StudentData studentData){
+        this.studentData.add(studentData);
     }
 
-    public void removeStudent(Student student){
-        this.students.remove(student);
+    public void removeStudent(StudentData studentData){
+        this.studentData.remove(studentData);
     }
 
-    public Student getStudent(String name){
-        for (Student student : this.students){
-            if(student.equals(name)) {
-                return student;
+    public StudentData getStudent(String name){
+        for (StudentData studentData : this.studentData){
+            if(studentData.equals(name)) {
+                return studentData;
             }
         }
         return null;
@@ -32,6 +32,6 @@ public class StudentGroup {
     //Getters and Setters
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
-    public ArrayList<Student> getStudents(){ return this.students; }
-    public void setStudents(ArrayList<Student> students) { this.students = students; }
+    public ArrayList<StudentData> getStudentData(){ return this.studentData; }
+    public void setStudentData(ArrayList<StudentData> studentData) { this.studentData = studentData; }
 }
