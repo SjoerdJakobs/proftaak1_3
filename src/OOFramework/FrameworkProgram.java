@@ -29,12 +29,13 @@ public abstract class FrameworkProgram extends Application
 
     protected Stage stage;
     protected Canvas canvas;
+    protected FXGraphics2D graphics2D;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-        FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
+        graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
         primaryStage.setScene(new Scene(new Group(canvas)));
         primaryStage.setTitle(TITLE);
         primaryStage.show();
@@ -47,7 +48,7 @@ public abstract class FrameworkProgram extends Application
             public void handle(long now) {
                 if (last == -1)
                     last = now;
-                Run(g2d);
+                Run(graphics2D);
                 last = now;
             }
         }.start();
@@ -138,6 +139,11 @@ public abstract class FrameworkProgram extends Application
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public FXGraphics2D getGraphics2D()
+    {
+        return graphics2D;
     }
 
     public ArrayList<BaseObject> getObjects()

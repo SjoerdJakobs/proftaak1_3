@@ -6,6 +6,7 @@ import org.jfree.fx.FXGraphics2D;
 
 public class Program extends FrameworkProgram
 {
+    sAgenda agenda;
     @Override
     public void start(Stage stage) throws Exception {
         super.start(stage);
@@ -23,6 +24,7 @@ public class Program extends FrameworkProgram
     protected void Init()
     {
         super.Init();
+        agenda = new sAgenda(this);
     }
 
     @Override
