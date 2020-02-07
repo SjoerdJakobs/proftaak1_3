@@ -15,6 +15,7 @@ public class sAgenda extends StandardObject
 {
     private Graphics2D graphics2D;
     private Renderable hourBlock;
+    private Renderable hourBlock2;
     private Canvas canvas;
 
     protected sAgenda(FrameworkProgram frameworkProgram)
@@ -27,7 +28,8 @@ public class sAgenda extends StandardObject
         this.canvas = frameworkProgram.getCanvas();
 
         //create a simple rectangle, just repeat this code for more
-        this.hourBlock = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400), 1 * (float) Math.PI, 1);
+        this.hourBlock = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400), 0 * (float) Math.PI, 1);
+        this.hourBlock2 = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(350, 350), 0 * (float) Math.PI, 1);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class sAgenda extends StandardObject
     protected void MainLoop(double deltaTime)
     {
         super.MainLoop(deltaTime);
-        //do
+        //do general stuff here, no clear idea what yet because i dont think a agenda has much logic now that i think about it
     }
 
     @Override
@@ -53,7 +55,9 @@ public class sAgenda extends StandardObject
         //with the code here we draw a red square each frame, every frame already gets cleared at the beginning of  the rendering.
         graphics2D.setColor(Color.red);
         graphics2D.draw(hourBlock.getTransformedShape());
+        graphics2D.draw(hourBlock2.getTransformedShape());
         graphics2D.fill(hourBlock.getTransformedShape());
+        //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.
     }

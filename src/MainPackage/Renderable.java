@@ -8,10 +8,10 @@ import java.awt.geom.Point2D;
 
 public class Renderable
 {
-    private Shape shape;
-    private Point2D position;
-    private float rotation;
-    private float scale;
+    protected Shape shape;
+    protected Point2D position;
+    protected float rotation;
+    protected float scale;
 
     public Renderable(Shape shape, Point2D position, float rotation, float scale)
     {
