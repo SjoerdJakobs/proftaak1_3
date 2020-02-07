@@ -1,4 +1,4 @@
-package MainPackage;
+package OOFramework;
 
 import org.jfree.fx.FXGraphics2D;
 
@@ -24,6 +24,7 @@ public class Renderable
     public void draw(FXGraphics2D g2d)
     {
         g2d.draw(getTransformedShape());
+        //System.out.println("draw0");
     }
 
     public Shape getTransformedShape()

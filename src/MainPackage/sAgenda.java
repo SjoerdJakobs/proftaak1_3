@@ -1,22 +1,25 @@
 package MainPackage;
 
 import OOFramework.FrameworkProgram;
+import OOFramework.Renderable;
 import OOFramework.StandardObject;
 import javafx.scene.canvas.Canvas;
+import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import static OOFramework.Modules.CONSTANTS.CANVAS_HEIGHT;
-import static OOFramework.Modules.CONSTANTS.CANVAS_WIDTH;
+import java.util.ArrayList;
 
 public class sAgenda extends StandardObject
 {
-    private Graphics2D graphics2D;
-    private Renderable hourBlock;
-    private Renderable hourBlock2;
+    private FXGraphics2D graphics2D;
     private Canvas canvas;
+
+    private ArrayList<HourBlock> hourBlocks;
+
+    private HourBlock hourBlock;
+    private Renderable hourBlock2;
 
     protected sAgenda(FrameworkProgram frameworkProgram)
     {
@@ -26,10 +29,18 @@ public class sAgenda extends StandardObject
         //you can give these two in the constructor but here i get them from the getters in the framework
         this.graphics2D = frameworkProgram.getGraphics2D();
         this.canvas = frameworkProgram.getCanvas();
+    }
+
+    @Override
+    protected void Start() {
+        super.Start();
+        hourBlocks = new ArrayList<HourBlock>();
 
         //create a simple rectangle, just repeat this code for more
-        this.hourBlock = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400), 0 * (float) Math.PI, 1);
-        this.hourBlock2 = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(350, 350), 0 * (float) Math.PI, 1);
+        this.hourBlock = new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400),10,12,"klass","leraar",Color.red);
+        hourBlocks.add(hourBlock);
+        //this.hourBlock2 = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(350, 350), 0 * (float) Math.PI, 1);
+
     }
 
     @Override
@@ -52,11 +63,10 @@ public class sAgenda extends StandardObject
         super.RenderLoop(deltaTime);
         //lets draw all stuff here
 
-        //with the code here we draw a red square each frame, every frame already gets cleared at the beginning of  the rendering.
-        graphics2D.setColor(Color.red);
-        graphics2D.draw(hourBlock.getTransformedShape());
-        graphics2D.draw(hourBlock2.getTransformedShape());
-        graphics2D.fill(hourBlock.getTransformedShape());
+        for(HourBlock h : hourBlocks)
+        {
+            h.draw(graphics2D);
+        }
         //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.
