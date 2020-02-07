@@ -12,33 +12,35 @@ public class HourBlock extends Renderable
     private int     endTime;
     private String  classId;
     private String  teacher;
+    private String  roomNr;
     private Color   color;
     private String  text;
 
     private static Font sanSerifFont = new Font("SanSerif", Font.PLAIN, 12);
 
-    public HourBlock(Shape shape, Point2D position, int beginTime, int endTime,String classId,String teacher, Color color) {
+    public HourBlock(Shape shape, Point2D position, int beginTime, int endTime,String classId,String roomNr,String teacher, Color color) {
         super(shape, position, 0, 1);
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.classId = classId;
         this.teacher = teacher;
+        this.roomNr = roomNr;
         this.color = color;
-        this.text = classId+"\n"+teacher+"\n"+ beginTime +" - "+endTime;
+        this.text = classId+"\n"+teacher+"\n"+roomNr+"\n"+ beginTime +" - "+endTime;
     }
 
     @Override
     public void draw(FXGraphics2D g2d) {
+        g2d.setColor(this.color);
         super.draw(g2d);
         //System.out.println("draw1");
-        g2d.setColor(this.color);
         g2d.fill(getTransformedShape());
         g2d.setFont(sanSerifFont);
         FontMetrics fm = g2d.getFontMetrics();
         int w = fm.stringWidth(text);
         int h = fm.getAscent();
         g2d.setColor(Color.black);
-        g2d.drawString(text, (int)position.getX() - (w / 2), (int) position.getY() + (h / 4));
+        g2d.drawString(text, (int)position.getX() - (w / 2), (int) position.getY() + (h*-1));
     }
 
     public int getBeginTime() {
@@ -87,5 +89,13 @@ public class HourBlock extends Renderable
 
     public static void setSanSerifFont(Font sanSerifFont) {
         HourBlock.sanSerifFont = sanSerifFont;
+    }
+
+    public String getRoomNr() {
+        return roomNr;
+    }
+
+    public void setRoomNr(String roomNr) {
+        this.roomNr = roomNr;
     }
 }

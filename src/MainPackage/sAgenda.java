@@ -28,7 +28,7 @@ public class sAgenda extends StandardObject
 
         //you can give these two in the constructor but here i get them from the getters in the framework
         this.graphics2D = frameworkProgram.getGraphics2D();
-        this.canvas = frameworkProgram.getCanvas();
+        this.canvas =     frameworkProgram.getCanvas();
     }
 
     @Override
@@ -37,8 +37,9 @@ public class sAgenda extends StandardObject
         hourBlocks = new ArrayList<HourBlock>();
 
         //create a simple rectangle, just repeat this code for more
-        this.hourBlock = new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400),10,12,"klass","leraar",Color.red);
+        this.hourBlock = new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400),10,12,"klas","LA 134","leraar",Color.red);
         hourBlocks.add(hourBlock);
+        hourBlocks.add(new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(600, 400),14,15,"klas2","LD 112","leraar2",Color.green));
         //this.hourBlock2 = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(350, 350), 0 * (float) Math.PI, 1);
 
     }
