@@ -14,22 +14,18 @@ public class Program extends FrameworkProgram
     }
 
     @Override
-    public void draw(FXGraphics2D g2d)
-    {
-        super.draw(g2d);
-
-    }
-
-    @Override
     protected void Init()
     {
         super.Init();
+
         agenda = new sAgenda(this);
+
     }
 
     @Override
     protected void AddToLoop() {
         super.AddToLoop();
+        //menu switch?
 
     }
 

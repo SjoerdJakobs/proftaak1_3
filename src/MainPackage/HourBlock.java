@@ -14,6 +14,7 @@ public class HourBlock extends Renderable
     private String  teacher;
     private String  roomNr;
     private Color   color;
+
     private String  text;
 
     private static Font sanSerifFont = new Font("SanSerif", Font.PLAIN, 12);

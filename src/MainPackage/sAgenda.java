@@ -4,6 +4,7 @@ import OOFramework.FrameworkProgram;
 import OOFramework.Renderable;
 import OOFramework.StandardObject;
 import javafx.scene.canvas.Canvas;
+import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class sAgenda extends StandardObject
 {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
+    private Stage stage;
 
     private ArrayList<HourBlock> hourBlocks;
 
@@ -29,6 +31,7 @@ public class sAgenda extends StandardObject
         //you can give these two in the constructor but here i get them from the getters in the framework
         this.graphics2D = frameworkProgram.getGraphics2D();
         this.canvas =     frameworkProgram.getCanvas();
+        this.stage =      frameworkProgram.getStage();
     }
 
     @Override

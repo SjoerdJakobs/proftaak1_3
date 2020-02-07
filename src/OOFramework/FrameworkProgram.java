@@ -34,11 +34,11 @@ public abstract class FrameworkProgram extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-        graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
-        primaryStage.setScene(new Scene(new Group(canvas)));
-        primaryStage.setTitle(TITLE);
-        primaryStage.show();
+        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
+        this.stage.setScene(new Scene(new Group(canvas)));
+        this.stage.setTitle(TITLE);
+        this.stage.show();
 
         this.Init();
 
@@ -52,10 +52,6 @@ public abstract class FrameworkProgram extends Application
                 last = now;
             }
         }.start();
-    }
-
-    public void draw(FXGraphics2D g2d) {
-
     }
 
     long lastTime = System.nanoTime();
@@ -78,6 +74,7 @@ public abstract class FrameworkProgram extends Application
         for (StandardObject object : inputObjects) {
             object.InputLoop(deltaTime);
         }
+
         for (StandardObject object : mainObjects) {
             object.MainLoop(deltaTime);
         }
