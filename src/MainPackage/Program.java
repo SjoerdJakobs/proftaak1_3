@@ -2,7 +2,6 @@ package MainPackage;
 
 import OOFramework.FrameworkProgram;
 import javafx.stage.Stage;
-import org.jfree.fx.FXGraphics2D;
 
 public class Program extends FrameworkProgram
 {
