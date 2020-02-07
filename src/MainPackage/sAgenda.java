@@ -43,6 +43,7 @@ public class sAgenda extends StandardObject
         this.hourBlock = new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400),10,12,"klas","LA 134","leraar",Color.red);
         hourBlocks.add(hourBlock);
         hourBlocks.add(new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(600, 400),14,15,"klas2","LD 112","leraar2",Color.green));
+        hourBlocks.add(new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(800, 400),14,15,"klas3","LD 114","leraar3",Color.yellow));
         //this.hourBlock2 = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(350, 350), 0 * (float) Math.PI, 1);
 
     }

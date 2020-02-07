@@ -36,6 +36,9 @@ public abstract class FrameworkProgram extends Application
         this.stage = primaryStage;
         this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
+        this.stage.setMaximized(true);
+        //this.stage.setFullScreen(true);
+        this.stage.setResizable(false);
         this.stage.setScene(new Scene(new Group(canvas)));
         this.stage.setTitle(TITLE);
         this.stage.show();
