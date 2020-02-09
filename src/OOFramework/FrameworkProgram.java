@@ -30,11 +30,15 @@ public abstract class FrameworkProgram extends Application
     protected Stage stage;
     protected Canvas canvas;
     protected FXGraphics2D graphics2D;
+    protected MenuBar menuBar; // even laten staan voor mezelf, het moet ergens omen te staan waar het makkelijk de heletijd toe gevoegd kan worden
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        stage.setHeight(CANVAS_HEIGHT);
+        stage.setWidth(CANVAS_WIDTH);
+       // this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.canvas = new Canvas(1000, 800);
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
         this.stage.setMaximized(true);
         //this.stage.setFullScreen(true);
