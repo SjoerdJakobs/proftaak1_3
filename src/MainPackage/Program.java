@@ -1,21 +1,8 @@
 package MainPackage;
 
-import Data.Agenda;
-import Data.Lesson;
-import Data.Rooms.ClassRoom;
-import Data.StudentGroup;
-import Data.Teacher;
-import OOFramework.ExampleClasses.ExampleStudent;
 import OOFramework.FrameworkProgram;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
@@ -124,11 +111,23 @@ public class Program extends FrameworkProgram
             g2d.fill(shape);
 
         }
+=======
+
+public class Program extends FrameworkProgram
+{
+    sAgenda agenda;
+    @Override
+    public void start(Stage stage) throws Exception {
+        super.start(stage);
+
+>>>>>>> master
     }
 
     @Override
-    protected void Init() {
+    protected void Init()
+    {
         super.Init();
+<<<<<<< HEAD
         agenda= new Agenda();
         this.rooms = new ArrayList<ClassRoom>();
         for(int i = 1; i <= 6; i++){
@@ -151,29 +150,22 @@ public class Program extends FrameworkProgram
             System.out.println(agenda.getLessons().get(i).getBeginTime()+ " " + agenda.getLessons().get(i).getEndTime());
         }
 
+=======
+
+        agenda = new sAgenda(this);
+
+>>>>>>> master
     }
 
     @Override
     protected void AddToLoop() {
         super.AddToLoop();
-
+        //menu switch?
 
     }
 
     @Override
     protected void ExitProgram() {
         super.ExitProgram();
-    }
-
-    private void mousePressed(MouseEvent e) {
-    }
-
-    private void mouseReleased(MouseEvent e) {
-
-    }
-
-    private void mouseDragged(MouseEvent e) {
-//        position = new Point2D.Double(e.getX(), e.getY());
-//        draw(new FXGraphics2D(canvas.getGraphicsContext2D()));
     }
 }
