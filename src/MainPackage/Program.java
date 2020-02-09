@@ -2,7 +2,7 @@ package MainPackage;
 
 import OOFramework.FrameworkProgram;
 import javafx.stage.Stage;
-<<<<<<< HEAD
+
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
@@ -13,105 +13,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Program extends FrameworkProgram
-{
-    private ResizableCanvas canvas;
-    private VBox vBox;
-    public Point2D position = new Point2D.Double(100, 100);
-
-    private int rows = 8;
-    private int columns = 12;
-    private int fontSize = 15;
-    private Agenda agenda;
-    private ArrayList<ClassRoom> rooms;
-    int vertStepsize = 0;
-    int horStepsize = 0;
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        super.start(stage);
-        //stage.setMaximized(true);
-        //stage.setFullScreen(true);
-        //stage.setResizable(false);
-        BorderPane mainPane = new BorderPane();
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(new Menu("Agenda"), new Menu("Simulation"));
-
-        BorderPane borderPane = new BorderPane();
-
-        canvas = new ResizableCanvas(g -> draw(g), mainPane);
-        vBox = new VBox();
-        borderPane.setRight(canvas);
-        borderPane.setLeft(vBox);
-
-        vBox.setSpacing((1080-rows*fontSize)/rows);
-
-        String[] rowLabels = {"unos","dos","tres", "quadros", "vijf", "zes", "seven", "eight", "nein", "tin"};
-
-
-//        for (int i = 0; i < rowLabels.length && i < this.rows; i++) {
-//            Label label = new Label(rowLabels[i]);
-//            label.setFont(new Font(fontSize));
-//            this.vBox.getChildren().add(new Label(rowLabels[i]));
-//        }
-
-        this.vBox.getChildren().add(new Label());
-        for (int i = 0; i < this.rooms.size() && i < this.rows; i++) {
-            Label label = new Label(this.rooms.get(i).getRoomName());
-            label.setFont(new Font(fontSize));
-            this.vBox.getChildren().add(label);
-        }
-
-
-
-
-        mainPane.setCenter(borderPane);
-        mainPane.setTop(menuBar);
-        stage.setScene(new Scene(mainPane));
-        stage.setTitle("Block Dragging");
-        stage.show();
-
-        canvas.setOnMousePressed(e -> mousePressed(e));
-        canvas.setOnMouseReleased(e -> mouseReleased(e));
-        canvas.setOnMouseDragged(e -> mouseDragged(e));
-
-        draw(new FXGraphics2D(canvas.getGraphicsContext2D()));
-
-    }
-
-    @Override
-    public void draw(FXGraphics2D g2d) {
-        super.draw(g2d);
-        g2d.setBackground(Color.white);
-        g2d.clearRect(0, 0, 1920, 1080);
-        g2d.setStroke(new BasicStroke(1));
-        //g2d.draw(new Rectangle2D.Double(position.getX() - 50, position.getY() - 50, 100, 100));
-        vertStepsize = (int) ((canvas.getWidth() - vBox.getWidth()) / this.columns);
-        horStepsize = (int) canvas.getHeight() / this.rows;
-
-        //Horizontal lines
-        for (int i = 0; i < this.rows; i++) {
-            g2d.drawLine(0, horStepsize * i, (int) canvas.getWidth(), horStepsize * i);
-        }
-
-        //Vertical Lines
-        for (int i = 0; i < this.columns; i++) {
-            g2d.drawLine(vertStepsize * i, 0, vertStepsize * i, (int) canvas.getHeight());
-            g2d.drawString((i + 8) + ":00", i * vertStepsize, 10);
-        }
-        
-        for (int i = 0; i < agenda.getLessons().size(); i++) {
-            g2d.setColor(new Color((int) (Math.random() * 0x1000000)));
-            double factorBegin = (agenda.getLessons().get(i).getBeginTime().getHour()-8)+(agenda.getLessons().get(i).getBeginTime().getMinute()/60.0);
-            double factorEnd = (agenda.getLessons().get(i).getEndTime().getHour()-8)+(agenda.getLessons().get(i).getEndTime().getMinute()/60.0);
-            Rectangle2D shape = new Rectangle2D.Double(vertStepsize * factorBegin, horStepsize * 6, vertStepsize*(factorEnd-factorBegin), horStepsize);
-            // DOOR MIDDEL VAN DE Y COORDINAAT TE STELLEN ALS DE horStepsize KAN JE DE POSITIE VAN DE VAKJES BEINVLOEDEN VAN DE VERTICALE POSITIE,
-            // DOOR HET TE VERMENIGVULDIGEN VOOR WELKE RIJ JE HET WILT HEBBEN.
-            g2d.draw(shape);
-            g2d.fill(shape);
-
-        }
-=======
 
 public class Program extends FrameworkProgram
 {
@@ -120,41 +21,15 @@ public class Program extends FrameworkProgram
     public void start(Stage stage) throws Exception {
         super.start(stage);
 
->>>>>>> master
     }
 
     @Override
     protected void Init()
     {
         super.Init();
-<<<<<<< HEAD
-        agenda= new Agenda();
-        this.rooms = new ArrayList<ClassRoom>();
-        for(int i = 1; i <= 6; i++){
-
-            ClassRoom classRoom = new ClassRoom("LA30" + i);
-            this.rooms.add(classRoom);
-        }
-        Teacher teacher = new Teacher();
-        System.out.println("Hallo");
-
-        for(int i=0; i<5; i++){
-            Lesson lesson = new Lesson(new StudentGroup("KlasB"),teacher, LocalTime.of(8+i,55),LocalTime.of(9+i,30),new ClassRoom("LA301"));
-            agenda.addLesson(lesson);
-        }
-
-        Lesson les = new Lesson(new StudentGroup("KlasB"),teacher, LocalTime.of(14,34),LocalTime.of(17,56),new ClassRoom("LA301"));
-        agenda.addLesson(les);
-        for(int i=0; i<5; i++){
-            //System.out.println(agenda.getLessons().get(i).getTeacher().getName());
-            System.out.println(agenda.getLessons().get(i).getBeginTime()+ " " + agenda.getLessons().get(i).getEndTime());
-        }
-
-=======
 
         agenda = new sAgenda(this);
 
->>>>>>> master
     }
 
     @Override
@@ -169,3 +44,4 @@ public class Program extends FrameworkProgram
         super.ExitProgram();
     }
 }
+
