@@ -11,10 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
@@ -99,7 +96,8 @@ public class sAgenda extends StandardObject {
         super.RenderLoop(deltaTime);
         //lets draw all stuff here
 
-
+        this.canvas.setWidth(this.stage.getWidth()*0.9);
+        this.canvas.setHeight(this.stage.getHeight()*0.9);
 
 
         //Horizontal lines
@@ -157,6 +155,13 @@ public class sAgenda extends StandardObject {
 
         buttonBox.getChildren().addAll(save, delete, edit, newOne);
 
+        VBox roomNames = new VBox();
+
+        HBox times = new HBox();
+
+
+        agendaPane.setTop(times);
+        agendaPane.setLeft(roomNames);
         agendaPane.setBottom(buttonBox);
         agendaPane.setRight(this.canvas);
 
