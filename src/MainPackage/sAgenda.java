@@ -26,6 +26,12 @@ public class sAgenda extends StandardObject
     private Renderable hourBlock2;
     private Agenda agenda;
 
+    private double hours;
+    private double rooms;
+
+    double xStepSize;
+    double yStepSize;
+
     protected sAgenda(FrameworkProgram frameworkProgram, Agenda agenda)
     {
         //the agenda uses input, the standard logic loop and a render loop
@@ -36,6 +42,10 @@ public class sAgenda extends StandardObject
         this.canvas =     frameworkProgram.getCanvas();
         this.stage =      frameworkProgram.getStage();
         this.agenda = agenda;
+        this.hours = 12;
+        this.rooms = 5;
+        this.xStepSize = canvas.getWidth()/hours;
+        this.yStepSize = canvas.getHeight()/rooms;
     }
 
     @Override
@@ -68,8 +78,8 @@ public class sAgenda extends StandardObject
             double begin = (lesson.getBeginTime().getHour()-8)+(lesson.getBeginTime().getMinute()/60.0);
             double width = (lesson.getEndTime().getHour()-8)+(lesson.getEndTime().getMinute()/60.0)-begin;
             System.out.println(begin + " " + width);
-            Point2D point = new Point2D.Double(begin*300,0);
-            Shape shape = new Rectangle2D.Double(begin*300,0,width*100,100);
+            Point2D point = new Point2D.Double(begin*xStepSize,yStepSize*0);
+            Shape shape = new Rectangle2D.Double(begin*xStepSize,yStepSize*0,width*xStepSize,yStepSize);
             hourBlocks.add(new HourBlock(shape,point,lesson,Color.CYAN));
         }
     }
@@ -86,6 +96,14 @@ public class sAgenda extends StandardObject
     {
         super.RenderLoop(deltaTime);
         //lets draw all stuff here
+
+        for(int i=0; i<24; i++){
+            graphics2D.drawLine((int)xStepSize*i,0,(int)xStepSize*i,(int)canvas.getHeight());
+        }
+
+        for(int i=0; i<5; i++){
+            graphics2D.drawLine(0,(int)yStepSize*i,(int)canvas.getWidth(),(int)yStepSize*i);
+        }
 
         for(HourBlock h : hourBlocks)
         {

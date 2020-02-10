@@ -38,6 +38,7 @@ public class HourBlock extends Renderable
 
     @Override
     public void draw(FXGraphics2D g2d) {
+        g2d.draw(shape);
         g2d.setColor(this.color);
         //super.draw(g2d);
         //System.out.println("draw1");
