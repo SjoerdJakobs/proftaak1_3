@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class StudentGroup {
     private String name;
     private ArrayList<Student> students;
+    private int groupID;
 
-    public StudentGroup(String name){
+    public StudentGroup(String name, int groupID){
         this.name = name;
         this.students = new ArrayList<>();
+        this.groupID = groupID;
     }
 
     public void addStudent(Student student){
@@ -34,4 +36,20 @@ public class StudentGroup {
     public void setName(String name) { this.name = name; }
     public ArrayList<Student> getStudents(){ return this.students; }
     public void setStudents(ArrayList<Student> students) { this.students = students; }
+    public int getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(int groupID) {
+        this.groupID = groupID;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentGroup{" +
+                "name='" + name + '\'' +
+                ", students=" + students +
+                ", groupID=" + groupID +
+                '}';
+    }
 }
