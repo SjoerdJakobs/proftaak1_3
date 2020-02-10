@@ -72,6 +72,7 @@ public class sAgenda extends StandardObject
         {
             h.draw(graphics2D);
         }
+
         //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.

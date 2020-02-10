@@ -11,13 +11,14 @@ public class ExampleStudent extends StandardObject
      * this var will hold the statemachine for the student ai, this is yet to be instantiated
      */
     private StateMachine StudentStateMachine;
+
     /**
      *how much does this student need to pee
      */
     private double peeValue = 0;
 
     /**
-     *when does this student need to go to thw toilet
+     *when does this student need to go to the toilet
      */
     private double peeThreshold = 5;
 

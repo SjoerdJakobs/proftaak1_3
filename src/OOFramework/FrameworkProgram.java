@@ -69,8 +69,8 @@ public abstract class FrameworkProgram extends Application
         lastTime = time;
 
         //uncomment to print the deltatime in seconds
-        //String s = String.format("%.5f", deltaTime);
-        //System.out.println(s);
+        String s = String.format("%.5f", deltaTime);
+        System.out.println(s);
 
         AddToLoop();
 
@@ -105,6 +105,10 @@ public abstract class FrameworkProgram extends Application
                 bo.Sleep();
             }
         }
+
+        //here lies the thread.sleep
+        //if we have above 60 frames in the end of the project, it will be added here to save battery
+        //Etienne/Joep if you see this, Sjoerd stopped the group from adding it in the begin..... fite me
     }
 
     protected void Init()

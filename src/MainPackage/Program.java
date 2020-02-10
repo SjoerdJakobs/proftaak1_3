@@ -16,7 +16,6 @@ public class Program extends FrameworkProgram
     protected void Init()
     {
         super.Init();
-
         agenda = new sAgenda(this);
 
     }
