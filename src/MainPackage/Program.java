@@ -1,5 +1,6 @@
 package MainPackage;
 
+import Data.MakeAgenda;
 import OOFramework.FrameworkProgram;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -23,6 +24,7 @@ public class Program extends FrameworkProgram {
     @Override
     protected void Init() {
         super.Init();
+<<<<<<< HEAD
 
 
         agenda = new sAgenda(this);
@@ -55,6 +57,10 @@ public class Program extends FrameworkProgram {
         this.stage.setScene(mainScene);
 //        agenda.setActive(false);
 
+=======
+        MakeAgenda makeAgenda = new MakeAgenda(this);
+        agenda = new sAgenda(this,makeAgenda.getAgenda());
+>>>>>>> Fabian
 
     }
 
