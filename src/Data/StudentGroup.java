@@ -51,7 +51,7 @@ public class StudentGroup {
     @Override
     public String toString() {
         return "StudentGroup{" +
-                "name='" + groupData.name + '\'' +
+                "name=" + groupData.name + '\'' +
                 ", groupID=" + groupData.groupID +
                 ", students=" + groupData.studentsIDs +
                 '}';
