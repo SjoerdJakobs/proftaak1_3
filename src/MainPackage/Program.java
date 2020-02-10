@@ -1,5 +1,6 @@
 package MainPackage;
 
+import Data.MakeAgenda;
 import OOFramework.FrameworkProgram;
 import javafx.stage.Stage;
 
@@ -16,8 +17,8 @@ public class Program extends FrameworkProgram
     protected void Init()
     {
         super.Init();
-
-        agenda = new sAgenda(this);
+        MakeAgenda makeAgenda = new MakeAgenda(this);
+        agenda = new sAgenda(this,makeAgenda.getAgenda());
 
     }
 
