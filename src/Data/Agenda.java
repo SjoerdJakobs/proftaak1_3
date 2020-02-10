@@ -17,10 +17,10 @@ public class Agenda {
         lessons.remove(lesson);
     }
 
-    public ArrayList<Lesson> getLessonFromClassRoom(String classRoomName){
+    public ArrayList<Lesson> getLessonFromClassRoom(int classRoomName){
         ArrayList<Lesson> lessonsInClass = new ArrayList<>();
         for(Lesson lesson : this.lessons){
-            if(lesson.getClassRoom().getRoomName().equals(classRoomName)){
+            if(lesson.getClassRoom().getRoomName() == (classRoomName)){
                 lessonsInClass.add(lesson);
             }
         }

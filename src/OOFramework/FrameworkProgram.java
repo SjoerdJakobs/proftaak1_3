@@ -36,14 +36,13 @@ public abstract class FrameworkProgram extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        this.stage.setWidth(1200);
-        this.stage.setHeight(900);
+        this.stage.setWidth(1500);
+        this.stage.setHeight(950);
 
-
-        this.canvas = new Canvas(this.stage.getWidth()*0.5, this.stage.getHeight()*0.5);
+        this.canvas = new Canvas(this.stage.getWidth(), this.stage.getHeight());
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
-     //   this.stage.setMaximized(true);
-        //this.stage.setFullScreen(true);
+//        this.stage.setMaximized(true);
+//        this.stage.setFullScreen(true);
 //        this.stage.setResizable(false);
 
 

@@ -16,7 +16,7 @@ public class HourBlock extends Renderable
     private LocalTime endTime;
     private String classId;
     private String teacher;
-    private String roomNr;
+    private int roomNr;
     private Color color;
     private Lesson lesson;
 
@@ -33,14 +33,14 @@ public class HourBlock extends Renderable
         this.teacher = lesson.getTeacher().getName();
         this.roomNr = lesson.getClassRoom().getRoomName();
         this.color = color;
-        this.text = classId+"\n"+teacher+"\n"+roomNr+"\n"+ beginTime +" - "+endTime;
+        this.text = "\n" +classId+"\n"+teacher+"\n"+"LA"+roomNr+"\n"+ beginTime +" - "+endTime;
     }
 
     @Override
     public void draw(FXGraphics2D g2d) {
         g2d.draw(shape);
+        super.draw(g2d);
         g2d.setColor(this.color);
-        //super.draw(g2d);
         //System.out.println("draw1");
         g2d.fill(shape);
         g2d.setFont(sanSerifFont);
@@ -103,4 +103,8 @@ public class HourBlock extends Renderable
     public void setRoomNr(ClassRoom room) {
         lesson.setClassRoom(room);
     }
+
+
+
+
 }

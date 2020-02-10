@@ -24,10 +24,11 @@ public class Program extends FrameworkProgram {
     @Override
     protected void Init() {
         super.Init();
-<<<<<<< HEAD
 
 
-        agenda = new sAgenda(this);
+        MakeAgenda makeAgenda = new MakeAgenda();
+        agenda = new sAgenda(this,makeAgenda.getAgenda());
+
         BorderPane pane = new BorderPane();
 
 
@@ -39,6 +40,7 @@ public class Program extends FrameworkProgram {
 
         itemAgenda.setOnAction(event -> {
             pane.setCenter(agenda.sceneAgenda());
+
         });
 
         itemSimulation.setOnAction(e ->{
@@ -57,10 +59,7 @@ public class Program extends FrameworkProgram {
         this.stage.setScene(mainScene);
 //        agenda.setActive(false);
 
-=======
-        MakeAgenda makeAgenda = new MakeAgenda(this);
-        agenda = new sAgenda(this,makeAgenda.getAgenda());
->>>>>>> Fabian
+
 
     }
 
