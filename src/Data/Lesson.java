@@ -7,7 +7,7 @@ import java.time.LocalTime;
 public class Lesson {
     private LessonData lessonData;
 
-    public Lesson(int lessonID, StudentGroup studentGroup, Teacher teacher, LocalTime beginTime, LocalTime endTime, ClassRoom classRoom){
+    public Lesson(){
 
     }
 

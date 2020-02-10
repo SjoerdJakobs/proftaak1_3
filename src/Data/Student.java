@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class Student extends Person{
     private StudentData studentData;
 
-    public Student(FrameworkProgram frameworkProgram, String name, StudentGroup studentGroup, int studentID, int age, Gender gender) {
-        super(frameworkProgram, name, age, gender);
+    public Student(FrameworkProgram frameworkProgram) {
+        super(frameworkProgram);
 
     }
 

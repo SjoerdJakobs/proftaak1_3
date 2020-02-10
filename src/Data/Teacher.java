@@ -6,8 +6,8 @@ import OOFramework.FrameworkProgram;
 public class Teacher extends Person {
     private TeacherData teacherdata;
 
-    public Teacher(FrameworkProgram frameworkProgram, String name, int teacherID, int age, Gender gender) {
-        super(frameworkProgram, name, age, gender);
+    public Teacher(FrameworkProgram frameworkProgram) {
+        super(frameworkProgram);
 
     }
 

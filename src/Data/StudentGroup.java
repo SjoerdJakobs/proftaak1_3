@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class StudentGroup {
     private GroupData groupData;
 
-    public StudentGroup(String name, int groupID){
+    public StudentGroup(){
 
     }
 
