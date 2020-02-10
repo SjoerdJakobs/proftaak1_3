@@ -1,31 +1,27 @@
 package Data;
 
+import Data.SavedData.TeacherData;
 import OOFramework.FrameworkProgram;
 
 public class Teacher extends Person {
-    private int teacherID;
+    private TeacherData teacherdata;
 
     public Teacher(FrameworkProgram frameworkProgram, String name, int teacherID, int age, Gender gender) {
         super(frameworkProgram, name, age, gender);
-        this.teacherID = teacherID;
-    }
 
-    // Getters and Setters
-    public int getTeacherID() {
-        return teacherID;
-    }
-
-    public void setTeacherID(int teacherID) {
-        this.teacherID = teacherID;
+        teacherdata.INSTANCE.setName(name);
+        teacherdata.INSTANCE.setAge(age);
+        teacherdata.INSTANCE.setStudentID(teacherID);
+        teacherdata.INSTANCE.setGender(gender.toString());
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                ", name=" + getName() +
-                ", age=" + getAge() +
-                ", gender=" + getGender() +
-                ", teacherID=" + teacherID +
+                "name=" + teacherdata.INSTANCE.getName() +
+                ", age=" + teacherdata.INSTANCE.getAge() +
+                ", studentID=" + teacherdata.INSTANCE.getStudentID() +
+                ", gender=" + teacherdata.INSTANCE.getGender() +
                 '}';
     }
 }

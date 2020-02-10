@@ -1,35 +1,31 @@
 package Data;
 
+import Data.SavedData.StudentData;
 import OOFramework.FrameworkProgram;
 
+import java.io.Serializable;
+
 public class Student extends Person {
-    private StudentGroup studentGroup;
-    private int studentID;
+    private StudentData studentData;
 
     public Student(FrameworkProgram frameworkProgram, String name, StudentGroup studentGroup, int studentID, int age, Gender gender) {
         super(frameworkProgram, name, age, gender);
-        this.studentGroup = studentGroup;
-        this.studentID = studentID;
-    }
 
-    // Getters and Setters
-    public StudentGroup getStudentGroup() { return this.studentGroup; }
-    public int getStudentID() {
-        return studentID;
-    }
-
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
+        studentData.INSTANCE.setGroup(studentGroup.getName());
+        studentData.INSTANCE.setName(name);
+        studentData.INSTANCE.setAge(age);
+        studentData.INSTANCE.setStudentID(studentID);
+        studentData.INSTANCE.setGender(gender.toString());
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "studentGroup=" + studentGroup +
-                ", name=" + getName() +
-                ", age=" + getAge() +
-                ", gender=" + getGender() +
-                ", studentID=" + studentID +
+                "studentGroup=" + studentData.INSTANCE.getGroup() +
+                ", name=" + studentData.INSTANCE.getName() +
+                ", age=" + studentData.INSTANCE.getAge() +
+                ", studentID=" + studentData.INSTANCE.getStudentID() +
+                ", gender=" + studentData.INSTANCE.getGender() +
                 '}';
     }
 }
