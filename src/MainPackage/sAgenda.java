@@ -12,7 +12,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
@@ -26,6 +28,8 @@ public class sAgenda extends StandardObject {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
     private Stage stage;
+
+    private Scene sceneAgenda;
 
     private ArrayList<HourBlock> hourBlocks;
 
@@ -46,12 +50,24 @@ public class sAgenda extends StandardObject {
         this.graphics2D = frameworkProgram.getGraphics2D();
         this.canvas = frameworkProgram.getCanvas();
         this.stage = frameworkProgram.getStage();
+
+    }
+
+    @Override
+    protected void Awake() {
+        super.Awake();
+    }
+
+    @Override
+    protected void Sleep() {
+        super.Sleep();
     }
 
     @Override
     protected void Start() {
         super.Start();
         hourBlocks = new ArrayList<HourBlock>();
+
 
         //create a simple rectangle, just repeat this code for more
         this.hourBlock = new HourBlock(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(400, 400), 10, 12, "klas", "LA 134", "leraar", Color.red);
@@ -84,57 +100,18 @@ public class sAgenda extends StandardObject {
         //lets draw all stuff here
 
 
-        GridPane gPane = new GridPane();
-        gPane.setHgap(10);
-        gPane.setPadding(new Insets(20, 20, 20, 20));
-
-        Button edit = new Button("EDIT");
-        Button save = new Button("SAVE");
-        Button newOne = new Button("NEW");
-        Button delete = new Button("DELETE");
-
-
-        gPane.add(newOne, 0,0);
-        gPane.add(delete, 1,0);
-        gPane.add(save, 2,0);
-        gPane.add(edit, 3,0);
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(this.canvas);
-        borderPane.setBottom(gPane);
-        //MenuBar bar = new MenuBar();
-
-        MenuBar bar = new MenuBar();
-        Menu agenda = new Menu();
-        agenda.setText("Agenda");
-
-        Menu simulation = new Menu();
-        simulation.setText("Simulation");
-
-        bar.getMenus().addAll(agenda, simulation);
-        borderPane.setTop(bar);
-
-        Label label = new Label("hello, im a label");
-
-        borderPane.setLeft(label);
-
-        this.horStepsize = (int) this.canvas.getWidth() / this.rows;
-        this.vertStepsize = (int) this.canvas.getHeight() / this.columns;
-
-        System.out.println(this.canvas.getHeight());
-        System.out.println(this.canvas.getWidth());
 
 
         //Horizontal lines
-        for (int i = 0; i < this.rows; i++) {
-            this.graphics2D.drawLine(0, horStepsize * i, (int) canvas.getWidth(), horStepsize * i);
-        }
-
-        //Vertical Lines
-        for (int i = 0; i < this.columns; i++) {
-            this.graphics2D.drawLine(vertStepsize * i, 0, vertStepsize * i, (int) canvas.getHeight());
-            //  g2d.drawString((i + 8) + ":00", i * vertStepsize, 10);
-        }
+//        for (int i = 0; i < this.rows; i++) {
+//            this.graphics2D.drawLine(0, horStepsize * i, (int) canvas.getWidth(), horStepsize * i);
+//        }
+//
+//        //Vertical Lines
+//        for (int i = 0; i < this.columns; i++) {
+//            this.graphics2D.drawLine(vertStepsize * i, 0, vertStepsize * i, (int) canvas.getHeight());
+//            //  g2d.drawString((i + 8) + ":00", i * vertStepsize, 10);
+//        }
 //
 //        for (int i = 0; i < agenda.getLessons().size(); i++) {
 //            g2d.setColor(new Color((int) (Math.random() * 0x1000000)));
@@ -164,6 +141,26 @@ public class sAgenda extends StandardObject {
         //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.
-        this.stage.setScene(new Scene(borderPane));
+      //  this.stage.setScene(new Scene(borderPane));
     }
+
+
+    public BorderPane sceneAgenda(){
+
+        BorderPane agendaPane = new BorderPane();
+        HBox buttonBox = new HBox();
+
+        Button save = new Button("SAVE");
+        Button delete = new Button("DELETE");
+        Button edit = new Button("EDIT");
+        Button newOne = new Button("NEW");
+
+        buttonBox.getChildren().addAll(save, delete, edit, newOne);
+
+        agendaPane.setBottom(buttonBox);
+        agendaPane.setRight(this.canvas);
+
+        return agendaPane;
+    }
+
 }
