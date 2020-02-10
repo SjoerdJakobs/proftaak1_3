@@ -93,6 +93,7 @@ public class sAgenda extends StandardObject {
         Button newOne = new Button("NEW");
         Button delete = new Button("DELETE");
 
+
         gPane.add(newOne, 0,0);
         gPane.add(delete, 1,0);
         gPane.add(save, 2,0);
@@ -103,7 +104,7 @@ public class sAgenda extends StandardObject {
         borderPane.setBottom(gPane);
         //MenuBar bar = new MenuBar();
 
-        javafx.scene.control.MenuBar bar = new javafx.scene.control.MenuBar();
+        MenuBar bar = new MenuBar();
         Menu agenda = new Menu();
         agenda.setText("Agenda");
 
