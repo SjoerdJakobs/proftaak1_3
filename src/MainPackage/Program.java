@@ -1,5 +1,10 @@
 package MainPackage;
 
+import Data.Gender;
+import Data.SavedData.SavedData;
+import Data.SavedData.StudentData;
+import Data.Student;
+import Data.StudentGroup;
 import OOFramework.FrameworkProgram;
 import javafx.stage.Stage;
 

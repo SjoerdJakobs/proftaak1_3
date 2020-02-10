@@ -1,87 +1,66 @@
 package Data;
 
 import Data.Rooms.ClassRoom;
-
+import Data.SavedData.LessonData;
 import java.time.LocalTime;
 
 public class Lesson {
-    private StudentGroup studentGroup;
-    private Teacher teacher;
-    private LocalTime beginTime;
-    private LocalTime endTime;
-    private ClassRoom classRoom;
-    private int lessonID;
-
-
+    private LessonData lessonData;
 
     public Lesson(int lessonID, StudentGroup studentGroup, Teacher teacher, LocalTime beginTime, LocalTime endTime, ClassRoom classRoom){
-        this.studentGroup = studentGroup;
-        this.teacher = teacher;
-        this.beginTime = beginTime;
-        this.endTime = endTime;
-        this.classRoom = classRoom;
-        this.lessonID = lessonID;
+
     }
 
-    // Getter and Setters
-
-    public StudentGroup getStudentGroup() {
-        return studentGroup;
+    // Getters and Setters
+    public String getStudentGroup() { return this.lessonData.studentGroup; }
+    public void setStudentGroup(String studentGroup) {
+        this.lessonData.studentGroup = studentGroup;
     }
 
-    public void setStudentGroup(StudentGroup studentGroup) {
-        this.studentGroup = studentGroup;
+    public String getTeacher() {
+        return this.lessonData.teacher;
     }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeacher(String teacher) {
+        this.lessonData.teacher = teacher;
     }
 
     public LocalTime getBeginTime() {
-        return beginTime;
+        return this.lessonData.beginTime;
     }
-
     public void setBeginTime(LocalTime beginTime) {
-        this.beginTime = beginTime;
+        this.lessonData.beginTime = beginTime;
     }
 
     public LocalTime getEndTime() {
-        return endTime;
+        return this.lessonData.endTime;
     }
-
     public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+        this.lessonData.endTime = endTime;
     }
 
-    public ClassRoom getClassRoom() {
-        return classRoom;
+    public String getClassRoom() {
+        return this.lessonData.classRoom;
     }
-
-    public void setClassRoom(ClassRoom classRoom) {
-        this.classRoom = classRoom;
+    public void setClassRoom(String classRoom) {
+        this.lessonData.classRoom = classRoom;
     }
 
     public int getLessonID() {
-        return lessonID;
+        return this.lessonData.lessonID;
     }
-
     public void setLessonID(int lessonID) {
-        this.lessonID = lessonID;
+        this.lessonData.lessonID = lessonID;
     }
 
     @Override
     public String toString() {
         return "Lesson{" +
-                "studentGroup=" + studentGroup +
-                ", teacher=" + teacher +
-                ", beginTime=" + beginTime +
-                ", endTime=" + endTime +
-                ", classRoom=" + classRoom +
-                ", lessonID=" + lessonID +
+                "studentGroup=" + lessonData.studentGroup +
+                ", teacher=" + lessonData.teacher +
+                ", beginTime=" + lessonData.beginTime +
+                ", endTime=" + lessonData.endTime +
+                ", classRoom=" + lessonData.classRoom +
+                ", lessonID=" + lessonData.lessonID +
                 '}';
     }
 }
