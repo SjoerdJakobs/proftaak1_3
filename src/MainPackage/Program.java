@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 public class Program extends FrameworkProgram
 {
     sAgenda agenda;
+    SavedData savedData = SavedData.INSTANCE;
     @Override
     public void start(Stage stage) throws Exception {
         super.start(stage);
@@ -16,7 +17,9 @@ public class Program extends FrameworkProgram
     protected void Init()
     {
         super.Init();
-        agenda = new sAgenda(this);
+        int id = savedData.id;
+        System.out.println(id);
+        //agenda = new sAgenda(this);
 
     }
 
