@@ -13,7 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
@@ -21,6 +23,7 @@ import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class sAgenda extends StandardObject {
@@ -43,6 +46,9 @@ public class sAgenda extends StandardObject {
     private double correctionX;
     private double correctionY;
 
+    private double timeSteps;
+    private double roomSteps;
+
     protected sAgenda(FrameworkProgram frameworkProgram, Agenda agenda) {
         //the agenda uses input, the standard logic loop and a render loop
         super(frameworkProgram, true, true, true, true);
@@ -52,7 +58,7 @@ public class sAgenda extends StandardObject {
         this.canvas = frameworkProgram.getCanvas();
         this.stage = frameworkProgram.getStage();
         this.agenda = agenda;
-        this.hours = 12;
+        this.hours = 13;
         this.rooms = 5;
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
@@ -93,12 +99,55 @@ public class sAgenda extends StandardObject {
         super.InputLoop(deltaTime);
         //lets put stuff like adding data for a lesson here
 
+        this.canvas.setOnMouseClicked(e -> {
+            for (HourBlock block : this.hourBlocks) {
+
+                if (e.getX() > block.getTransformedShape().getBounds2D().getMinX() && e.getX() < block.getTransformedShape().getBounds2D().getMaxX()) {
+                    if (e.getY() > block.getTransformedShape().getBounds2D().getMinY() && e.getY() < block.getTransformedShape().getBounds2D().getMaxY()) {
+
+                        Stage popUpEdit = new Stage();
+                        popUpEdit.initOwner(this.stage);
+                        popUpEdit.initModality(Modality.APPLICATION_MODAL);
+
+                        HBox hbox = makeSceneEditLesson();
+
+                        VBox popVBoxInformation = new VBox(10);
+
+                        TextField beginTime = new TextField();
+                        TextField endTime = new TextField();
+                        TextField group = new TextField();
+                        TextField teacher = new TextField();
+
+                        popVBoxInformation.getChildren().add(beginTime);
+                        popVBoxInformation.getChildren().add(endTime);
+                        popVBoxInformation.getChildren().add(group);
+                        popVBoxInformation.getChildren().add(teacher);
+
+                        Scene popScene = new Scene(hbox);
+
+                        popUpEdit.setScene(popScene);
+                        popUpEdit.show();
+
+                    }
+                }
+            }
+
+        });
+
+
+    }
+
+    @Override
+    protected void MainLoop(double deltaTime) {
+        super.MainLoop(deltaTime);
+        //do general stuff here, no clear idea what yet because i dont think a agenda has much logic now that i think about it
+
         this.correctionX = 0.0;
         this.correctionY = 0.0;
 
-        ArrayList<Lesson> lessons = agenda.getLessons();
         this.hourBlocks.clear();
         //Color[] colors = {Color.GREEN,Color.RED,Color.BLACK,Color.BLUE,Color.PINK,Color.MAGENTA};
+        ArrayList<Lesson> lessons = agenda.getLessons();
         for (Lesson lesson : lessons) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
@@ -109,13 +158,6 @@ public class sAgenda extends StandardObject {
             this.correctionY = this.correctionY + 0.65;
         }
 
-
-    }
-
-    @Override
-    protected void MainLoop(double deltaTime) {
-        super.MainLoop(deltaTime);
-        //do general stuff here, no clear idea what yet because i dont think a agenda has much logic now that i think about it
     }
 
     @Override
@@ -125,6 +167,9 @@ public class sAgenda extends StandardObject {
 
         this.canvas.setWidth(this.stage.getWidth() * 0.95);
         this.canvas.setHeight(this.stage.getHeight() * 0.85);
+
+        this.timeSteps = this.canvas.getWidth() / 24;
+        this.roomSteps = this.canvas.getHeight() / 6;
 
         graphics2D.setColor(Color.white);
         graphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
@@ -165,21 +210,74 @@ public class sAgenda extends StandardObject {
         Button edit = new Button("EDIT");
         Button newOne = new Button("NEW");
 
+
+
+        newOne.setOnAction(e -> {
+            final Stage popUpNew = new Stage();
+            popUpNew.initOwner(this.stage);
+            popUpNew.initModality(Modality.APPLICATION_MODAL);
+            popUpNew.setTitle("create a lesson");
+
+            HBox hbox = makeSceneEditLesson();
+
+            VBox popVBoxInformation = new VBox(10);
+
+            TextField beginTime = new TextField();
+            TextField endTime = new TextField();
+            TextField group = new TextField();
+            TextField teacher = new TextField();
+
+            VBox extraTime = new VBox(10);
+            TextField beginTimeMin = new TextField();
+            TextField endTimeMin = new TextField();
+            extraTime.getChildren().addAll(beginTimeMin, endTimeMin);
+
+
+            popVBoxInformation.getChildren().add(beginTime);
+            popVBoxInformation.getChildren().add(endTime);
+            popVBoxInformation.getChildren().add(group);
+            popVBoxInformation.getChildren().add(teacher);
+
+            Label warningLabel = new Label();
+
+            save.setOnAction(ex->{
+                if(beginTime.getText().isEmpty()){
+                    warningLabel.setText("please enter a correct value at begin time.");
+                } else if(endTime.getText().isEmpty()){
+                    warningLabel.setText("please enter a correct value at end time.");
+                } else if(group.getText().isEmpty()){
+                    warningLabel.setText("please enter a correct value at group.");
+                } else if(teacher.getText().isEmpty()){
+                    warningLabel.setText("please enter a correct value at teacher.");
+                }
+
+              //  Lesson newLesson = new Lesson()
+
+            });
+
+            hbox.getChildren().addAll(popVBoxInformation, save, warningLabel);
+            Scene popScene = new Scene(hbox, 600, 400);
+            popUpNew.setScene(popScene);
+            popUpNew.show();
+        });
+
+
+
+
         buttonBox.getChildren().addAll(save, delete, edit, newOne);
 
         VBox roomNames = new VBox();
-        roomNames.setSpacing(this.canvas.getHeight()/ 5);
+        roomNames.setSpacing(this.canvas.getHeight() / 6);
         for (int i = 0; i <= 4; i++) {
-            roomNames.getChildren().add(new Label("LA30" + i));
+            roomNames.getChildren().add(new Label("\nLA30" + i));
         }
 
 
         HBox times = new HBox();
         times.setSpacing(this.canvas.getWidth() / 24);
-
         times.getChildren().add(new Label("Time: \n \n Room:"));
         for (int i = 8; i <= 20; i++) {
-            times.getChildren().add(new Label(i + ":00"));
+            times.getChildren().add(new Label(i + ":00\t"));
         }
 
         agendaPane.setTop(times);
@@ -187,7 +285,24 @@ public class sAgenda extends StandardObject {
         agendaPane.setBottom(buttonBox);
         agendaPane.setCenter(this.canvas);
 
+
         return agendaPane;
+    }
+
+
+    private HBox makeSceneEditLesson() {
+        HBox popHBox = new HBox(20);
+
+        VBox popVBoxLabels = new VBox(20);
+
+        popVBoxLabels.getChildren().add(new Label("begin time: "));
+        popVBoxLabels.getChildren().add(new Label("end time: "));
+        popVBoxLabels.getChildren().add(new Label("group: "));
+        popVBoxLabels.getChildren().add(new Label("teacher: "));
+
+
+        popHBox.getChildren().addAll(popVBoxLabels);
+        return popHBox;
     }
 
 }
