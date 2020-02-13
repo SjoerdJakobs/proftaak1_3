@@ -1,11 +1,15 @@
 package MainPackage;
 
+import OOFramework.Modules.ASSERT_MSG;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
+import static OOFramework.Modules.ASSERT_MSG.ASSERT_MSG_TERMINATE;
 
 public class DataReader {
 
@@ -24,7 +28,9 @@ public class DataReader {
         oos.writeObject(null);
         oos.close();
 
-
+        /**
+         * start read/loading code
+         */
         Counter loaded;
         FileInputStream fis = new FileInputStream(f);
         ObjectInputStream ois = new ObjectInputStream(fis);
@@ -37,10 +43,33 @@ public class DataReader {
                     loaded = (Counter)readCase;
                     System.out.println(loaded.count);
                 }
+                /*else if(readCase instanceof TeacherData)
+                {
+                    //save teacher stuff in data class
+                }
+                else if(readCase instanceof StudentData)
+                {
+                    //save student stuff in data class
+                }
+                else if(readCase instanceof LessonData)
+                {
+                    //save lesson stuff in data class
+                }
+                else if(readCase instanceof ClassData)
+                {
+                    //save class stuff in data class
+                }*/
+                else
+                {
+                    ASSERT_MSG_TERMINATE(false,"LOADING AN UNKNOWN OBJECT, CLASS: DataReader");
+                }
             }
         } while (readCase != null);
         ois.close();
     }
+    /**
+     * end read/loading code
+     */
 
 }
 
