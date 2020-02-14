@@ -1,7 +1,6 @@
 package Data;
 
-import Data.Rooms.ClassRoom;
-import Data.SavedData.LessonData;
+import MainPackage.ReadWriteData.DataClasses.LessonData;
 import java.time.LocalTime;
 
 public class Lesson {
@@ -12,16 +11,16 @@ public class Lesson {
     }
 
     // Getters and Setters
-    public String getStudentGroup() { return this.lessonData.studentGroup; }
-    public void setStudentGroup(String studentGroup) {
-        this.lessonData.studentGroup = studentGroup;
+    public int getStudentGroup() { return this.lessonData.studentGroupId; }
+    public void setStudentGroup(int studentGroup) {
+        this.lessonData.studentGroupId = studentGroup;
     }
 
-    public String getTeacher() {
-        return this.lessonData.teacher;
+    public int getTeacher() {
+        return this.lessonData.teacherId;
     }
-    public void setTeacher(String teacher) {
-        this.lessonData.teacher = teacher;
+    public void setTeacher(int teacher) {
+        this.lessonData.teacherId = teacher;
     }
 
     public LocalTime getBeginTime() {
@@ -38,11 +37,11 @@ public class Lesson {
         this.lessonData.endTime = endTime;
     }
 
-    public String getClassRoom() {
-        return this.lessonData.classRoom;
+    public int getClassRoom() {
+        return this.lessonData.classRoomId;
     }
-    public void setClassRoom(String classRoom) {
-        this.lessonData.classRoom = classRoom;
+    public void setClassRoom(int classRoomId) {
+        this.lessonData.classRoomId = classRoomId;
     }
 
     public int getLessonID() {
@@ -55,11 +54,11 @@ public class Lesson {
     @Override
     public String toString() {
         return "Lesson{" +
-                "studentGroup=" + lessonData.studentGroup +
-                ", teacher=" + lessonData.teacher +
+                "studentGroup=" + lessonData.studentGroupId +
+                ", teacher=" + lessonData.teacherId +
                 ", beginTime=" + lessonData.beginTime +
                 ", endTime=" + lessonData.endTime +
-                ", classRoom=" + lessonData.classRoom +
+                ", classRoom=" + lessonData.classRoomId +
                 ", lessonID=" + lessonData.lessonID +
                 '}';
     }
