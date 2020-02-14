@@ -44,7 +44,7 @@ public class Program extends FrameworkProgram {
         });
 
         itemSimulation.setOnAction(e ->{
-            agenda.setActive(false);
+            pane.setCenter(new BorderPane());
         });
 
         menuAgenda.getItems().add(itemAgenda);

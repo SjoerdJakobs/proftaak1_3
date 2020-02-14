@@ -8,6 +8,7 @@ import OOFramework.StandardObject;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -222,7 +223,8 @@ public class sAgenda extends StandardObject {
 
             TextField beginTime = new TextField();
             TextField endTime = new TextField();
-            TextField group = new TextField();
+            ComboBox group = new ComboBox();
+
             TextField teacher = new TextField();
 
             VBox extraTime = new VBox(10);
@@ -243,13 +245,11 @@ public class sAgenda extends StandardObject {
                     warningLabel.setText("please enter a correct value at begin time.");
                 } else if(endTime.getText().isEmpty()){
                     warningLabel.setText("please enter a correct value at end time.");
-                } else if(group.getText().isEmpty()){
+                } else if(group.getSelectionModel().isEmpty()){
                     warningLabel.setText("please enter a correct value at group.");
                 } else if(teacher.getText().isEmpty()){
                     warningLabel.setText("please enter a correct value at teacher.");
-                }
-
-              //  Lesson newLesson = new Lesson()
+                } 
 
             });
 
