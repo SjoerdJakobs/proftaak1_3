@@ -45,31 +45,53 @@ public enum SavedData {
         this.groupData = groupData;
     }
 
-    // Finders
-    public GroupData findStudentGroupData(int groupID){
+    // Finders by ID
+    public GroupData findStudentGroupDataByID(int groupID){
         for(GroupData gData : this.groupData){
             if(gData.groupID == groupID) { return gData; }
         }
         return null;
     }
 
-    public TeacherData findTeacherData(int teacherID){
+    public TeacherData findTeacherDataByID(int teacherID){
         for(TeacherData tData : this.teacherData){
             if(tData.teacherId == teacherID) { return tData; }
         }
         return null;
     }
 
-    public StudentData findStudentData(int studentID){
+    public StudentData findStudentDataByID(int studentID){
         for(StudentData sData : this.studentData){
             if(sData.studentID == studentID) { return sData; }
         }
         return null;
     }
 
-    public LessonData findLessonData(int lessonID){
+    public LessonData findLessonDataByID(int lessonID){
         for(LessonData lData : lessonData){
             if(lData.lessonID == lessonID) { return lData; }
+        }
+        return null;
+    }
+
+    // Finders by Name
+    public GroupData findStudentGroupDataByName(String groupName){
+        for(GroupData gData : this.groupData){
+            if(gData.name.equals(groupName)) { return gData; }
+        }
+        return null;
+    }
+
+    public TeacherData findTeacherDataByName(String teacherName){
+        for(TeacherData tData : this.teacherData){
+            if(tData.name.equals(teacherName)) { return tData; }
+        }
+        return null;
+    }
+
+    public StudentData findStudentDataByName(String studentName){
+        for(StudentData sData : this.studentData){
+            if(sData.equals(studentName)) { return sData; }
         }
         return null;
     }
