@@ -4,7 +4,10 @@ import OOFramework.FrameworkProgram;
 
 public class ClassRoom extends Room {
 
-    public ClassRoom(String roomName) {
+    public ClassRoom(int roomName) {
         super(roomName);
     }
+
+
+
 }

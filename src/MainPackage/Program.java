@@ -1,16 +1,20 @@
 package MainPackage;
 
-import Data.Gender;
-import Data.SavedData.SavedData;
-import Data.SavedData.StudentData;
-import Data.Student;
-import Data.StudentGroup;
+import Data.MakeAgenda;
 import OOFramework.FrameworkProgram;
+import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class Program extends FrameworkProgram
-{
+import javax.swing.border.Border;
+
+
+public class Program extends FrameworkProgram {
     sAgenda agenda;
+
     @Override
     public void start(Stage stage) throws Exception {
         super.start(stage);
@@ -18,11 +22,44 @@ public class Program extends FrameworkProgram
     }
 
     @Override
-    protected void Init()
-    {
+    protected void Init() {
         super.Init();
 
-        agenda = new sAgenda(this);
+
+        MakeAgenda makeAgenda = new MakeAgenda();
+        agenda = new sAgenda(this,makeAgenda.getAgenda());
+
+        BorderPane pane = new BorderPane();
+
+
+        MenuBar mainBar = new MenuBar();
+        Menu menuAgenda = new Menu("Agenda");
+        MenuItem itemAgenda = new MenuItem("agenda");
+        Menu menuSimulation = new Menu("Simulation");
+        MenuItem itemSimulation = new MenuItem("simulaion");
+
+        itemAgenda.setOnAction(event -> {
+            pane.setCenter(agenda.sceneAgenda());
+
+        });
+
+        itemSimulation.setOnAction(e ->{
+            agenda.setActive(false);
+        });
+
+        menuAgenda.getItems().add(itemAgenda);
+        menuSimulation.getItems().add(itemSimulation);
+
+        mainBar.getMenus().addAll(menuAgenda, menuSimulation);
+
+        pane.setTop(mainBar);
+
+        Scene mainScene = new Scene(pane);
+
+        this.stage.setScene(mainScene);
+//        agenda.setActive(false);
+
+
 
     }
 
@@ -38,3 +75,4 @@ public class Program extends FrameworkProgram
         super.ExitProgram();
     }
 }
+
