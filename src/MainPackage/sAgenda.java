@@ -36,8 +36,6 @@ public class sAgenda extends StandardObject {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
     private Stage stage;
-    private HourBlock hourBlock;
-    private Renderable hourBlock2;
     private Agenda agenda;
 
     private ArrayList<HourBlock> hourBlocks;
