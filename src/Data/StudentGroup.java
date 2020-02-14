@@ -1,8 +1,6 @@
 package Data;
 
-import Data.SavedData.GroupData;
-import Data.SavedData.SavedData;
-import Data.SavedData.StudentData;
+import MainPackage.ReadWriteData.DataClasses.GroupData;
 
 import java.util.ArrayList;
 

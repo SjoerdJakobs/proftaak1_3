@@ -1,6 +1,6 @@
 package Data;
 
-import Data.SavedData.TeacherData;
+import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import OOFramework.FrameworkProgram;
 
 public class Teacher extends Person {
@@ -26,7 +26,7 @@ public class Teacher extends Person {
         this.teacherdata.age = age;
     }
 
-    public int getTeacherID() {
+    /*public int getTeacherID() {
         return this.teacherdata.teacherID;
     }
     public void setTeacherID(int studentID) {
@@ -48,5 +48,5 @@ public class Teacher extends Person {
                 ", teacherID=" + teacherdata.teacherID +
                 ", gender=" + teacherdata.gender +
                 '}';
-    }
+    }*/
 }
