@@ -105,6 +105,7 @@ public class HourBlock extends Renderable
     }
 
 
-
-
+    public Lesson getLesson() {
+        return lesson;
+    }
 }

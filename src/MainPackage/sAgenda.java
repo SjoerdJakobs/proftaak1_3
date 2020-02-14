@@ -2,6 +2,9 @@ package MainPackage;
 
 import Data.Agenda;
 import Data.Lesson;
+import Data.Rooms.ClassRoom;
+import Data.StudentGroup;
+import Data.Teacher;
 import OOFramework.FrameworkProgram;
 import OOFramework.Renderable;
 import OOFramework.StandardObject;
@@ -25,18 +28,22 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class sAgenda extends StandardObject {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
     private Stage stage;
-
-    private ArrayList<HourBlock> hourBlocks;
-
     private HourBlock hourBlock;
     private Renderable hourBlock2;
     private Agenda agenda;
+
+    private ArrayList<HourBlock> hourBlocks;
+    private ArrayList<StudentGroup> groups = new ArrayList<>();
+    private ArrayList<Lesson> lessons;
+
 
     private double hours;
     private double rooms;
@@ -59,6 +66,7 @@ public class sAgenda extends StandardObject {
         this.canvas.setHeight(900);
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
+        this.lessons = agenda.getLessons();
 
     }
 
@@ -101,8 +109,8 @@ public class sAgenda extends StandardObject {
             for (HourBlock block : this.hourBlocks) {
 
 
-                if (e.getX() > block.getTransformedShape().getBounds2D().getMinX()+xStepSize && e.getX() < block.getTransformedShape().getBounds2D().getMaxX()+xStepSize) {
-                    if (e.getY() > block.getTransformedShape().getBounds2D().getMinY()+yStepSize && e.getY() < block.getTransformedShape().getBounds2D().getMaxY()+yStepSize) {
+                if (e.getX() > block.getTransformedShape().getBounds2D().getMinX() + xStepSize && e.getX() < block.getTransformedShape().getBounds2D().getMaxX() + xStepSize) {
+                    if (e.getY() > block.getTransformedShape().getBounds2D().getMinY() + yStepSize && e.getY() < block.getTransformedShape().getBounds2D().getMaxY() + yStepSize) {
 
                         Stage popUpEdit = new Stage();
                         popUpEdit.initOwner(this.stage);
@@ -114,15 +122,73 @@ public class sAgenda extends StandardObject {
 
                         TextField beginTime = new TextField();
                         TextField endTime = new TextField();
-                        TextField group = new TextField();
-                        TextField teacher = new TextField();
+                        ComboBox<StudentGroup> group = new ComboBox();
+                        ComboBox<Teacher> teacher = new ComboBox();
+                        ComboBox<ClassRoom> room = new ComboBox();
+
+                        Label warning = new Label();
+
+                        this.groups.clear();
+                        this.lessons = agenda.getLessons();
+                        for (Lesson lesson : lessons) {
+                            this.groups.add(lesson.getStudentGroup());
+                            teacher.getItems().add(lesson.getTeacher());
+                            room.getItems().add(lesson.getClassRoom());
+                        }
+                        for (StudentGroup sg : this.groups) {
+                            group.getItems().add(sg);
+                        }
+
 
                         popVBoxInformation.getChildren().add(beginTime);
                         popVBoxInformation.getChildren().add(endTime);
                         popVBoxInformation.getChildren().add(group);
                         popVBoxInformation.getChildren().add(teacher);
+                        popVBoxInformation.getChildren().add(room);
 
-                        Scene popScene = new Scene(hbox);
+                        VBox buttons = new VBox(20);
+                        Button saveEdit = new Button("SAVE");
+
+                        saveEdit.setOnAction(event -> {
+
+                            if (beginTime.getText().isEmpty() || LocalTime.parse(beginTime.getText()).getHour() < 8 || LocalTime.parse(beginTime.getText()).getHour() > 20) {
+                                warning.setText("please enter a correct value at begin time.");
+                            } else if (endTime.getText().isEmpty() || LocalTime.parse(endTime.getText()).getHour() < 8 || LocalTime.parse(endTime.getText()).getHour() > 20) {
+                                warning.setText("please enter a correct value at end time.");
+                            } else if (group.getSelectionModel().isEmpty()) {
+                                warning.setText("please enter a correct value at group.");
+                            } else if (teacher.getSelectionModel().isEmpty()) {
+                                warning.setText("please enter a correct value at teacher.");
+                            } else {
+                                try {
+                                    block.getLesson().setBeginTime(LocalTime.parse(beginTime.getText()));
+                                    block.getLesson().setEndTime(LocalTime.parse(endTime.getText()));
+                                    block.getLesson().setStudentGroup(group.getValue());
+                                    block.getLesson().setClassRoom(room.getValue());
+                                    block.getLesson().setTeacher(teacher.getValue());
+
+                                    popUpEdit.close();
+                                } catch (DateTimeParseException dtpe) {
+                                    warning.setText("Please enter a valid time in a form of 08:00, not something else!");
+                                }
+                            }
+
+
+                        });
+
+
+                        Button deleteEdit = new Button("DELETE");
+                        deleteEdit.setOnAction(event->{
+
+                            this.lessons.remove(block.getLesson());
+                            popUpEdit.close();
+
+                        });
+
+                        buttons.getChildren().addAll(saveEdit, deleteEdit);
+
+                        hbox.getChildren().addAll(popVBoxInformation, buttons);
+                        Scene popScene = new Scene(hbox, 600, 400);
 
                         popUpEdit.setScene(popScene);
                         popUpEdit.show();
@@ -143,11 +209,11 @@ public class sAgenda extends StandardObject {
 
         this.hourBlocks.clear();
         //Color[] colors = {Color.GREEN,Color.RED,Color.BLACK,Color.BLUE,Color.PINK,Color.MAGENTA};
-        ArrayList<Lesson> lessons = agenda.getLessons();
+        this.lessons = agenda.getLessons();
         for (Lesson lesson : lessons) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
-            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300) );
+            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300));
             Shape shape = new Rectangle2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300), width * xStepSize, yStepSize);
             hourBlocks.add(new HourBlock(shape, point, lesson, Color.CYAN));
         }
@@ -160,7 +226,6 @@ public class sAgenda extends StandardObject {
 
         graphics2D.setColor(Color.white);
         graphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-
 //        graphics2D.fillRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
         this.xStepSize = canvas.getWidth() / hours;
@@ -171,27 +236,24 @@ public class sAgenda extends StandardObject {
         for (int i = 0; i < hours; i++) {
             graphics2D.drawLine((int) xStepSize * i, 0, (int) xStepSize * i, (int) canvas.getHeight());
         }
-
         for (int i = 0; i < rooms; i++) {
             graphics2D.drawLine(0, (int) yStepSize * i, (int) canvas.getWidth(), (int) yStepSize * i);
         }
-
-        for(int i = 0; i<hours; i++){
-            graphics2D.drawString(((i+8)+":00"),(int)(xStepSize*i+xStepSize),10);
+        for (int i = 0; i < hours; i++) {
+            graphics2D.drawString(((i + 8) + ":00"), (int) (xStepSize * i + xStepSize), 10);
+        }
+        for (int i = 0; i < rooms; i++) {
+            graphics2D.drawString("LA:" + (i + 300), 0, (int) (yStepSize * i + yStepSize + 10));
         }
 
-        for(int i = 0; i<rooms; i++){
-                                            graphics2D.drawString("LA:"+(i+300),0,(int)(yStepSize*i+yStepSize+10));
-        }
-
-        graphics2D.translate(xStepSize,yStepSize);
+        graphics2D.translate(xStepSize, yStepSize);
 
         for (HourBlock h : hourBlocks) {
 
             h.draw(graphics2D);
         }
 
-        graphics2D.translate(-xStepSize,-yStepSize);
+        graphics2D.translate(-xStepSize, -yStepSize);
         //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.
@@ -202,13 +264,14 @@ public class sAgenda extends StandardObject {
     public BorderPane sceneAgenda() {
 
         BorderPane agendaPane = new BorderPane();
-        HBox buttonBox = new HBox();
+        HBox buttonBox = new HBox(30);
 
-        Button save = new Button("SAVE");
+        Button newOne = new Button("NEW");
+        Button saveAgenda = new Button("SAVE");
+
+        Button savePopUp = new Button("SAVE");
         Button delete = new Button("DELETE");
         Button edit = new Button("EDIT");
-        Button newOne = new Button("NEW");
-
 
 
         newOne.setOnAction(e -> {
@@ -218,48 +281,60 @@ public class sAgenda extends StandardObject {
             popUpNew.setTitle("create a lesson");
 
             HBox hbox = makeSceneEditLesson();
-
             VBox popVBoxInformation = new VBox(10);
-
             TextField beginTime = new TextField();
             TextField endTime = new TextField();
-            ComboBox group = new ComboBox();
+            ComboBox<StudentGroup> group = new ComboBox();
+            ComboBox<Teacher> teachers = new ComboBox<>();
+            ComboBox<ClassRoom> rooms = new ComboBox<>();
 
-            TextField teacher = new TextField();
+            this.groups.clear();
+            this.lessons = agenda.getLessons();
+            for (Lesson lesson : lessons) {
+                this.groups.add(lesson.getStudentGroup());
+                teachers.getItems().add(lesson.getTeacher());
+                rooms.getItems().add(lesson.getClassRoom());
+            }
+            for (StudentGroup sg : this.groups) {
+                group.getItems().add(sg);
+            }
 
-            VBox extraTime = new VBox(10);
-            TextField beginTimeMin = new TextField();
-            TextField endTimeMin = new TextField();
-            extraTime.getChildren().addAll(beginTimeMin, endTimeMin);
 
 
             popVBoxInformation.getChildren().add(beginTime);
             popVBoxInformation.getChildren().add(endTime);
             popVBoxInformation.getChildren().add(group);
-            popVBoxInformation.getChildren().add(teacher);
+            popVBoxInformation.getChildren().add(teachers);
+            popVBoxInformation.getChildren().add(rooms);
 
             Label warningLabel = new Label();
 
-            save.setOnAction(ex->{
-                if(beginTime.getText().isEmpty()){
+            savePopUp.setOnAction(ex -> {
+                if (beginTime.getText().isEmpty() || LocalTime.parse(beginTime.getText()).getHour() < 8 || LocalTime.parse(beginTime.getText()).getHour() > 20) {
                     warningLabel.setText("please enter a correct value at begin time.");
-                } else if(endTime.getText().isEmpty()){
+                } else if (endTime.getText().isEmpty() || LocalTime.parse(endTime.getText()).getHour() < 8 || LocalTime.parse(endTime.getText()).getHour() > 20) {
                     warningLabel.setText("please enter a correct value at end time.");
-                } else if(group.getSelectionModel().isEmpty()){
+                } else if (group.getSelectionModel().isEmpty()) {
                     warningLabel.setText("please enter a correct value at group.");
-                } else if(teacher.getText().isEmpty()){
+                } else if (teachers.getSelectionModel().isEmpty()) {
                     warningLabel.setText("please enter a correct value at teacher.");
-                } 
-
+                } else {
+                    try {
+                        this.agenda.addLesson(new Lesson(group.getValue(), teachers.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), rooms.getValue()));
+                        popUpNew.close();
+                    } catch (DateTimeParseException dtpe) {
+                        warningLabel.setText("Please enter a valid time in a form of 08:00, not something else!");
+                    }
+                }
             });
 
-            hbox.getChildren().addAll(popVBoxInformation, save, warningLabel);
+            hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
             Scene popScene = new Scene(hbox, 600, 400);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
 
-        buttonBox.getChildren().addAll(save,delete,edit,newOne);
+        buttonBox.getChildren().addAll(newOne, saveAgenda);
         agendaPane.setBottom(buttonBox);
         agendaPane.setTop(this.canvas);
 
@@ -273,11 +348,11 @@ public class sAgenda extends StandardObject {
 
         VBox popVBoxLabels = new VBox(20);
 
-        popVBoxLabels.getChildren().add(new Label("begin time: "));
-        popVBoxLabels.getChildren().add(new Label("end time: "));
-        popVBoxLabels.getChildren().add(new Label("group: "));
-        popVBoxLabels.getChildren().add(new Label("teacher: "));
-
+        popVBoxLabels.getChildren().add(new Label("Begin time: "));
+        popVBoxLabels.getChildren().add(new Label("End time: "));
+        popVBoxLabels.getChildren().add(new Label("Group: "));
+        popVBoxLabels.getChildren().add(new Label("Teacher: "));
+        popVBoxLabels.getChildren().add(new Label("Classroom: "));
 
         popHBox.getChildren().addAll(popVBoxLabels);
         return popHBox;

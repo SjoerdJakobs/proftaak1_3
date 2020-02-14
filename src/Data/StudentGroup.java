@@ -34,4 +34,10 @@ public class StudentGroup {
     public void setName(String name) { this.name = name; }
     public ArrayList<StudentData> getStudentData(){ return this.studentData; }
     public void setStudentData(ArrayList<StudentData> studentData) { this.studentData = studentData; }
+
+
+    @Override
+    public String toString() {
+        return name ;
+    }
 }
