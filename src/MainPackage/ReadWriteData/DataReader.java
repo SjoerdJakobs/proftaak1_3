@@ -25,10 +25,10 @@ public class DataReader {
 
     public void Load() throws IOException, ClassNotFoundException
     {
-        ReadData();
+        ReadFile();
     }
 
-    public void ReadData() throws IOException, ClassNotFoundException
+    public void ReadFile() throws IOException, ClassNotFoundException
     {
         File f = new File(STANDARD_SAVE_FILE_PATH);
         FileInputStream fis = new FileInputStream(f);

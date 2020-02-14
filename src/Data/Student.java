@@ -1,9 +1,7 @@
 package Data;
 
-import Data.SavedData.StudentData;
+import MainPackage.ReadWriteData.DataClasses.StudentData;
 import OOFramework.FrameworkProgram;
-
-import java.io.Serializable;
 
 public class Student extends Person{
     private StudentData studentData;
@@ -14,10 +12,10 @@ public class Student extends Person{
     }
 
     // Getters and Setters
-    public String getGroup() {
+    public int getGroup() {
         return this.studentData.group;
     }
-    public void setGroup(String group) {
+    public void setGroup(int group) {
         this.studentData.group = group;
     }
 
@@ -42,10 +40,10 @@ public class Student extends Person{
         this.studentData.studentID = studentID;
     }
 
-    public String getGender() {
+    public boolean getGender() {
         return this.studentData.gender;
     }
-    public void setGender(String gender) {
+    public void setGender(boolean gender) {
         this.studentData.gender = gender;
     }
 

@@ -7,6 +7,7 @@ import MainPackage.ReadWriteData.DataClasses.TeacherData;
 
 import java.util.ArrayList;
 
+//https://dzone.com/articles/java-singletons-using-enum
 public enum SavedData {
     INSTANCE;
 

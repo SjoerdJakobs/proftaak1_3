@@ -20,9 +20,9 @@ public class Agenda {
     public ArrayList<Lesson> getLessonFromClassRoom(String classRoomName){
         ArrayList<Lesson> lessonsInClass = new ArrayList<>();
         for(Lesson lesson : this.lessons){
-            if(lesson.getClassRoom().equals(classRoomName)){
+            /*if(lesson.getClassRoom().equals(classRoomName)){
                 lessonsInClass.add(lesson);
-            }
+            }*/
         }
         return lessonsInClass;
     }
