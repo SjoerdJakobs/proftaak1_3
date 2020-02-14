@@ -43,12 +43,6 @@ public class sAgenda extends StandardObject {
     double xStepSize;
     double yStepSize;
 
-    private double correctionX;
-    private double correctionY;
-
-    private double timeSteps;
-    private double roomSteps;
-
     protected sAgenda(FrameworkProgram frameworkProgram, Agenda agenda) {
         //the agenda uses input, the standard logic loop and a render loop
         super(frameworkProgram, true, true, true, true);
@@ -59,7 +53,9 @@ public class sAgenda extends StandardObject {
         this.stage = frameworkProgram.getStage();
         this.agenda = agenda;
         this.hours = 13;
-        this.rooms = 5;
+        this.rooms = 6;
+        this.canvas.setWidth(1625);
+        this.canvas.setHeight(900);
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
 
@@ -92,6 +88,7 @@ public class sAgenda extends StandardObject {
 //            hourBlocks.add(new HourBlock(shape,point,lesson,Color.GREEN));
 //        }
         //this.hourBlock2 = new Renderable(new Rectangle2D.Double(-50, -50, 100, 100), new Point2D.Double(350, 350), 0 * (float) Math.PI, 1);
+
     }
 
     @Override
@@ -102,8 +99,9 @@ public class sAgenda extends StandardObject {
         this.canvas.setOnMouseClicked(e -> {
             for (HourBlock block : this.hourBlocks) {
 
-                if (e.getX() > block.getTransformedShape().getBounds2D().getMinX() && e.getX() < block.getTransformedShape().getBounds2D().getMaxX()) {
-                    if (e.getY() > block.getTransformedShape().getBounds2D().getMinY() && e.getY() < block.getTransformedShape().getBounds2D().getMaxY()) {
+
+                if (e.getX() > block.getTransformedShape().getBounds2D().getMinX()+xStepSize && e.getX() < block.getTransformedShape().getBounds2D().getMaxX()+xStepSize) {
+                    if (e.getY() > block.getTransformedShape().getBounds2D().getMinY()+yStepSize && e.getY() < block.getTransformedShape().getBounds2D().getMaxY()+yStepSize) {
 
                         Stage popUpEdit = new Stage();
                         popUpEdit.initOwner(this.stage);
@@ -142,34 +140,22 @@ public class sAgenda extends StandardObject {
         super.MainLoop(deltaTime);
         //do general stuff here, no clear idea what yet because i dont think a agenda has much logic now that i think about it
 
-        this.correctionX = 0.0;
-        this.correctionY = 0.0;
-
         this.hourBlocks.clear();
         //Color[] colors = {Color.GREEN,Color.RED,Color.BLACK,Color.BLUE,Color.PINK,Color.MAGENTA};
         ArrayList<Lesson> lessons = agenda.getLessons();
         for (Lesson lesson : lessons) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
-            Point2D point = new Point2D.Double(begin * xStepSize - this.correctionX, yStepSize * (lesson.getClassRoom().getRoomName() - 300) - this.correctionY);
-            Shape shape = new Rectangle2D.Double(begin * xStepSize - this.correctionX, yStepSize * (lesson.getClassRoom().getRoomName() - 300) - this.correctionY, width * xStepSize, yStepSize);
+            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300) );
+            Shape shape = new Rectangle2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300), width * xStepSize, yStepSize);
             hourBlocks.add(new HourBlock(shape, point, lesson, Color.CYAN));
-            this.correctionX = this.correctionX + 0.6;
-            this.correctionY = this.correctionY + 0.65;
         }
-
     }
 
     @Override
     protected void RenderLoop(double deltaTime) {
         super.RenderLoop(deltaTime);
         //lets draw all stuff here
-
-        this.canvas.setWidth(this.stage.getWidth() * 0.95);
-        this.canvas.setHeight(this.stage.getHeight() * 0.85);
-
-        this.timeSteps = this.canvas.getWidth() / 24;
-        this.roomSteps = this.canvas.getHeight() / 6;
 
         graphics2D.setColor(Color.white);
         graphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
@@ -181,18 +167,30 @@ public class sAgenda extends StandardObject {
 
         graphics2D.setColor(Color.black);
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < hours; i++) {
             graphics2D.drawLine((int) xStepSize * i, 0, (int) xStepSize * i, (int) canvas.getHeight());
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < rooms; i++) {
             graphics2D.drawLine(0, (int) yStepSize * i, (int) canvas.getWidth(), (int) yStepSize * i);
         }
+
+        for(int i = 0; i<hours; i++){
+            graphics2D.drawString(((i+8)+":00"),(int)(xStepSize*i+xStepSize),10);
+        }
+
+        for(int i = 0; i<rooms; i++){
+                                            graphics2D.drawString("LA:"+(i+300),0,(int)(yStepSize*i+yStepSize+10));
+        }
+
+        graphics2D.translate(xStepSize,yStepSize);
 
         for (HourBlock h : hourBlocks) {
 
             h.draw(graphics2D);
         }
+
+        graphics2D.translate(-xStepSize,-yStepSize);
         //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.
@@ -261,29 +259,9 @@ public class sAgenda extends StandardObject {
             popUpNew.show();
         });
 
-
-
-
-        buttonBox.getChildren().addAll(save, delete, edit, newOne);
-
-        VBox roomNames = new VBox();
-        roomNames.setSpacing(this.canvas.getHeight() / 6);
-        for (int i = 0; i <= 4; i++) {
-            roomNames.getChildren().add(new Label("\nLA30" + i));
-        }
-
-
-        HBox times = new HBox();
-        times.setSpacing(this.canvas.getWidth() / 24);
-        times.getChildren().add(new Label("Time: \n \n Room:"));
-        for (int i = 8; i <= 20; i++) {
-            times.getChildren().add(new Label(i + ":00\t"));
-        }
-
-        agendaPane.setTop(times);
-        agendaPane.setLeft(roomNames);
+        buttonBox.getChildren().addAll(save,delete,edit,newOne);
         agendaPane.setBottom(buttonBox);
-        agendaPane.setCenter(this.canvas);
+        agendaPane.setTop(this.canvas);
 
 
         return agendaPane;
