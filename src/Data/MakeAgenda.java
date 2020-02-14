@@ -16,6 +16,9 @@ public class MakeAgenda {
                     LocalTime.of(i+8,0),LocalTime.of(i+9,0),new ClassRoom(300 + i)));
         }
 
+        this.agenda.addLesson(new Lesson(new StudentGroup("B"),new Teacher("Johan"),
+                LocalTime.of(17,0),LocalTime.of(19,0),new ClassRoom(300 )));
+
     }
 
     public Agenda getAgenda(){
