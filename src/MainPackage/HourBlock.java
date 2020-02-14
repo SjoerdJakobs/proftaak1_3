@@ -20,6 +20,8 @@ public class HourBlock extends Renderable
     private static Font sanSerifFont = new Font("SanSerif", Font.PLAIN, 12);
 
     public HourBlock(Shape shape, Point2D position, int beginTime, int endTime,String classId,String roomNr,String teacher, Color color) {
+
+
         super(shape, position, 0, 1);
         this.beginTime = beginTime;
         this.endTime = endTime;

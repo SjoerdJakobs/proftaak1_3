@@ -18,7 +18,7 @@ public class sAgenda extends StandardObject
     private Canvas canvas;
     private Stage stage;
 
-    private ArrayList<HourBlock> hourBlocks;
+    private ArrayList<HourBlock>  hourBlocks;
 
     private HourBlock hourBlock;
     private Renderable hourBlock2;
@@ -37,6 +37,8 @@ public class sAgenda extends StandardObject
     @Override
     protected void Start() {
         super.Start();
+
+
         hourBlocks = new ArrayList<HourBlock>();
 
         //create a simple rectangle, just repeat this code for more
@@ -72,6 +74,7 @@ public class sAgenda extends StandardObject
         {
             h.draw(graphics2D);
         }
+
         //graphics2D.fill(hourBlock2.getTransformedShape());
 
         //renderable has a draw function as well, you can choose if you want to draw it here or there.

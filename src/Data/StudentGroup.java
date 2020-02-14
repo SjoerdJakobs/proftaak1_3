@@ -1,55 +1,57 @@
 package Data;
 
+import MainPackage.ReadWriteData.DataClasses.GroupData;
+
 import java.util.ArrayList;
 
 public class StudentGroup {
-    private String name;
-    private ArrayList<Student> students;
-    private int groupID;
+    private GroupData groupData;
 
-    public StudentGroup(String name, int groupID){
-        this.name = name;
-        this.students = new ArrayList<>();
-        this.groupID = groupID;
+    public StudentGroup(){
+
     }
 
-    public void addStudent(Student student){
-        this.students.add(student);
+    // Getters and Setters
+    public String getName() {
+        return this.groupData.name;
+    }
+    public void setName(String name) {
+        this.groupData.name = name;
     }
 
-    public void removeStudent(Student student){
-        this.students.remove(student);
-    }
-
-    public Student getStudent(String name){
-        for (Student student : this.students){
-            if(student.equals(name)) {
-                return student;
-            }
-        }
-        return null;
-    }
-
-
-    //Getters and Setters
-    public String getName() { return this.name; }
-    public void setName(String name) { this.name = name; }
-    public ArrayList<Student> getStudents(){ return this.students; }
-    public void setStudents(ArrayList<Student> students) { this.students = students; }
     public int getGroupID() {
-        return groupID;
+        return this.groupData.groupID;
+    }
+    public void setGroupID(int groupID) {
+        this.groupData.groupID = groupID;
     }
 
-    public void setGroupID(int groupID) {
-        this.groupID = groupID;
+    public ArrayList<Integer> getStudentsIDs() {
+        return this.groupData.studentsIDs;
+    }
+    public void setStudentsIDs(ArrayList<Integer> studentsIDs) {
+        this.groupData.studentsIDs = studentsIDs;
+    }
+
+
+    public void addStudent(int studentID){
+        groupData.studentsIDs.add(studentID);
+    }
+
+    public void removeStudent(int studentID){
+        groupData.studentsIDs.remove(studentID);
+    }
+
+    public boolean isInGroup(int studentID){
+        return groupData.studentsIDs.contains(studentID);
     }
 
     @Override
     public String toString() {
         return "StudentGroup{" +
-                "name='" + name + '\'' +
-                ", students=" + students +
-                ", groupID=" + groupID +
+                "name=" + groupData.name + '\'' +
+                ", groupID=" + groupData.groupID +
+                ", students=" + groupData.studentsIDs +
                 '}';
     }
 }

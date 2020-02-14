@@ -1,31 +1,52 @@
 package Data;
 
+import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import OOFramework.FrameworkProgram;
 
 public class Teacher extends Person {
-    private int teacherID;
+    private TeacherData teacherdata;
 
-    public Teacher(FrameworkProgram frameworkProgram, String name, int teacherID, int age, Gender gender) {
-        super(frameworkProgram, name, age, gender);
-        this.teacherID = teacherID;
+    public Teacher(FrameworkProgram frameworkProgram) {
+        super(frameworkProgram);
+
     }
 
     // Getters and Setters
-    public int getTeacherID() {
-        return teacherID;
+    public String getName() {
+        return this.teacherdata.name;
+    }
+    public void setName(String name) {
+        this.teacherdata.name = name;
     }
 
-    public void setTeacherID(int teacherID) {
-        this.teacherID = teacherID;
+    public int getAge() {
+        return this.teacherdata.age;
+    }
+    public void setAge(int age) {
+        this.teacherdata.age = age;
+    }
+
+    /*public int getTeacherID() {
+        return this.teacherdata.teacherID;
+    }
+    public void setTeacherID(int studentID) {
+        this.teacherdata.teacherID = studentID;
+    }
+
+    public String getGender() {
+        return this.teacherdata.gender;
+    }
+    public void setGender(String gender) {
+        this.teacherdata.gender = gender;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
-                ", name=" + getName() +
-                ", age=" + getAge() +
-                ", gender=" + getGender() +
-                ", teacherID=" + teacherID +
+        return "Teacher{" +
+                "name=" + teacherdata.name +
+                ", age=" + teacherdata.age +
+                ", teacherID=" + teacherdata.teacherID +
+                ", gender=" + teacherdata.gender +
                 '}';
-    }
+    }*/
 }
