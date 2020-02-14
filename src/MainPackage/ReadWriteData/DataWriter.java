@@ -26,3 +26,17 @@ public class DataWriter {
         oos.close();
     }
 }
+/*
+        Counter counter = new Counter(10);
+        Counter counter1 = new Counter(19);
+        AntiCounter antiCounter = new AntiCounter(14);
+
+        File f = new File("MyFile.txt");
+        FileOutputStream fos = new FileOutputStream(f);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(counter);
+        oos.writeObject(counter1);
+        oos.writeObject(antiCounter);
+        oos.writeObject(null);
+        oos.close();
+ */
