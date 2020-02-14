@@ -1,5 +1,6 @@
 package MainPackage;
 
+import MainPackage.ReadWriteData.SavedData;
 import OOFramework.FrameworkProgram;
 import javafx.stage.Stage;
 
@@ -17,8 +18,8 @@ public class Program extends FrameworkProgram
     protected void Init()
     {
         super.Init();
-        int id = savedData.id;
-        System.out.println(id);
+        //int id = savedData.id;
+        //System.out.println(id);
         //agenda = new sAgenda(this);
 
     }

@@ -1,7 +1,7 @@
-package MainPackage;
+package MainPackage.ReadWriteData;
 
 public enum SavedData {
     INSTANCE;
 
-    int id = 9;
+
 }

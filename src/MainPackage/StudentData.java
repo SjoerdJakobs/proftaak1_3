@@ -14,6 +14,6 @@ class student
 
     public void student()
     {
-        data = SavedData.getStudentData();
+        //data = SavedData.getStudentData();
     }
 }
