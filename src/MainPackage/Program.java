@@ -1,5 +1,7 @@
 package MainPackage;
 
+import Data.Gender;
+import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import MainPackage.ReadWriteData.DataReader;
 import MainPackage.ReadWriteData.DataWriter;
@@ -15,6 +17,9 @@ import javafx.stage.Stage;
 
 import javax.swing.border.Border;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Program extends FrameworkProgram {
@@ -27,8 +32,10 @@ public class Program extends FrameworkProgram {
     protected void Init() {
         super.Init();
         //Save();
-        Load();
+        //Load();
 
+        SavedData.INSTANCE.getGroupData().add(new GroupData("23TIVT1B", 0, new ArrayList<Integer>(Arrays.asList(12,34,56,78,90))));
+        SavedData.INSTANCE.getTeacherData().add(new TeacherData("Johan", 5, 20, Gender.MALE));
         MakeAgenda makeAgenda = new MakeAgenda();
         agenda = new sAgenda(this,makeAgenda.getAgenda());
 
@@ -39,7 +46,7 @@ public class Program extends FrameworkProgram {
         Menu menuAgenda = new Menu("Agenda");
         MenuItem itemAgenda = new MenuItem("agenda");
         Menu menuSimulation = new Menu("Simulation");
-        MenuItem itemSimulation = new MenuItem("simulaion");
+        MenuItem itemSimulation = new MenuItem("simulation");
 
         itemAgenda.setOnAction(event -> {
             pane.setCenter(agenda.sceneAgenda());
@@ -80,12 +87,12 @@ public class Program extends FrameworkProgram {
     public void Save()
     {
         try {
-            savedData.getTeacherData().add(new TeacherData("yee",1,1,false));
-            savedData.getTeacherData().add(new TeacherData("yee1",2,2,true));
-            savedData.getTeacherData().add(new TeacherData("52345672",3,3,false));
-            savedData.getTeacherData().add(new TeacherData("yee555",4,999,false));
-            savedData.getTeacherData().add(new TeacherData("yee4",5,5,true));
-            savedData.getTeacherData().add(new TeacherData("yee5",6,6,false));
+            savedData.getTeacherData().add(new TeacherData("yee",1,1, Gender.MALE));
+            savedData.getTeacherData().add(new TeacherData("yee1",2,2,Gender.FEMALE));
+            savedData.getTeacherData().add(new TeacherData("52345672",3,3,Gender.MALE));
+            savedData.getTeacherData().add(new TeacherData("yee555",4,999,Gender.MALE));
+            savedData.getTeacherData().add(new TeacherData("yee4",5,5,Gender.FEMALE));
+            savedData.getTeacherData().add(new TeacherData("yee5",6,6,Gender.MALE));
 
             dataWriter.Save();
         } catch (IOException e) {

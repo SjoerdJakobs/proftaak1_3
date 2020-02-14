@@ -40,10 +40,10 @@ public class Student extends Person{
         this.studentData.studentID = studentID;
     }
 
-    public boolean getGender() {
+    public Gender getGender() {
         return this.studentData.gender;
     }
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.studentData.gender = gender;
     }
 

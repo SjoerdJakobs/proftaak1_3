@@ -45,4 +45,32 @@ public enum SavedData {
         this.groupData = groupData;
     }
 
+    // Finders
+    public GroupData findStudentGroupData(int groupID){
+        for(GroupData gData : this.groupData){
+            if(gData.groupID == groupID) { return gData; }
+        }
+        return null;
+    }
+
+    public TeacherData findTeacherData(int teacherID){
+        for(TeacherData tData : this.teacherData){
+            if(tData.teacherId == teacherID) { return tData; }
+        }
+        return null;
+    }
+
+    public StudentData findStudentData(int studentID){
+        for(StudentData sData : this.studentData){
+            if(sData.studentID == studentID) { return sData; }
+        }
+        return null;
+    }
+
+    public LessonData findLessonData(int lessonID){
+        for(LessonData lData : lessonData){
+            if(lData.lessonID == lessonID) { return lData; }
+        }
+        return null;
+    }
 }

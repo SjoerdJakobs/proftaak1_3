@@ -148,8 +148,8 @@ public class sAgenda extends StandardObject {
         for (Lesson lesson : lessons) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
-            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300) );
-            Shape shape = new Rectangle2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300), width * xStepSize, yStepSize);
+            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom() - 300) );
+            Shape shape = new Rectangle2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom() - 300), width * xStepSize, yStepSize);
             hourBlocks.add(new HourBlock(shape, point, lesson, Color.CYAN));
         }
     }

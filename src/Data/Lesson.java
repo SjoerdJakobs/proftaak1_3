@@ -10,6 +10,10 @@ public class Lesson {
 
     }
 
+    public Lesson(LessonData lessonData){
+        this.lessonData = lessonData;
+    }
+
     // Getters and Setters
     public int getStudentGroup() { return this.lessonData.studentGroupId; }
     public void setStudentGroup(int studentGroup) {
