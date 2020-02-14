@@ -150,17 +150,17 @@ public class sAgenda extends StandardObject {
                         Button saveEdit = new Button("SAVE");
 
                         saveEdit.setOnAction(event -> {
+                            try {
+                                if (beginTime.getText().isEmpty() || LocalTime.parse(beginTime.getText()).getHour() < 8 || LocalTime.parse(beginTime.getText()).getHour() > 20 || LocalTime.parse(beginTime.getText()).getHour() == 20 && LocalTime.parse(beginTime.getText()).getMinute() > 0) {
+                                    warning.setText("please enter a correct value at begin time, between 8 and 20.\n Make sure the notation is correct (for example 08:00, two digits each side.");
+                                } else if (endTime.getText().isEmpty() || LocalTime.parse(endTime.getText()).getHour() < 8 || LocalTime.parse(endTime.getText()).getHour() > 20 || LocalTime.parse(endTime.getText()).getHour() == 20 && LocalTime.parse(endTime.getText()).getMinute() > 0 || ((LocalTime.parse(beginTime.getText()).getHour() * 60) + LocalTime.parse(beginTime.getText()).getMinute()) > ((LocalTime.parse(endTime.getText()).getHour() * 60) + LocalTime.parse(endTime.getText()).getMinute())) {
+                                    warning.setText("please enter a correct value at end time, between 8 and 20.\n Make sure the end time is later than the begin time.\n And make sure the notation is correct (for example 08:00, two digits each side).");
+                                } else if (group.getSelectionModel().isEmpty()) {
+                                    warning.setText("please enter a correct value at group.");
+                                } else if (teacher.getSelectionModel().isEmpty()) {
+                                    warning.setText("please enter a correct value at teacher.");
+                                } else {
 
-                            if (beginTime.getText().isEmpty() || LocalTime.parse(beginTime.getText()).getHour() < 8 || LocalTime.parse(beginTime.getText()).getHour() > 20) {
-                                warning.setText("please enter a correct value at begin time.");
-                            } else if (endTime.getText().isEmpty() || LocalTime.parse(endTime.getText()).getHour() < 8 || LocalTime.parse(endTime.getText()).getHour() > 20) {
-                                warning.setText("please enter a correct value at end time.");
-                            } else if (group.getSelectionModel().isEmpty()) {
-                                warning.setText("please enter a correct value at group.");
-                            } else if (teacher.getSelectionModel().isEmpty()) {
-                                warning.setText("please enter a correct value at teacher.");
-                            } else {
-                                try {
                                     block.getLesson().setBeginTime(LocalTime.parse(beginTime.getText()));
                                     block.getLesson().setEndTime(LocalTime.parse(endTime.getText()));
                                     block.getLesson().setStudentGroup(group.getValue());
@@ -168,9 +168,9 @@ public class sAgenda extends StandardObject {
                                     block.getLesson().setTeacher(teacher.getValue());
 
                                     popUpEdit.close();
-                                } catch (DateTimeParseException dtpe) {
-                                    warning.setText("Please enter a valid time in a form of 08:00, not something else!");
                                 }
+                            } catch (DateTimeParseException dtpe) {
+                                warning.setText("Please enter a valid time in a form of 08:00, not something else!");
                             }
 
 
@@ -178,7 +178,7 @@ public class sAgenda extends StandardObject {
 
 
                         Button deleteEdit = new Button("DELETE");
-                        deleteEdit.setOnAction(event->{
+                        deleteEdit.setOnAction(event -> {
 
                             this.lessons.remove(block.getLesson());
                             popUpEdit.close();
@@ -187,8 +187,8 @@ public class sAgenda extends StandardObject {
 
                         buttons.getChildren().addAll(saveEdit, deleteEdit);
 
-                        hbox.getChildren().addAll(popVBoxInformation, buttons);
-                        Scene popScene = new Scene(hbox, 600, 400);
+                        hbox.getChildren().addAll(popVBoxInformation, buttons, warning);
+                        Scene popScene = new Scene(hbox, 800, 400);
 
                         popUpEdit.setScene(popScene);
                         popUpEdit.show();
@@ -300,7 +300,6 @@ public class sAgenda extends StandardObject {
             }
 
 
-
             popVBoxInformation.getChildren().add(beginTime);
             popVBoxInformation.getChildren().add(endTime);
             popVBoxInformation.getChildren().add(group);
@@ -310,26 +309,27 @@ public class sAgenda extends StandardObject {
             Label warningLabel = new Label();
 
             savePopUp.setOnAction(ex -> {
-                if (beginTime.getText().isEmpty() || LocalTime.parse(beginTime.getText()).getHour() < 8 || LocalTime.parse(beginTime.getText()).getHour() > 20) {
-                    warningLabel.setText("please enter a correct value at begin time.");
-                } else if (endTime.getText().isEmpty() || LocalTime.parse(endTime.getText()).getHour() < 8 || LocalTime.parse(endTime.getText()).getHour() > 20) {
-                    warningLabel.setText("please enter a correct value at end time.");
-                } else if (group.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("please enter a correct value at group.");
-                } else if (teachers.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("please enter a correct value at teacher.");
-                } else {
-                    try {
+                try {
+                    if (beginTime.getText().isEmpty() || LocalTime.parse(beginTime.getText()).getHour() < 8 || LocalTime.parse(beginTime.getText()).getHour() > 20 || LocalTime.parse(beginTime.getText()).getHour() == 20 && LocalTime.parse(beginTime.getText()).getMinute() > 0) {
+                        warningLabel.setText("please enter a correct value at begin time, between 8 and 20.\n Make sure the notation is correct (for example 08:00, two digits each side.");
+                    } else if (endTime.getText().isEmpty() || LocalTime.parse(endTime.getText()).getHour() < 8 || LocalTime.parse(endTime.getText()).getHour() > 20 || LocalTime.parse(endTime.getText()).getHour() == 20 && LocalTime.parse(endTime.getText()).getMinute() > 0 || ((LocalTime.parse(beginTime.getText()).getHour() * 60) + LocalTime.parse(beginTime.getText()).getMinute()) > ((LocalTime.parse(endTime.getText()).getHour() * 60) + LocalTime.parse(endTime.getText()).getMinute())) {
+                        warningLabel.setText("please enter a correct value at end time, between 8 and 20.\n Make sure the end time is later than the begin time.\n And make sure the notation is correct (for example 08:00, two digits each side).");
+                    } else if (group.getSelectionModel().isEmpty()) {
+                        warningLabel.setText("please enter a correct value at group.");
+                    } else if (teachers.getSelectionModel().isEmpty()) {
+                        warningLabel.setText("please enter a correct value at teacher.");
+                    } else {
+
                         this.agenda.addLesson(new Lesson(group.getValue(), teachers.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), rooms.getValue()));
                         popUpNew.close();
-                    } catch (DateTimeParseException dtpe) {
-                        warningLabel.setText("Please enter a valid time in a form of 08:00, not something else!");
                     }
+                } catch (DateTimeParseException dtpe) {
+                    warningLabel.setText("Please enter a valid time in a form of 08:00, not something else!");
                 }
             });
 
             hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
-            Scene popScene = new Scene(hbox, 600, 400);
+            Scene popScene = new Scene(hbox, 800, 400);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
