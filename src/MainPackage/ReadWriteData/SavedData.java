@@ -80,7 +80,7 @@ public enum SavedData {
         }
     }
 
-    public ArrayList<LessonData> getStudentGroupLessons(StudentGroup studentGroup){
+    public ArrayList<LessonData> getStudentGroupLessons(GroupData studentGroup){
         ArrayList<LessonData> lessonsStudentGroup = new ArrayList<>();
         if(!this.lessonData.isEmpty()){
             for(LessonData lesson : lessonData){

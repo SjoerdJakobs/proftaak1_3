@@ -2,13 +2,14 @@ package MainPackage.ReadWriteData.DataClasses;
 
 import Data.Rooms.ClassRoom;
 import Data.StudentGroup;
+import javafx.scene.layout.GridPane;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 
 public class LessonData implements Serializable {
 
-    public StudentGroup studentGroupId;
+    public GroupData studentGroupId;
     public TeacherData teacherId;
     public LocalTime beginTime;
     public LocalTime endTime;
@@ -20,7 +21,7 @@ public class LessonData implements Serializable {
 
     }
 
-    public LessonData(StudentGroup studentGroupId, TeacherData teacherId, LocalTime beginTime, LocalTime endTime, ClassRoom classRoomId)
+    public LessonData(GroupData studentGroupId, TeacherData teacherId, LocalTime beginTime, LocalTime endTime, ClassRoom classRoomId)
     {
         this.studentGroupId = studentGroupId;
         this.teacherId = teacherId;
@@ -30,11 +31,11 @@ public class LessonData implements Serializable {
      //   this.lessonID = lessonID;
     }
 
-    public StudentGroup getStudentGroup() {
+    public GroupData getStudentGroup() {
         return studentGroupId;
     }
 
-    public void setStudentGroup(StudentGroup studentGroupId) {
+    public void setStudentGroup(GroupData studentGroupId) {
         this.studentGroupId = studentGroupId;
     }
 

@@ -5,6 +5,7 @@ import Data.Lesson;
 import Data.Rooms.ClassRoom;
 import Data.StudentGroup;
 import Data.Teacher;
+import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import MainPackage.ReadWriteData.DataWriter;
@@ -31,6 +32,7 @@ import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -42,7 +44,7 @@ public class sAgenda extends StandardObject {
     private Stage stage;
 
     private ArrayList<HourBlock> hourBlocks;
-    private ArrayList<StudentGroup> groups = new ArrayList<>();
+    private ArrayList<GroupData> groups = new ArrayList<>();
 
 
     private double hours;
@@ -53,14 +55,15 @@ public class sAgenda extends StandardObject {
 
     private ArrayList<TeacherData> teachers;
     private ArrayList<ClassRoom> classrooms;
-    private ArrayList<StudentGroup> studentGroups;
+    private ArrayList<GroupData> studentGroups;
 
     private SavedData savedData = SavedData.INSTANCE;
+    private DataWriter dataWriter;
 
     protected sAgenda(FrameworkProgram frameworkProgram, DataWriter dataWriter) {
         //the agenda uses input, the standard logic loop and a render loop
         super(frameworkProgram, true, true, true, true);
-
+        this.dataWriter = dataWriter;
         //you can give these two in the constructor but here i get them from the getters in the framework
         this.graphics2D = frameworkProgram.getGraphics2D();
         this.canvas = frameworkProgram.getCanvas();
@@ -91,11 +94,11 @@ public class sAgenda extends StandardObject {
         classrooms.add(new ClassRoom(303));
         classrooms.add(new ClassRoom(304));
 
-        studentGroups.add(new StudentGroup("A"));
-        studentGroups.add(new StudentGroup("B"));
-        studentGroups.add(new StudentGroup("C"));
-        studentGroups.add(new StudentGroup("D"));
-        studentGroups.add(new StudentGroup("E"));
+        studentGroups.add(new GroupData("A"));
+        studentGroups.add(new GroupData("B"));
+        studentGroups.add(new GroupData("C"));
+        studentGroups.add(new GroupData("D"));
+        studentGroups.add(new GroupData("E"));
 
     }
 
@@ -138,7 +141,7 @@ public class sAgenda extends StandardObject {
 
                         TextField beginTime = new TextField();
                         TextField endTime = new TextField();
-                        ComboBox<StudentGroup> group = new ComboBox();
+                        ComboBox<GroupData> group = new ComboBox();
                         ComboBox<TeacherData> teacher = new ComboBox();
                         ComboBox<ClassRoom> room = new ComboBox();
 
@@ -306,6 +309,15 @@ public class sAgenda extends StandardObject {
         Button delete = new Button("DELETE");
         Button edit = new Button("EDIT");
 
+        saveAgenda.setOnAction(event -> {
+            try {
+                this.dataWriter.Save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
         newOne.setOnAction(e -> {
             final Stage popUpNew = new Stage();
@@ -317,7 +329,7 @@ public class sAgenda extends StandardObject {
             VBox popVBoxInformation = new VBox(10);
             TextField beginTime = new TextField();
             TextField endTime = new TextField();
-            ComboBox<StudentGroup> group = new ComboBox();
+            ComboBox<GroupData> group = new ComboBox();
             ComboBox<TeacherData> teacher = new ComboBox<>();
             ComboBox<ClassRoom> room = new ComboBox<>();
 
