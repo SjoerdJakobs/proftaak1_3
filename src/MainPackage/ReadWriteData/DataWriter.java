@@ -8,6 +8,7 @@ import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import java.io.*;
 import java.util.ArrayList;
 
+import static OOFramework.Modules.ASSERT_MSG.ASSERT_MSG_TERMINATE;
 import static OOFramework.Modules.CONSTANTS.STANDARD_SAVE_FILE_PATH;
 
 public class DataWriter {
@@ -26,10 +27,16 @@ public class DataWriter {
 
     public void WriteToFile() throws IOException, ClassNotFoundException
     {
-        File f = new File(STANDARD_SAVE_FILE_PATH);
+        File file = new File(STANDARD_SAVE_FILE_PATH);
+        if(file.exists())
+        {
+            ASSERT_MSG_TERMINATE(file.delete(),"UNABLE TO DELETE OLD FILE");
+        }
 
-        FileOutputStream fos = new FileOutputStream(f);
+        FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
+        
+        ASSERT_MSG_TERMINATE(file.canWrite(),"UNABLE TO WRITE TO FILE");
 
         ArrayList<TeacherData> teacherDatas = savedData.getTeacherData();
         ArrayList<StudentData> studentDatas = savedData.getStudentData();
