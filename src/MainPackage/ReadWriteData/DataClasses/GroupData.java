@@ -1,8 +1,9 @@
 package MainPackage.ReadWriteData.DataClasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GroupData {
+public class GroupData implements Serializable {
 
     public GroupData()
     {
