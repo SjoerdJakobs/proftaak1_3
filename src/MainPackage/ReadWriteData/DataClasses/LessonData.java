@@ -1,8 +1,6 @@
 package MainPackage.ReadWriteData.DataClasses;
 
 import Data.Rooms.ClassRoom;
-import Data.StudentGroup;
-import javafx.scene.layout.GridPane;
 
 import java.io.Serializable;
 import java.time.LocalTime;

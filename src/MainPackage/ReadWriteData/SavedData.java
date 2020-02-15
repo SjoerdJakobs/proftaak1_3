@@ -1,9 +1,6 @@
 package MainPackage.ReadWriteData;
 
-import Data.Lesson;
 import Data.Rooms.ClassRoom;
-import Data.StudentGroup;
-import Data.Teacher;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;

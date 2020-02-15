@@ -3,7 +3,10 @@ package Data.Rooms;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 
-public abstract class Room {
+import java.io.Serializable;
+
+public abstract class Room implements Serializable
+{
     private int roomName;
 
     public Room(int roomName){

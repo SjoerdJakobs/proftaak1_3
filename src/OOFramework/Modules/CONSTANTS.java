@@ -11,4 +11,6 @@ public class CONSTANTS
     public static final long UPDATE_PERIOD_NSEC = 1000000000L / UPDATES_PER_SEC;  // nanoseconds
 
     public static final boolean DEBUG_MODE = true;
+
+    public static final long TEACHER_SERIAL_VERSION_UID = 44;
 }

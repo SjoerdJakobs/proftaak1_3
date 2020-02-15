@@ -16,7 +16,8 @@ import static OOFramework.Modules.CONSTANTS.STANDARD_SAVE_FILE_PATH;
 
 public class DataReader {
 
-    SavedData savedData;
+    private SavedData savedData;
+    private DataWriter dataWriter;
 
     public DataReader()
     {
@@ -30,14 +31,21 @@ public class DataReader {
 
     public void ReadFile() throws IOException, ClassNotFoundException
     {
-        File f = new File(STANDARD_SAVE_FILE_PATH);
-        FileInputStream fis = new FileInputStream(f);
+        File file = new File(STANDARD_SAVE_FILE_PATH);
+        if (!file.exists() || !file.isFile())
+        {
+            dataWriter = new DataWriter();
+            dataWriter.WriteToFile();
+        }
+        FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object readCase;
+
         ArrayList<TeacherData> teacherData = new ArrayList<TeacherData>();
         ArrayList<StudentData> studentData = new ArrayList<StudentData>();
         ArrayList<LessonData> lessonData = new ArrayList<LessonData>();
         ArrayList<GroupData> groupData = new ArrayList<GroupData>();
+
         do {
             readCase = ois.readObject();
             if (readCase != null) {
