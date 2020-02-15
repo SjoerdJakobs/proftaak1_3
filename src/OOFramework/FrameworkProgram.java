@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
@@ -30,15 +31,21 @@ public abstract class FrameworkProgram extends Application
     protected Stage stage;
     protected Canvas canvas;
     protected FXGraphics2D graphics2D;
+    protected MenuBar menuBar; // even laten staan voor mezelf, het moet ergens omen te staan waar het makkelijk de heletijd toe gevoegd kan worden
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.stage.setWidth(1650);
+        this.stage.setHeight(1000);
+
+        this.canvas = new Canvas(this.stage.getWidth(), this.stage.getHeight());
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
-        this.stage.setMaximized(true);
-        //this.stage.setFullScreen(true);
-        this.stage.setResizable(false);
+//        this.stage.setMaximized(true);
+//        this.stage.setFullScreen(true);
+//        this.stage.setResizable(false);
+
+
         this.stage.setScene(new Scene(new Group(canvas)));
         this.stage.setTitle(TITLE);
         this.stage.show();

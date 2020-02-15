@@ -1,5 +1,6 @@
 package MainPackage.ReadWriteData;
 
+import Data.Rooms.ClassRoom;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
@@ -44,5 +45,53 @@ public enum SavedData {
     public void setGroupData(ArrayList<GroupData> groupData) {
         this.groupData = groupData;
     }
+
+
+    public ArrayList<LessonData> getTeacherLessons(TeacherData teacher){
+        ArrayList<LessonData> lessonsTeacher = new ArrayList<>();
+        if(!lessonData.isEmpty()){
+            for(LessonData lesson : lessonData){
+                if(lesson.getTeacher().getName().equals(teacher.getName())){
+                    lessonsTeacher.add(lesson);
+                }
+            }
+            return lessonsTeacher;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public ArrayList<LessonData> getClassroomLessons(ClassRoom classRoom){
+        ArrayList<LessonData> lessonsClassroom = new ArrayList<>();
+        if(this.lessonData.isEmpty()){
+            for(LessonData lesson : this.lessonData){
+                if(lesson.getClassRoom().getRoomName() == classRoom.getRoomName()){
+                    lessonsClassroom.add(lesson);
+                }
+            }
+            return lessonsClassroom;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public ArrayList<LessonData> getStudentGroupLessons(GroupData studentGroup){
+        ArrayList<LessonData> lessonsStudentGroup = new ArrayList<>();
+        if(!this.lessonData.isEmpty()){
+            for(LessonData lesson : lessonData){
+                if(lesson.getStudentGroup().getName().equals(studentGroup.getName())){
+                    lessonsStudentGroup.add(lesson);
+                }
+            }
+            return lessonsStudentGroup;
+        }
+        else {
+            return null;
+        }
+    }
+
+
 
 }

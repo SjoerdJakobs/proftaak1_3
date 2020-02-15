@@ -11,12 +11,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+import static OOFramework.Modules.ASSERT_MSG.ASSERT_MSG;
 import static OOFramework.Modules.ASSERT_MSG.ASSERT_MSG_TERMINATE;
 import static OOFramework.Modules.CONSTANTS.STANDARD_SAVE_FILE_PATH;
 
 public class DataReader {
 
-    SavedData savedData;
+    private SavedData savedData;
+    private DataWriter dataWriter;
 
     public DataReader()
     {
@@ -30,14 +32,32 @@ public class DataReader {
 
     public void ReadFile() throws IOException, ClassNotFoundException
     {
-        File f = new File(STANDARD_SAVE_FILE_PATH);
-        FileInputStream fis = new FileInputStream(f);
+        File file = new File(STANDARD_SAVE_FILE_PATH);
+
+        if (!file.exists())
+        {
+            dataWriter = new DataWriter();
+            dataWriter.WriteToFile();
+            ASSERT_MSG(file.exists(),"FILE NOT FOUND AND UNABLE TO BE CREATED");
+        }
+        else if(!file.isFile())
+        {
+            ASSERT_MSG_TERMINATE(file.delete(),"INCORRECT FILE FOUND AND UNABLE TO CREATE A NEW FILE");
+            dataWriter = new DataWriter();
+            dataWriter.WriteToFile();
+        }
+
+        ASSERT_MSG_TERMINATE(file.canRead(),"UNABLE TO READ FILE");
+
+        FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object readCase;
+
         ArrayList<TeacherData> teacherData = new ArrayList<TeacherData>();
         ArrayList<StudentData> studentData = new ArrayList<StudentData>();
         ArrayList<LessonData> lessonData = new ArrayList<LessonData>();
         ArrayList<GroupData> groupData = new ArrayList<GroupData>();
+
         do {
             readCase = ois.readObject();
             if (readCase != null) {

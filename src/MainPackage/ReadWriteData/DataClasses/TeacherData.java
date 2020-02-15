@@ -2,8 +2,18 @@ package MainPackage.ReadWriteData.DataClasses;
 
 import java.io.Serializable;
 
+import static OOFramework.Modules.CONSTANTS.TEACHER_SERIAL_VERSION_UID;
+
 public class TeacherData implements Serializable
 {
+    //private static final long serialVersionUID = TEACHER_SERIAL_VERSION_UID;
+    //1071250592083009658
+    private String name;
+    private int age;
+    private int teacherId;
+    private boolean gender;
+
+
     public TeacherData()
     {
 
@@ -16,8 +26,37 @@ public class TeacherData implements Serializable
         this.teacherId = teacherId;
         this.gender = gender;
     }
-    public String name;
-    public int age;
-    public int teacherId;
-    public boolean gender;
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
 }
