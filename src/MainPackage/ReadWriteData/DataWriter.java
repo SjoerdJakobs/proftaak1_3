@@ -30,13 +30,13 @@ public class DataWriter {
         File file = new File(STANDARD_SAVE_FILE_PATH);
         if(file.exists())
         {
-            ASSERT_MSG_TERMINATE(file.delete(),"UNABLE TO DELETE OLD FILE");
+            ASSERT_MSG_TERMINATE(file.delete(),"UNABLE TO DELETE OLD FILE, "+this.getClass());
         }
 
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         
-        ASSERT_MSG_TERMINATE(file.canWrite(),"UNABLE TO WRITE TO FILE");
+        ASSERT_MSG_TERMINATE(file.canWrite(),"UNABLE TO WRITE TO FILE, "+this.getClass());
 
         ArrayList<TeacherData> teacherDatas = savedData.getTeacherData();
         ArrayList<StudentData> studentDatas = savedData.getStudentData();

@@ -38,16 +38,16 @@ public class DataReader {
         {
             dataWriter = new DataWriter();
             dataWriter.WriteToFile();
-            ASSERT_MSG(file.exists(),"FILE NOT FOUND AND UNABLE TO BE CREATED");
+            ASSERT_MSG(file.exists(),"FILE NOT FOUND AND UNABLE TO BE CREATED, "+this.getClass());
         }
         else if(!file.isFile())
         {
-            ASSERT_MSG_TERMINATE(file.delete(),"INCORRECT FILE FOUND AND UNABLE TO CREATE A NEW FILE");
+            ASSERT_MSG_TERMINATE(file.delete(),"INCORRECT FILE FOUND AND UNABLE TO CREATE A NEW FILE, "+this.getClass());
             dataWriter = new DataWriter();
             dataWriter.WriteToFile();
         }
 
-        ASSERT_MSG_TERMINATE(file.canRead(),"UNABLE TO READ FILE");
+        ASSERT_MSG_TERMINATE(file.canRead(),"UNABLE TO READ FILE, "+this.getClass());
 
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
