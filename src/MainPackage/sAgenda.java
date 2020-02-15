@@ -412,6 +412,8 @@ public class sAgenda extends StandardObject {
         ArrayList<LessonData> studentGroupsavedData = this.savedData.getStudentGroupLessons(lesson.getStudentGroup());
 
         //Check if teacher is available
+        if(teachersavedData != null){
+
         for(LessonData teacherLesson : teachersavedData){
             //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
             if((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))){
@@ -427,7 +429,11 @@ public class sAgenda extends StandardObject {
                 return false;
             }
         }
+        }
+
         //Check if classroom is available
+        if(classRoomsavedData != null){
+
         for(LessonData classroomLesson : classRoomsavedData){
             if((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))){
                 return false;
@@ -442,7 +448,11 @@ public class sAgenda extends StandardObject {
                 return false;
             }
         }
+        }
+
         //Check if StudentGroup is available
+        if(studentGroupsavedData != null){
+
         for(LessonData studentGroupLesson : studentGroupsavedData){
             //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
             if((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))){
@@ -457,6 +467,7 @@ public class sAgenda extends StandardObject {
             else if(lesson.getEndTime().compareTo(studentGroupLesson.getEndTime())==0){
                 return false;
             }
+        }
         }
 
         return true;
