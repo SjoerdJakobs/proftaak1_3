@@ -49,17 +49,18 @@ public class DataReader {
 
         ASSERT_MSG_TERMINATE(file.canRead(),"UNABLE TO READ FILE, "+this.getClass());
 
-        FileInputStream fis = new FileInputStream(file);
+        FileInputStream fis   = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
+
         Object readCase;
 
         ArrayList<TeacherData> teacherData = new ArrayList<TeacherData>();
         ArrayList<StudentData> studentData = new ArrayList<StudentData>();
-        ArrayList<LessonData> lessonData = new ArrayList<LessonData>();
-        ArrayList<GroupData> groupData = new ArrayList<GroupData>();
+        ArrayList<LessonData>  lessonData  = new ArrayList<LessonData>();
+        ArrayList<GroupData>   groupData   = new ArrayList<GroupData>();
 
         do {
-            readCase = ois.readObject();
+            readCase = (Object) ois.readObject();
             if (readCase != null) {
                 if(readCase instanceof TeacherData)
                 {
@@ -84,6 +85,7 @@ public class DataReader {
             }
         } while (readCase != null);
         ois.close();
+
         savedData.setTeacherData(teacherData);
         savedData.setStudentData(studentData);
         savedData.setLessonData(lessonData);

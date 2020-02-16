@@ -6,8 +6,6 @@ import static OOFramework.Modules.CONSTANTS.TEACHER_SERIAL_VERSION_UID;
 
 public class TeacherData implements Serializable
 {
-    //private static final long serialVersionUID = TEACHER_SERIAL_VERSION_UID;
-    //1071250592083009658
     private String name;
     private int age;
     private int teacherId;
