@@ -11,7 +11,7 @@ public class TeacherData implements Serializable
     private String name;
     private int age;
     private int teacherId;
-    private boolean gender;
+    private Gender gender;
 
 
     public TeacherData()
@@ -52,11 +52,16 @@ public class TeacherData implements Serializable
         this.teacherId = teacherId;
     }
 
-    public boolean isGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

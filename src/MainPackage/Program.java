@@ -73,9 +73,6 @@ public class Program extends FrameworkProgram {
 
     }
 
-
-    }
-
     @Override
     protected void AddToLoop() {
         super.AddToLoop();

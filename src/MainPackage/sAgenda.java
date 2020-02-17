@@ -1,5 +1,6 @@
 package MainPackage;
 
+import Data.Gender;
 import Data.Rooms.ClassRoom;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
@@ -71,11 +72,11 @@ public class sAgenda extends StandardObject {
         studentGroups = new ArrayList<>();
 
         //Load in teachers, classrooms and studentgroups later for now manual
-        teachers.add(new TeacherData("Johan", 30, 1, true));
-        teachers.add(new TeacherData("Jessica", 30, 2, false));
-        teachers.add(new TeacherData("Maurice", 30, 3, true));
-        teachers.add(new TeacherData("Hans", 30, 4, true));
-        teachers.add(new TeacherData("Joep", 30, 5, true));
+        teachers.add(new TeacherData("Johan", 30, 1, Gender.MALE));
+        teachers.add(new TeacherData("Jessica", 30, 2, Gender.FEMALE));
+        teachers.add(new TeacherData("Maurice", 30, 3, Gender.MALE));
+        teachers.add(new TeacherData("Hans", 30, 4, Gender.MALE));
+        teachers.add(new TeacherData("Joep", 30, 5, Gender.MALE));
 
         classrooms.add(new ClassRoom(300));
         classrooms.add(new ClassRoom(301));

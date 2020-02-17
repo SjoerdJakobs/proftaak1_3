@@ -10,7 +10,7 @@ public class StudentData implements Serializable
     public int group;
     public int age;
     public int studentID;
-    public boolean gender;
+    public Gender gender;
     public StudentData()
     {
 
@@ -58,11 +58,11 @@ public class StudentData implements Serializable
         this.studentID = studentID;
     }
 
-    public boolean isGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 }

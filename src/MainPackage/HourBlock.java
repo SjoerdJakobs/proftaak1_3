@@ -31,9 +31,9 @@ public class HourBlock extends Renderable
         this.lessonData = lesson;
         this.beginTime = lesson.getBeginTime();
         this.endTime = lesson.getEndTime();
-        this.classId = SavedData.INSTANCE.findStudentGroupDataByID(lesson.getStudentGroup()).name;
-        this.teacher = SavedData.INSTANCE.findTeacherDataByID(lesson.getTeacher()).name;
-        this.roomNr = lesson.getClassRoom();
+        this.classId = lesson.getStudentGroup().getName();
+        this.teacher = lesson.getTeacher().getName();
+        this.roomNr = lesson.getClassRoom().getRoomName();
         this.color = color;
         this.text = "\n" +classId+"\n"+teacher+"\n"+"LA"+roomNr+"\n"+ beginTime +" - "+endTime;
     }
