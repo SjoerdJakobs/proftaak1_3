@@ -57,4 +57,9 @@ public class TeacherData implements Serializable
     public void setGender(boolean gender) {
         this.gender = gender;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
