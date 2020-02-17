@@ -1,5 +1,6 @@
 package MainPackage.ReadWriteData;
 
+import Data.Rooms.ClassRoom;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
@@ -45,54 +46,52 @@ public enum SavedData {
         this.groupData = groupData;
     }
 
-    // Finders by ID
-    public GroupData findStudentGroupDataByID(int groupID){
-        for(GroupData gData : this.groupData){
-            if(gData.groupID == groupID) { return gData; }
+
+    public ArrayList<LessonData> getTeacherLessons(TeacherData teacher){
+        ArrayList<LessonData> lessonsTeacher = new ArrayList<>();
+        if(!lessonData.isEmpty()){
+            for(LessonData lesson : lessonData){
+                if(lesson.getTeacher().getName().equals(teacher.getName())){
+                    lessonsTeacher.add(lesson);
+                }
+            }
+            return lessonsTeacher;
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
-    public TeacherData findTeacherDataByID(int teacherID){
-        for(TeacherData tData : this.teacherData){
-            if(tData.teacherId == teacherID) { return tData; }
+    public ArrayList<LessonData> getClassroomLessons(ClassRoom classRoom){
+        ArrayList<LessonData> lessonsClassroom = new ArrayList<>();
+        if(this.lessonData.isEmpty()){
+            for(LessonData lesson : this.lessonData){
+                if(lesson.getClassRoom().getRoomName() == classRoom.getRoomName()){
+                    lessonsClassroom.add(lesson);
+                }
+            }
+            return lessonsClassroom;
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
-    public StudentData findStudentDataByID(int studentID){
-        for(StudentData sData : this.studentData){
-            if(sData.studentID == studentID) { return sData; }
+    public ArrayList<LessonData> getStudentGroupLessons(GroupData studentGroup){
+        ArrayList<LessonData> lessonsStudentGroup = new ArrayList<>();
+        if(!this.lessonData.isEmpty()){
+            for(LessonData lesson : lessonData){
+                if(lesson.getStudentGroup().getName().equals(studentGroup.getName())){
+                    lessonsStudentGroup.add(lesson);
+                }
+            }
+            return lessonsStudentGroup;
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
-    public LessonData findLessonDataByID(int lessonID){
-        for(LessonData lData : lessonData){
-            if(lData.lessonID == lessonID) { return lData; }
-        }
-        return null;
-    }
 
-    // Finders by Name
-    public GroupData findStudentGroupDataByName(String groupName){
-        for(GroupData gData : this.groupData){
-            if(gData.name.equals(groupName)) { return gData; }
-        }
-        return null;
-    }
 
-    public TeacherData findTeacherDataByName(String teacherName){
-        for(TeacherData tData : this.teacherData){
-            if(tData.name.equals(teacherName)) { return tData; }
-        }
-        return null;
-    }
-
-    public StudentData findStudentDataByName(String studentName){
-        for(StudentData sData : this.studentData){
-            if(sData.equals(studentName)) { return sData; }
-        }
-        return null;
-    }
 }
