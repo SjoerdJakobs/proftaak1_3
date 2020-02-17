@@ -1,5 +1,7 @@
 package MainPackage.ReadWriteData.DataClasses;
 
+import Data.Gender;
+
 import java.io.Serializable;
 
 public class StudentData implements Serializable
@@ -8,13 +10,13 @@ public class StudentData implements Serializable
     public int group;
     public int age;
     public int studentID;
-    public boolean gender;
+    public Gender gender;
     public StudentData()
     {
 
     }
 
-    public StudentData(String name,int group,int age,int studentID,boolean gender)
+    public StudentData(String name, int group, int age, int studentID, Gender gender)
     {
         this.name = name;
         this.group = group;
@@ -56,11 +58,11 @@ public class StudentData implements Serializable
         this.studentID = studentID;
     }
 
-    public boolean isGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 }
