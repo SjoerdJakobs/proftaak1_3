@@ -3,6 +3,8 @@ package MainPackage;
 import Data.Lesson;
 import Data.Rooms.ClassRoom;
 import Data.Teacher;
+import MainPackage.ReadWriteData.DataClasses.LessonData;
+import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import OOFramework.Renderable;
 import org.jfree.fx.FXGraphics2D;
 
@@ -18,15 +20,15 @@ public class HourBlock extends Renderable
     private String teacher;
     private int roomNr;
     private Color color;
-    private Lesson lesson;
+    private LessonData lessonData;
 
     private String  text;
 
     private static Font sanSerifFont = new Font("SanSerif", Font.PLAIN, 12);
 
-    public HourBlock(Shape shape, Point2D position, Lesson lesson, Color color) {
+    public HourBlock(Shape shape, Point2D position, LessonData lesson, Color color) {
         super(shape, position, 0, 1);
-        this.lesson = lesson;
+        this.lessonData = lesson;
         this.beginTime = lesson.getBeginTime();
         this.endTime = lesson.getEndTime();
         this.classId = lesson.getStudentGroup().getName();
@@ -52,32 +54,32 @@ public class HourBlock extends Renderable
     }
 
     public LocalTime getBeginTime() {
-        return lesson.getBeginTime();
+        return lessonData.getBeginTime();
     }
 
     public void setBeginTime(LocalTime beginTime) {
-        lesson.setBeginTime(beginTime);
+        lessonData.setBeginTime(beginTime);
     }
 
     public LocalTime getEndTime() {
-        return lesson.getEndTime();
+        return lessonData.getEndTime();
     }
 
-    public void setEndTime(LocalTime endTime) { lesson.setEndTime(endTime);
+    public void setEndTime(LocalTime endTime) { lessonData.setEndTime(endTime);
     }
 
     public String getClassId() {
-        return lesson.getStudentGroup().getName();
+        return lessonData.getStudentGroup().getName();
     }
 
-    public void setClassId(String classId) { lesson.getStudentGroup().setName(classId);
+    public void setClassId(String classId) { lessonData.getStudentGroup().setName(classId);
     }
 
-    public Teacher getTeacher() {
-        return lesson.getTeacher();
+    public TeacherData getTeacher() {
+        return lessonData.getTeacher();
     }
 
-    public void setTeacher(Teacher teacher) { lesson.setTeacher(teacher);
+    public void setTeacher(TeacherData teacher) { lessonData.setTeacher(teacher);
     }
 
     public Color getColor() {
@@ -97,15 +99,15 @@ public class HourBlock extends Renderable
     }
 
     public ClassRoom getRoomNr() {
-        return lesson.getClassRoom();
+        return lessonData.getClassRoom();
     }
 
     public void setRoomNr(ClassRoom room) {
-        lesson.setClassRoom(room);
+        lessonData.setClassRoom(room);
     }
 
 
-    public Lesson getLesson() {
-        return lesson;
+    public LessonData getLessonData() {
+        return lessonData;
     }
 }

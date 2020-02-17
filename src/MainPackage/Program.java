@@ -1,6 +1,8 @@
 package MainPackage;
 
-import Data.MakeAgenda;
+
+import MainPackage.ReadWriteData.DataReader;
+import MainPackage.ReadWriteData.DataWriter;
 import OOFramework.FrameworkProgram;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -10,10 +12,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import javax.swing.border.Border;
+import java.awt.dnd.DropTarget;
+import java.io.IOException;
 
 
 public class Program extends FrameworkProgram {
     sAgenda agenda;
+
+    DataReader dataReader = new DataReader();
+    DataWriter dataWriter = new DataWriter();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,10 +31,15 @@ public class Program extends FrameworkProgram {
     @Override
     protected void Init() {
         super.Init();
+        try{
+            dataReader.Load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-
-        MakeAgenda makeAgenda = new MakeAgenda();
-        agenda = new sAgenda(this,makeAgenda.getAgenda());
+        agenda = new sAgenda(this, dataWriter);
 
         BorderPane pane = new BorderPane();
 

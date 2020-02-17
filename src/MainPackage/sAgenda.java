@@ -1,33 +1,28 @@
 package MainPackage;
 
-import Data.Agenda;
-import Data.Lesson;
 import Data.Rooms.ClassRoom;
-import Data.StudentGroup;
-import Data.Teacher;
+import MainPackage.ReadWriteData.DataClasses.GroupData;
+import MainPackage.ReadWriteData.DataClasses.LessonData;
+import MainPackage.ReadWriteData.DataClasses.TeacherData;
+import MainPackage.ReadWriteData.DataWriter;
+import MainPackage.ReadWriteData.SavedData;
 import OOFramework.FrameworkProgram;
-import OOFramework.Renderable;
 import OOFramework.StandardObject;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.time.LocalDateTime;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -36,11 +31,9 @@ public class sAgenda extends StandardObject {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
     private Stage stage;
-    private Agenda agenda;
 
     private ArrayList<HourBlock> hourBlocks;
-    private ArrayList<StudentGroup> groups = new ArrayList<>();
-    private ArrayList<Lesson> lessons;
+    private ArrayList<GroupData> groups = new ArrayList<>();
 
 
     private double hours;
@@ -49,22 +42,52 @@ public class sAgenda extends StandardObject {
     double xStepSize;
     double yStepSize;
 
-    protected sAgenda(FrameworkProgram frameworkProgram, Agenda agenda) {
+    private ArrayList<TeacherData> teachers;
+    private ArrayList<ClassRoom> classrooms;
+    private ArrayList<GroupData> studentGroups;
+
+    private SavedData savedData = SavedData.INSTANCE;
+    private DataWriter dataWriter;
+
+    protected sAgenda(FrameworkProgram frameworkProgram, DataWriter dataWriter) {
         //the agenda uses input, the standard logic loop and a render loop
         super(frameworkProgram, true, true, true, true);
-
+        this.dataWriter = dataWriter;
         //you can give these two in the constructor but here i get them from the getters in the framework
         this.graphics2D = frameworkProgram.getGraphics2D();
         this.canvas = frameworkProgram.getCanvas();
         this.stage = frameworkProgram.getStage();
-        this.agenda = agenda;
+
         this.hours = 13;
         this.rooms = 6;
         this.canvas.setWidth(1625);
         this.canvas.setHeight(900);
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
-        this.lessons = agenda.getLessons();
+        //this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
+
+        teachers = new ArrayList<>();
+        classrooms = new ArrayList<>();
+        studentGroups = new ArrayList<>();
+
+        //Load in teachers, classrooms and studentgroups later for now manual
+        teachers.add(new TeacherData("Johan", 30, 1, true));
+        teachers.add(new TeacherData("Jessica", 30, 2, false));
+        teachers.add(new TeacherData("Maurice", 30, 3, true));
+        teachers.add(new TeacherData("Hans", 30, 4, true));
+        teachers.add(new TeacherData("Joep", 30, 5, true));
+
+        classrooms.add(new ClassRoom(300));
+        classrooms.add(new ClassRoom(301));
+        classrooms.add(new ClassRoom(302));
+        classrooms.add(new ClassRoom(303));
+        classrooms.add(new ClassRoom(304));
+
+        studentGroups.add(new GroupData("A"));
+        studentGroups.add(new GroupData("B"));
+        studentGroups.add(new GroupData("C"));
+        studentGroups.add(new GroupData("D"));
+        studentGroups.add(new GroupData("E"));
 
     }
 
@@ -107,21 +130,26 @@ public class sAgenda extends StandardObject {
 
                         TextField beginTime = new TextField();
                         TextField endTime = new TextField();
-                        ComboBox<StudentGroup> group = new ComboBox();
-                        ComboBox<Teacher> teacher = new ComboBox();
+                        ComboBox<GroupData> group = new ComboBox();
+                        ComboBox<TeacherData> teacher = new ComboBox();
                         ComboBox<ClassRoom> room = new ComboBox();
 
                         Label warning = new Label();
 
-                        this.groups.clear();
-                        this.lessons = agenda.getLessons();
-                        for (Lesson lesson : lessons) {
-                            this.groups.add(lesson.getStudentGroup());
-                            teacher.getItems().add(lesson.getTeacher());
-                            room.getItems().add(lesson.getClassRoom());
-                        }
-                        for (StudentGroup sg : this.groups) {
-                            group.getItems().add(sg);
+                        //this.groups.clear();
+//                        this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
+//                        for (Lesson lesson : savedData.getLessonData()) {
+//                            this.groups.add(lesson.getStudentGroup());
+//                                      teacher.getItems().add(lesson.getTeacher());
+//                            room.getItems().add(lesson.getClassRoom());
+//                        }
+//                        for (StudentGroup sg : this.groups) {
+//                            group.getItems().add(sg);
+//                        }
+                        for(int i = 0; i<5; i++){
+                            group.getItems().addAll(studentGroups.get(i));
+                            teacher.getItems().add(teachers.get(i));
+                            room.getItems().add(classrooms.get(i));
                         }
 
 
@@ -145,14 +173,27 @@ public class sAgenda extends StandardObject {
                                 } else if (teacher.getSelectionModel().isEmpty()) {
                                     warning.setText("please enter a correct value at teacher.");
                                 } else {
+                                    LessonData clickedBlockLesson = getClickedBlockLesson(block);
+                                    savedData.getLessonData().remove(clickedBlockLesson);
+                                    if(canAddLesson(clickedBlockLesson)){
+                                        System.out.println("Edit");
+                                        clickedBlockLesson.setTeacher(teacher.getValue());
+                                        clickedBlockLesson.setClassRoom(room.getValue());
+                                        clickedBlockLesson.setStudentGroup(group.getValue());
+                                        clickedBlockLesson.setBeginTime(LocalTime.parse(beginTime.getText()));
+                                        clickedBlockLesson.setEndTime(LocalTime.parse(endTime.getText()));
+                                        this.savedData.getLessonData().add(clickedBlockLesson);
+                                        popUpEdit.close();
+                                    }
+                                    else {
+                                        warning.setText("Cant edit");
+                                    }
+//                                    block.getLesson().setBeginTime(LocalTime.parse(beginTime.getText()));
+//                                    block.getLesson().setEndTime(LocalTime.parse(endTime.getText()));
+//                                    block.getLesson().setStudentGroup(group.getValue());
+//                                    block.getLesson().setClassRoom(room.getValue());
+//                                    block.getLesson().setTeacher(teacher.getValue());
 
-                                    block.getLesson().setBeginTime(LocalTime.parse(beginTime.getText()));
-                                    block.getLesson().setEndTime(LocalTime.parse(endTime.getText()));
-                                    block.getLesson().setStudentGroup(group.getValue());
-                                    block.getLesson().setClassRoom(room.getValue());
-                                    block.getLesson().setTeacher(teacher.getValue());
-
-                                    popUpEdit.close();
                                 }
                             } catch (DateTimeParseException dtpe) {
                                 warning.setText("Please enter a valid time in a form of 08:00, not something else!");
@@ -165,7 +206,7 @@ public class sAgenda extends StandardObject {
                         Button deleteEdit = new Button("DELETE");
                         deleteEdit.setOnAction(event -> {
 
-                            this.lessons.remove(block.getLesson());
+                            this.savedData.getLessonData().remove(getClickedBlockLesson(block));
                             popUpEdit.close();
 
                         });
@@ -194,8 +235,7 @@ public class sAgenda extends StandardObject {
 
         this.hourBlocks.clear();
         //Color[] colors = {Color.GREEN,Color.RED,Color.BLACK,Color.BLUE,Color.PINK,Color.MAGENTA};
-        this.lessons = agenda.getLessons();
-        for (Lesson lesson : lessons) {
+        for (LessonData lesson : savedData.getLessonData()) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
             Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300));
@@ -258,6 +298,15 @@ public class sAgenda extends StandardObject {
         Button delete = new Button("DELETE");
         Button edit = new Button("EDIT");
 
+        saveAgenda.setOnAction(event -> {
+            try {
+                this.dataWriter.Save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
         newOne.setOnAction(e -> {
             final Stage popUpNew = new Stage();
@@ -269,27 +318,33 @@ public class sAgenda extends StandardObject {
             VBox popVBoxInformation = new VBox(10);
             TextField beginTime = new TextField();
             TextField endTime = new TextField();
-            ComboBox<StudentGroup> group = new ComboBox();
-            ComboBox<Teacher> teachers = new ComboBox<>();
-            ComboBox<ClassRoom> rooms = new ComboBox<>();
+            ComboBox<GroupData> group = new ComboBox();
+            ComboBox<TeacherData> teacher = new ComboBox<>();
+            ComboBox<ClassRoom> room = new ComboBox<>();
 
-            this.groups.clear();
-            this.lessons = agenda.getLessons();
-            for (Lesson lesson : lessons) {
-                this.groups.add(lesson.getStudentGroup());
-                teachers.getItems().add(lesson.getTeacher());
-                rooms.getItems().add(lesson.getClassRoom());
-            }
-            for (StudentGroup sg : this.groups) {
-                group.getItems().add(sg);
+//            this.groups.clear();
+//            this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
+//            for (Lesson lesson : savedData.getLessonData()) {
+//                this.groups.add(lesson.getStudentGroup());
+//                teachers.getItems().add(lesson.getTeacher());
+//                rooms.getItems().add(lesson.getClassRoom());
+//            }
+//            for (StudentGroup sg : this.groups) {
+//                group.getItems().add(sg);
+//            }
+
+            for(int i = 0; i<5; i++){
+                group.getItems().addAll(studentGroups.get(i));
+                teacher.getItems().add(teachers.get(i));
+                room.getItems().add(classrooms.get(i));
             }
 
 
             popVBoxInformation.getChildren().add(beginTime);
             popVBoxInformation.getChildren().add(endTime);
             popVBoxInformation.getChildren().add(group);
-            popVBoxInformation.getChildren().add(teachers);
-            popVBoxInformation.getChildren().add(rooms);
+            popVBoxInformation.getChildren().add(teacher);
+            popVBoxInformation.getChildren().add(room);
 
             Label warningLabel = new Label();
 
@@ -301,12 +356,20 @@ public class sAgenda extends StandardObject {
                         warningLabel.setText("please enter a correct value at end time, between 8 and 20.\n Make sure the end time is later than the begin time.\n And make sure the notation is correct (for example 08:00, two digits each side).");
                     } else if (group.getSelectionModel().isEmpty()) {
                         warningLabel.setText("please enter a correct value at group.");
-                    } else if (teachers.getSelectionModel().isEmpty()) {
+                    } else if (teacher.getSelectionModel().isEmpty()) {
                         warningLabel.setText("please enter a correct value at teacher.");
                     } else {
+                        LessonData newLesson = new LessonData(group.getValue(), teacher.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), room.getValue());
+                        if(canAddLesson(newLesson)){
+                            System.out.println("added new lesson");
+                            this.savedData.getLessonData().add(newLesson);
+                            popUpNew.close();
+                        }
+                        else {
+                            System.out.println("not valid");
+                            warningLabel.setText("This lesson cannot be added");
+                        }
 
-                        this.agenda.addLesson(new Lesson(group.getValue(), teachers.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), rooms.getValue()));
-                        popUpNew.close();
                     }
                 } catch (DateTimeParseException dtpe) {
                     warningLabel.setText("Please enter a valid time in a form of 08:00, not something else!");
@@ -341,6 +404,78 @@ public class sAgenda extends StandardObject {
 
         popHBox.getChildren().addAll(popVBoxLabels);
         return popHBox;
+    }
+
+
+    private boolean canAddLesson(LessonData lesson){
+        ArrayList<LessonData> teachersavedData = this.savedData.getTeacherLessons(lesson.getTeacher());
+        ArrayList<LessonData> classRoomsavedData = this.savedData.getClassroomLessons(lesson.getClassRoom());
+        ArrayList<LessonData> studentGroupsavedData = this.savedData.getStudentGroupLessons(lesson.getStudentGroup());
+
+        //Check if teacher is available
+        if(teachersavedData != null){
+
+        for(LessonData teacherLesson : teachersavedData){
+            //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
+            if((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))){
+                return false;
+            }
+            else if((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))){
+                return false;
+            }
+            else if(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime())==0){
+                return false;
+            }
+            else if(lesson.getEndTime().compareTo(teacherLesson.getEndTime())==0){
+                return false;
+            }
+        }
+        }
+
+        //Check if classroom is available
+        if(classRoomsavedData != null){
+
+        for(LessonData classroomLesson : classRoomsavedData){
+            if((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))){
+                return false;
+            }
+            else if((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))){
+                return false;
+            }
+            else if(lesson.getBeginTime().compareTo(classroomLesson.getBeginTime())==0){
+                return false;
+            }
+            else if(lesson.getEndTime().compareTo(classroomLesson.getEndTime())==0){
+                return false;
+            }
+        }
+        }
+
+        //Check if StudentGroup is available
+        if(studentGroupsavedData != null){
+
+        for(LessonData studentGroupLesson : studentGroupsavedData){
+            //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
+            if((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))){
+                return false;
+            }
+            else if((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))){
+                return false;
+            }
+            else if(lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime())==0){
+                return false;
+            }
+            else if(lesson.getEndTime().compareTo(studentGroupLesson.getEndTime())==0){
+                return false;
+            }
+        }
+        }
+
+        return true;
+    }
+
+    private LessonData getClickedBlockLesson(HourBlock block){
+        return block.getLessonData();
     }
 
 }

@@ -1,63 +1,65 @@
 package Data;
 
-import Data.Rooms.ClassRoom;
-
+import MainPackage.ReadWriteData.DataClasses.LessonData;
 import java.time.LocalTime;
 
 public class Lesson {
-    private StudentGroup studentGroup;
-    private Teacher teacher;
-    private LocalTime beginTime;
-    private LocalTime endTime;
-    private ClassRoom classRoom;
+    private LessonData lessonData;
 
-    public Lesson(StudentGroup studentGroup, Teacher teacher, LocalTime beginTime, LocalTime endTime, ClassRoom classRoom){
-        this.studentGroup = studentGroup;
-        this.teacher = teacher;
-        this.beginTime = beginTime;
-        this.endTime = endTime;
-        this.classRoom = classRoom;
+    public Lesson(){
+
     }
 
-    // Getter and Setters
-
-    public StudentGroup getStudentGroup() {
-        return studentGroup;
-    }
-
-    public void setStudentGroup(StudentGroup studentGroup) {
-        this.studentGroup = studentGroup;
-    }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
-
-    public LocalTime getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(LocalTime beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public ClassRoom getClassRoom() {
-        return classRoom;
-    }
-
-    public void setClassRoom(ClassRoom classRoom) {
-        this.classRoom = classRoom;
-    }
+//    // Getters and Setters
+//    public int getStudentGroup() { return this.lessonData.studentGroupId; }
+//    public void setStudentGroup(int studentGroup) {
+//        this.lessonData.studentGroupId = studentGroup;
+//    }
+//
+//    public int getTeacher() {
+//        return this.lessonData.teacherId;
+//    }
+//    public void setTeacher(int teacher) {
+//        this.lessonData.teacherId = teacher;
+//    }
+//
+//    public LocalTime getBeginTime() {
+//        return this.lessonData.beginTime;
+//    }
+//    public void setBeginTime(LocalTime beginTime) {
+//        this.lessonData.beginTime = beginTime;
+//    }
+//
+//    public LocalTime getEndTime() {
+//        return this.lessonData.endTime;
+//    }
+//    public void setEndTime(LocalTime endTime) {
+//        this.lessonData.endTime = endTime;
+//    }
+//
+//    public int getClassRoom() {
+//        return this.lessonData.classRoomId;
+//    }
+//    public void setClassRoom(int classRoomId) {
+//        this.lessonData.classRoomId = classRoomId;
+//    }
+//
+//    public int getLessonID() {
+//        return this.lessonData.lessonID;
+//    }
+//    public void setLessonID(int lessonID) {
+//        this.lessonData.lessonID = lessonID;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Lesson{" +
+//                "studentGroup=" + lessonData.studentGroupId +
+//                ", teacher=" + lessonData.teacherId +
+//                ", beginTime=" + lessonData.beginTime +
+//                ", endTime=" + lessonData.endTime +
+//                ", classRoom=" + lessonData.classRoomId +
+//                ", lessonID=" + lessonData.lessonID +
+//                '}';
+//    }
 }
