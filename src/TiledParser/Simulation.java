@@ -20,7 +20,7 @@ public class Simulation extends Application {
 
     public void init() {
         try {
-            this.tileMap = new TileMap("resources/TiledParser/map.json");
+            tileMap = new TileMap("resources/map.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +56,8 @@ public class Simulation extends Application {
 
     public void draw(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
-        graphics.setBackground(Color.white);
+        graphics.setBackground(Color.black);
+        //graphics.scale(10,10);
 
         tileMap.draw(graphics);
     }
