@@ -18,8 +18,7 @@ public class Main {
 //
 //        TileMapJSONParser tileMapJSONParser = new TileMapJSONParser(new File("resources/test.json"));
 //        int spriteID = tileMapJSONParser.getTileData(0, 0, 4);
-//        BufferedImage bufferedImage = new BufferedImage(1024,1024,BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
+
 
         //System.out.println(tileMapJSONParser.getWidth());
 

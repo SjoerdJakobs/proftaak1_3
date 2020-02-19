@@ -4,23 +4,26 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 public class Simulation extends Application {
-    private Canvas canvas;
     private FXGraphics2D graphics2D;
+    private Canvas canvas;
+
     private TileMap tileMap;
-    private double scale = 1.0;
+    private Camera camera;
 
     public void init() {
+        this.camera = new Camera();
+
         try {
             tileMap = new TileMap("resources/map.json");
         } catch (IOException e) {
@@ -39,18 +42,19 @@ public class Simulation extends Application {
             public void handle(long now) {
                 if (last == -1)
                     last = now;
-                update(graphics2D);
+                update((now - last) / 1000000000.0);
                 last = now;
             }
         }.start();
 
         this.canvas = new Canvas(stage.getWidth(), stage.getHeight());
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
+
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(canvas);
 
-        //todo fix camera
-        //canvas.setOnScroll(e -> onMouseScoll(e));
+        canvas.setOnScroll(e -> onMouseScoll(e));
+        canvas.setOnMouseDragged(e -> onMouseDrag(e));
 
         draw(graphics2D);
         stage.setScene(new Scene(mainPane));
@@ -62,29 +66,24 @@ public class Simulation extends Application {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-        graphics.scale(scale, scale);
+        graphics.scale(camera.getZoom(), camera.getZoom());
 
-        tileMap.draw(graphics);
+        tileMap.draw(graphics, camera);
     }
 
-    public void update(FXGraphics2D graphics) {
+    public void update(double deltaTime) {
 
     }
 
-    //todo fix camera
     public void onMouseScoll(ScrollEvent event) {
-        if (event.getDeltaY() < 0) {
-            //Scroll back
-            if (scale > 1) {
-                scale--;
-            }
-        } else if (event.getDeltaY() > 0) {
-            //Scroll forward
-            if (scale < 15) {
-                scale++;
-            }
-        }
-        update(graphics2D);
+        camera.zoom(event.getDeltaY());
+        draw(graphics2D);
+    }
+
+    public void onMouseDrag(MouseEvent event){
+        System.out.println(event.getEventType());
+
+        camera.pan(event.getX(), event.getY());
         draw(graphics2D);
     }
 }
