@@ -16,12 +16,12 @@ public class TileMapJSONParser {
         jsonObject = jsonReader.readObject();
     }
 
-    public JsonObject getTileset(int id){
+    public JsonObject getTileset(int id) {
         JsonArray tilesets = jsonObject.getJsonArray("tilesets");
         return tilesets.getJsonObject(id);
     }
 
-    public String getTilesetImageSource(){
+    public String getTilesetImageSource() {
         JsonObject tileset = getTileset(0);
         return tileset.getString("image");
     }
@@ -40,6 +40,10 @@ public class TileMapJSONParser {
 
     public int getTileHeight() {
         return jsonObject.getInt("tileheight");
+    }
+
+    public int getLayersAmount() {
+        return getLayers().size();
     }
 
     public JsonArray getLayers() {
@@ -62,16 +66,18 @@ public class TileMapJSONParser {
         return null;
     }
 
+
     public int getTileData(int layer, int xPos, int yPos) {
         JsonObject layerObject = getLayer(layer);
         int tileID = getTileID(xPos, yPos);
-        return layerObject.getJsonArray("data").getInt(tileID) - 1;
+        int data = layerObject.getJsonArray("data").getInt(tileID) - 1;
+        return data;
+
     }
 
     public int getTileID(int xPos, int yPos) {
-        return (yPos * 100) + xPos;
+        return (yPos * getWidth()) + xPos;
     }
-
 
     public JsonObject getJsonObject() {
         return this.jsonObject;

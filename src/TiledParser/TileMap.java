@@ -28,17 +28,21 @@ public class TileMap {
         this.spriceHeight = tileMapJSONParser.getTileHeight();
 
         //this.sourceImage = ImageIO.read(getClass().getResource("resources/" + tileMapJSONParser.getTilesetImageSource()));
-        this.sourceImage = ImageIO.read(new File("resources/tileset_16x16_interior.png"));
+        this.sourceImage = ImageIO.read(new File("resources/" + tileMapJSONParser.getTilesetImageSource()));
         this.sprites = Spriteloader.getImages(sourceImage, spriteWidth, spriceHeight);
 
     }
 
     public void draw(FXGraphics2D graphics) {
-        int layer = 0;
-        for (int yPos = 0; yPos < mapHeight; yPos++) {
-            for (int xPos = 0; xPos < mapWidth; xPos++) {
-                int spriteID = tileMapJSONParser.getTileData(layer, xPos, yPos);
-                graphics.drawImage(sprites[spriteID], xPos, yPos, null);
+        for (int layer = 0; layer < tileMapJSONParser.getLayersAmount() - 1; layer++) {
+            System.out.println("Layer: " + layer);
+            for (int yPos = 0; yPos < mapHeight; yPos++) {
+                for (int xPos = 0; xPos < mapWidth; xPos++) {
+                    int spriteID = tileMapJSONParser.getTileData(layer, xPos, yPos);
+                    if (spriteID != -1) {
+                        graphics.drawImage(sprites[spriteID], xPos * spriteWidth, yPos * spriceHeight, null);
+                    }
+                }
             }
         }
     }

@@ -18,7 +18,7 @@ public class Simulation extends Application {
     private Canvas canvas;
     private FXGraphics2D graphics2D;
     private TileMap tileMap;
-    private double scale = 10.0;
+    private double scale = 1.0;
 
     public void init() {
         try {
@@ -49,7 +49,8 @@ public class Simulation extends Application {
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(canvas);
 
-        canvas.setOnScroll(e -> onMouseScoll(e));
+        //todo fix camera
+        //canvas.setOnScroll(e -> onMouseScoll(e));
 
         draw(graphics2D);
         stage.setScene(new Scene(mainPane));
@@ -70,6 +71,7 @@ public class Simulation extends Application {
 
     }
 
+    //todo fix camera
     public void onMouseScoll(ScrollEvent event) {
         if (event.getDeltaY() < 0) {
             //Scroll back
