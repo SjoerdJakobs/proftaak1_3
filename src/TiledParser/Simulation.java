@@ -81,8 +81,6 @@ public class Simulation extends Application {
     }
 
     public void onMouseDrag(MouseEvent event){
-        System.out.println(event.getEventType());
-
         camera.pan(event.getX(), event.getY());
         draw(graphics2D);
     }
