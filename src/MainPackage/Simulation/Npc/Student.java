@@ -16,9 +16,7 @@ public class Student extends Npc{
 
 
     private void initializeSprites(){
-
-
-
+        
     }
 
 
