@@ -35,6 +35,8 @@ public class Simulation extends StandardObject {
         this.graphics2D = frameworkProgram.getGraphics2DSimulation();
         this.stage = frameworkProgram.getStage();
 
+        this.camera = new Camera(canvas, g -> draw(g), graphics2D);
+
         this.borderPane = new BorderPane();
         this.bottomPane = new GridPane();
 
@@ -51,9 +53,6 @@ public class Simulation extends StandardObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        canvas.setOnScroll(e -> onMouseScoll(e));
-        canvas.setOnMouseDragged(e -> onMouseDrag(e));
     }
 
 
@@ -75,12 +74,9 @@ public class Simulation extends StandardObject {
         super.RenderLoop(deltaTime);
         draw(this.graphics2D);
     }
-        this.camera = new Camera(canvas, g -> draw(g), graphics2D);
+
 
     public void start(Stage stage) throws Exception {
-
-
-
         draw(graphics2D);
         stage.setTitle("Simulation");
         stage.show();

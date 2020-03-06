@@ -52,7 +52,7 @@ public class Program extends FrameworkProgram {
         Menu menuAgenda = new Menu("Agenda");
         MenuItem itemAgenda = new MenuItem("agenda");
         Menu menuSimulation = new Menu("Simulation");
-        MenuItem itemSimulation = new MenuItem("simulaion");
+        MenuItem itemSimulation = new MenuItem("simulation");
 
         itemAgenda.setOnAction(event -> {
             pane.setCenter(agenda.sceneAgenda());
@@ -74,8 +74,6 @@ public class Program extends FrameworkProgram {
 
         this.stage.setScene(mainScene);
 //        agenda.setActive(false);
-
-
 
     }
 
