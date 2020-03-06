@@ -6,20 +6,23 @@ import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 
 public class Npc extends StandardObject {
-LogicalTile currentTile;
-Point2D cords;
+protected LogicalTile currentTile;
+protected Point2D cords;
+protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
 
 
     protected Npc(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
+
     }
 
 
     @Override
     protected void InputLoop(double deltaTime) {
-        
+
     }
 
     @Override
@@ -31,7 +34,9 @@ Point2D cords;
     protected void RenderLoop(double deltaTime){}
 
 
+    private void initializeSprites(){
 
+    }
 
 
 
