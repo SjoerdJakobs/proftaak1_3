@@ -1,5 +1,7 @@
 package TiledParser;
 
+import OOFramework.FrameworkProgram;
+import OOFramework.StandardObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -7,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
@@ -14,12 +17,33 @@ import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 
-public class Simulation extends Application {
+public class Simulation extends StandardObject {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
+    private Stage stage;
 
     private TileMap tileMap;
     private Camera camera;
+
+    private BorderPane borderPane;
+    private GridPane bottomPane;
+
+    public Simulation(FrameworkProgram frameworkProgram) {
+        super(frameworkProgram);
+
+        this.canvas = frameworkProgram.getCanvasSimulation();
+        this.graphics2D = frameworkProgram.getGraphics2DSimulation();
+        this.stage = frameworkProgram.getStage();
+
+        this.borderPane = new BorderPane();
+        this.bottomPane = new GridPane();
+
+        init();
+
+        this.borderPane.setCenter(this.canvas);
+        this.borderPane.setBottom(bottomPane);
+
+    }
 
     public void init() {
         this.camera = new Camera();
@@ -29,35 +53,36 @@ public class Simulation extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void start(Stage stage) throws Exception {
-        stage.setWidth(1650);
-        stage.setHeight(1000);
-
-        new AnimationTimer() {
-            long last = -1;
-
-            @Override
-            public void handle(long now) {
-                if (last == -1)
-                    last = now;
-                update((now - last) / 1000000000.0);
-                last = now;
-            }
-        }.start();
-
-        this.canvas = new Canvas(stage.getWidth(), stage.getHeight());
-        this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
-
-        BorderPane mainPane = new BorderPane();
-        mainPane.setCenter(canvas);
 
         canvas.setOnScroll(e -> onMouseScoll(e));
         canvas.setOnMouseDragged(e -> onMouseDrag(e));
+    }
+
+
+
+    @Override
+    protected void InputLoop(double deltaTime) {
+        super.InputLoop(deltaTime);
+    }
+
+    @Override
+    protected void MainLoop(double deltaTime) {
+        super.MainLoop(deltaTime);
+        this.canvas.setWidth(this.stage.getWidth());
+        this.canvas.setHeight(this.stage.getHeight());
+    }
+
+    @Override
+    protected void RenderLoop(double deltaTime) {
+        super.RenderLoop(deltaTime);
+        draw(this.graphics2D);
+    }
+
+    public void start(Stage stage) throws Exception {
+
+
 
         draw(graphics2D);
-        stage.setScene(new Scene(mainPane));
         stage.setTitle("Simulation");
         stage.show();
     }
@@ -71,9 +96,6 @@ public class Simulation extends Application {
         tileMap.draw(graphics, camera);
     }
 
-    public void update(double deltaTime) {
-
-    }
 
     public void onMouseScoll(ScrollEvent event) {
         camera.zoom(event.getDeltaY());
@@ -84,4 +106,9 @@ public class Simulation extends Application {
         camera.pan(event.getX(), event.getY());
         draw(graphics2D);
     }
+
+    public BorderPane getBorderPane(){
+        return this.borderPane;
+    }
+
 }
