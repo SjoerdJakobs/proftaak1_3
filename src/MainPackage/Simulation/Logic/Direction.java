@@ -1,4 +1,8 @@
 package MainPackage.Simulation.Logic;
 
-public enum Directions {
+public enum Direction {
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
 }

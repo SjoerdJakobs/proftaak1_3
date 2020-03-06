@@ -1,4 +1,9 @@
 package MainPackage.Simulation.Npc;
 
-public class Teacher {
+import OOFramework.FrameworkProgram;
+
+public class Teacher extends Npc {
+    protected Teacher(FrameworkProgram frameworkProgram) {
+        super(frameworkProgram);
+    }
 }

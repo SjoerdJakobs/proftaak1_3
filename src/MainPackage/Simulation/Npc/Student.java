@@ -1,4 +1,13 @@
 package MainPackage.Simulation.Npc;
 
-public class Student {
+import OOFramework.FrameworkProgram;
+
+public class Student extends Npc{
+
+
+    protected Student(FrameworkProgram frameworkProgram) {
+        super(frameworkProgram);
+    }
+
+
 }
