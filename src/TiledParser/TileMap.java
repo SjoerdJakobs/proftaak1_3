@@ -35,7 +35,7 @@ public class TileMap {
                 for (int xPos = 0; xPos < mapWidth; xPos++) {
                     int spriteID = tileMapJSONParser.getTileData(layer, xPos, yPos);
                     if (spriteID != -1) {
-                        graphics.drawImage(sprites[spriteID], camera.getXOffset() + (xPos * spriteWidth), camera.getYOffset() + (yPos * spriteHeight), null);
+                        graphics.drawImage(sprites[spriteID], (xPos * spriteWidth), (yPos * spriteHeight), null);
                     }
                 }
             }
