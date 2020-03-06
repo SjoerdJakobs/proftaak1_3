@@ -1,5 +1,7 @@
 package TiledParser;
 
+import OOFramework.FrameworkProgram;
+import OOFramework.StandardObject;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,16 +16,22 @@ import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 
-public class Simulation extends Application {
+public class Simulation extends StandardObject {
     private FXGraphics2D graphics2D;
     private Canvas canvas;
 
     private TileMap tileMap;
     private Camera camera;
 
+   public Simulation(FrameworkProgram frameworkProgram){
+       super(frameworkProgram);
+       this.canvas = new Canvas(1920, 1080);
+       init();
+   }
+
     public void init() {
         this.camera = new Camera();
-
+        this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
         try {
             tileMap = new TileMap("resources/map.json");
         } catch (IOException e) {
@@ -31,35 +39,15 @@ public class Simulation extends Application {
         }
     }
 
-    public void start(Stage stage) throws Exception {
-        stage.setWidth(1650);
-        stage.setHeight(1000);
+    public BorderPane sceneSimulation(){
+       BorderPane pane = new BorderPane();
 
-        new AnimationTimer() {
-            long last = -1;
-
-            @Override
-            public void handle(long now) {
-                if (last == -1)
-                    last = now;
-                update((now - last) / 1000000000.0);
-                last = now;
-            }
-        }.start();
-
-        this.canvas = new Canvas(stage.getWidth(), stage.getHeight());
-        this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
-
-        BorderPane mainPane = new BorderPane();
-        mainPane.setCenter(canvas);
 
         canvas.setOnScroll(e -> onMouseScoll(e));
         canvas.setOnMouseDragged(e -> onMouseDrag(e));
+        pane.setCenter(canvas);
+        return pane;
 
-        draw(graphics2D);
-        stage.setScene(new Scene(mainPane));
-        stage.setTitle("Simulation");
-        stage.show();
     }
 
     public void draw(FXGraphics2D graphics) {
@@ -71,10 +59,6 @@ public class Simulation extends Application {
         tileMap.draw(graphics, camera);
     }
 
-    public void update(double deltaTime) {
-
-    }
-
     public void onMouseScoll(ScrollEvent event) {
         camera.zoom(event.getDeltaY());
         draw(graphics2D);
@@ -82,6 +66,12 @@ public class Simulation extends Application {
 
     public void onMouseDrag(MouseEvent event){
         camera.pan(event.getX(), event.getY());
+        draw(graphics2D);
+    }
+
+    @Override
+    protected void RenderLoop(double deltaTime) {
+        super.RenderLoop(deltaTime);
         draw(graphics2D);
     }
 }
