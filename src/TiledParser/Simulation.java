@@ -22,8 +22,6 @@ public class Simulation extends Application {
     private Camera camera;
 
     public void init() {
-        this.camera = new Camera();
-
         try {
             tileMap = new TileMap("resources/map.json");
         } catch (IOException e) {
@@ -50,11 +48,10 @@ public class Simulation extends Application {
         this.canvas = new Canvas(stage.getWidth(), stage.getHeight());
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
 
+        this.camera = new Camera(canvas, g -> draw(g), graphics2D);
+
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(canvas);
-
-        canvas.setOnScroll(e -> onMouseScoll(e));
-        canvas.setOnMouseDragged(e -> onMouseDrag(e));
 
         draw(graphics2D);
         stage.setScene(new Scene(mainPane));
@@ -66,22 +63,13 @@ public class Simulation extends Application {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-        graphics.scale(camera.getZoom(), camera.getZoom());
+
+        graphics.setTransform(camera.getTransform((int)canvas.getWidth(), (int)canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
     }
 
     public void update(double deltaTime) {
 
-    }
-
-    public void onMouseScoll(ScrollEvent event) {
-        camera.zoom(event.getDeltaY());
-        draw(graphics2D);
-    }
-
-    public void onMouseDrag(MouseEvent event){
-        camera.pan(event.getX(), event.getY());
-        draw(graphics2D);
     }
 }
