@@ -1,15 +1,19 @@
 package OOFramework;
 
+import OOFramework.Modules.CONSTANTS;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -55,6 +59,7 @@ public abstract class FrameworkProgram extends Application
 
         this.stage.setScene(new Scene(new Group(canvas)));
         this.stage.setTitle(TITLE);
+        this.stage.getIcons().add(new Image(PROGRAM_ICON));
         this.stage.show();
 
         this.Init();

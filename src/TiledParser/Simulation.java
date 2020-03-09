@@ -47,8 +47,10 @@ public class Simulation extends StandardObject {
 
     }
 
+    //1st method called, before the program launches.
     public void init() {
         try {
+            //Load the tilemap with the map.json file
             tileMap = new TileMap("resources/map.json");
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,12 +85,15 @@ public class Simulation extends StandardObject {
     }
 
     public void draw(FXGraphics2D graphics) {
+        //Clear the old frame off the screen
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
+        //Transform everything around the camera
         graphics.setTransform(camera.getTransform((int)canvas.getWidth(), (int)canvas.getHeight()));
 
+        //Draw the map
         tileMap.draw(graphics, camera);
     }
 
