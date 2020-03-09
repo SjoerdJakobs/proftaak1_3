@@ -4,6 +4,7 @@ package MainPackage;
 import MainPackage.ReadWriteData.DataReader;
 import MainPackage.ReadWriteData.DataWriter;
 import OOFramework.FrameworkProgram;
+import TiledParser.Simulation;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 public class Program extends FrameworkProgram {
     sAgenda agenda;
+    Simulation simulation;
 
     DataReader dataReader = new DataReader();
     DataWriter dataWriter = new DataWriter();
@@ -40,6 +42,8 @@ public class Program extends FrameworkProgram {
         }
 
         agenda = new sAgenda(this, dataWriter);
+        simulation = new Simulation(this);
+
 
         BorderPane pane = new BorderPane();
 
@@ -48,7 +52,7 @@ public class Program extends FrameworkProgram {
         Menu menuAgenda = new Menu("Agenda");
         MenuItem itemAgenda = new MenuItem("agenda");
         Menu menuSimulation = new Menu("Simulation");
-        MenuItem itemSimulation = new MenuItem("simulaion");
+        MenuItem itemSimulation = new MenuItem("simulation");
 
         itemAgenda.setOnAction(event -> {
             pane.setCenter(agenda.sceneAgenda());
@@ -56,7 +60,7 @@ public class Program extends FrameworkProgram {
         });
 
         itemSimulation.setOnAction(e ->{
-            pane.setCenter(new BorderPane());
+            pane.setCenter(simulation.getBorderPane());
         });
 
         menuAgenda.getItems().add(itemAgenda);
@@ -70,8 +74,6 @@ public class Program extends FrameworkProgram {
 
         this.stage.setScene(mainScene);
 //        agenda.setActive(false);
-
-
 
     }
 
