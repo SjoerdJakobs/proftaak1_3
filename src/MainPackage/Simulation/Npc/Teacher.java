@@ -1,6 +1,7 @@
 package MainPackage.Simulation.Npc;
 
 import OOFramework.FrameworkProgram;
+import org.jfree.fx.FXGraphics2D;
 
 import java.awt.image.BufferedImage;
 
@@ -9,8 +10,8 @@ public class Teacher extends Npc {
 
 
 
-    protected Teacher(FrameworkProgram frameworkProgram) {
-        super(frameworkProgram);
+    protected Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
+        super(frameworkProgram, graphics2D);
 
     }
     @Override
@@ -22,4 +23,18 @@ public class Teacher extends Npc {
         }
     }
 
+    @Override
+    protected void InputLoop(double deltaTime) {
+        super.InputLoop(deltaTime);
+    }
+
+    @Override
+    protected void MainLoop(double deltaTime) {
+        super.MainLoop(deltaTime);
+    }
+
+    @Override
+    protected void RenderLoop(double deltaTime) {
+        super.RenderLoop(deltaTime);
+    }
 }
