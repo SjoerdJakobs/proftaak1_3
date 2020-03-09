@@ -49,6 +49,6 @@ public class TileMap {
     }
 
     public void draw(FXGraphics2D graphics2D, Camera camera) {
-        graphics2D.drawImage(mapImage, camera.getXOffset(), camera.getYOffset(), null);
+        graphics2D.drawImage(mapImage, 0, 0, null);
     }
 }
