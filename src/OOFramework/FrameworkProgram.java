@@ -31,6 +31,10 @@ public abstract class FrameworkProgram extends Application
     protected Stage stage;
     protected Canvas canvas;
     protected FXGraphics2D graphics2D;
+
+    protected Canvas canvasSimulation;
+    protected FXGraphics2D graphics2DSimulation;
+
     protected MenuBar menuBar; // even laten staan voor mezelf, het moet ergens omen te staan waar het makkelijk de heletijd toe gevoegd kan worden
 
     @Override
@@ -40,7 +44,10 @@ public abstract class FrameworkProgram extends Application
         this.stage.setHeight(1000);
 
         this.canvas = new Canvas(this.stage.getWidth(), this.stage.getHeight());
+        this.canvasSimulation = new Canvas(this.stage.getWidth(), this.stage.getHeight());
+
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
+        this.graphics2DSimulation = new FXGraphics2D(canvasSimulation.getGraphicsContext2D());
 //        this.stage.setMaximized(true);
 //        this.stage.setFullScreen(true);
 //        this.stage.setResizable(false);
@@ -175,6 +182,14 @@ public abstract class FrameworkProgram extends Application
     public ArrayList<StandardObject> getRenderObjects()
     {
         return renderObjects;
+    }
+
+    public Canvas getCanvasSimulation() {
+        return canvasSimulation;
+    }
+
+    public FXGraphics2D getGraphics2DSimulation() {
+        return graphics2DSimulation;
     }
 }
 

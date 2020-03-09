@@ -14,7 +14,7 @@ public class Main {
 //        TileMap tileMap = new TileMap("resources/map.json");
 //        tileMap.draw(null);
 
-        launch(Simulation.class);
+      //  launch(Simulation.class);
 //
 //        TileMapJSONParser tileMapJSONParser = new TileMapJSONParser(new File("resources/test.json"));
 //        int spriteID = tileMapJSONParser.getTileData(0, 0, 4);
