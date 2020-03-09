@@ -35,6 +35,8 @@ public class Simulation extends StandardObject {
         this.graphics2D = frameworkProgram.getGraphics2DSimulation();
         this.stage = frameworkProgram.getStage();
 
+        this.camera = new Camera(canvas, g -> draw(g), graphics2D);
+
         this.borderPane = new BorderPane();
         this.bottomPane = new GridPane();
 
@@ -46,7 +48,6 @@ public class Simulation extends StandardObject {
     }
 
     public void init() {
-        this.camera = new Camera();
 
         try {
             tileMap = new TileMap("resources/map.json");
@@ -54,8 +55,6 @@ public class Simulation extends StandardObject {
             e.printStackTrace();
         }
 
-        canvas.setOnScroll(e -> onMouseScoll(e));
-        canvas.setOnMouseDragged(e -> onMouseDrag(e));
     }
 
 
@@ -91,20 +90,10 @@ public class Simulation extends StandardObject {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-        graphics.scale(camera.getZoom(), camera.getZoom());
+
+        graphics.setTransform(camera.getTransform((int)canvas.getWidth(), (int)canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
-    }
-
-
-    public void onMouseScoll(ScrollEvent event) {
-        camera.zoom(event.getDeltaY());
-        draw(graphics2D);
-    }
-
-    public void onMouseDrag(MouseEvent event){
-        camera.pan(event.getX(), event.getY());
-        draw(graphics2D);
     }
 
     public BorderPane getBorderPane(){
