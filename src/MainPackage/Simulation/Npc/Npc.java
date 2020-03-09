@@ -19,12 +19,12 @@ public class Npc extends StandardObject {
     protected FXGraphics2D graphics2D;
     protected int walkcyle = 0;
     protected double timePassed = 0;
-    protected double cycleTime = 100;
     protected Direction direction = Direction.DOWN;
     protected double speed = 100;
     protected double straightspeed = speed;
     protected double diagonalSpeed = speed/2;
     protected Point2D target = new Point2D.Double(1300, 300);
+    protected double cycleTime = 0.3;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
         super(frameworkProgram);
@@ -56,7 +56,7 @@ public class Npc extends StandardObject {
     }
 
 
-    protected BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
+    public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
 
         int spriteLayer = 0;
         switch (direction) {
@@ -82,12 +82,16 @@ public class Npc extends StandardObject {
         } else {
             switch (walkcyle) {
                 case 0:
-                case 4:
+                    System.out.println("0");
+                case 2:
+                    System.out.println("0/2");
                     return mySprites[spriteLayer * 3 + 1];
                 case 1:
+                    System.out.println("1");
                     return mySprites[spriteLayer * 3];
 
-                case 2:
+                case 3:
+                    System.out.println(2);
                     return mySprites[spriteLayer * 3 + 2];
 
                 default:
@@ -100,6 +104,8 @@ public class Npc extends StandardObject {
 
     protected void testCycle(double deltatime) {
         timePassed += deltatime;
+
+
         if (timePassed > cycleTime) {
             timePassed = 0;
             walkcyle++;

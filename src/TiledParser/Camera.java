@@ -1,5 +1,6 @@
 package TiledParser;
 
+import OOFramework.Modules.CONSTANTS;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -10,8 +11,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 public class Camera {
-    private Point2D centerPoint = new Point2D.Double(0,0);
-    private double zoom = 1;
+    private Point2D centerPoint = new Point2D.Double(-800,-800);
+    private double zoom = 0.6;
     private double rotation = 0;
     private Point2D lastMousePos;
     private Canvas canvas;
@@ -49,7 +50,11 @@ public class Camera {
     }
 
     public void mouseZoom(ScrollEvent e) {
-        zoom *= (1 + e.getDeltaY()/250.0f);
-        resizable.draw(g2d);
+        double newZoom = zoom * (1 + e.getDeltaY() / CONSTANTS.CAMERAZOOM_SENSITIVIY);
+        if (newZoom < 5.0 && newZoom > 0.2) {
+            zoom = newZoom;
+            resizable.draw(g2d);
+        }
+        System.out.println(zoom);
     }
 }

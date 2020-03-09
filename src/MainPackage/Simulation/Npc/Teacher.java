@@ -3,12 +3,10 @@ package MainPackage.Simulation.Npc;
 import OOFramework.FrameworkProgram;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Teacher extends Npc {
-    //private BufferedImage[] mySprites = new BufferedImage[12];
 
 
 
@@ -17,8 +15,11 @@ public class Teacher extends Npc {
         super(frameworkProgram,graphics2D, position);
 
     }
+
     @Override
-    protected void initializeSprites(){
+    protected void initializeSprites(){ //generates the sprites necessarry for allowing walkcylces
+
+
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
 
