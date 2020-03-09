@@ -1,8 +1,6 @@
 package MainPackage;
 
-import Data.Lesson;
 import Data.Rooms.ClassRoom;
-import Data.Teacher;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import OOFramework.Renderable;
@@ -43,12 +41,9 @@ public class HourBlock extends Renderable
         g2d.draw(shape);
         super.draw(g2d);
         g2d.setColor(this.color);
-        //System.out.println("draw1");
         g2d.fill(shape);
         g2d.setFont(sanSerifFont);
         FontMetrics fm = g2d.getFontMetrics();
-//        int w = fm.stringWidth(text);
-//        int h = fm.getAscent();
         g2d.setColor(Color.black);
         g2d.drawString(text, (int)position.getX(), (int) position.getY());
     }
