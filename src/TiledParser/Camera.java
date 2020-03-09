@@ -30,7 +30,7 @@ public class Camera {
 
     public void zoom(double zoomAmount) {
         this.zoom *= 1 + zoomAmount / 1000.0;
-        System.out.println(zoom);
+        //System.out.println(zoom);
     }
 
     public void pan(double mouseX, double mouseY) {
