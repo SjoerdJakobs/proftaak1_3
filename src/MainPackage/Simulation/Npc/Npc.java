@@ -21,10 +21,11 @@ public class Npc extends StandardObject {
     protected double cycleTime = 100;
 
 
-    protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
+    protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D cords) {
         super(frameworkProgram);
         initializeSprites();
         this.graphics2D = graphics2D;
+        this.cords = cords;
     }
 
 
@@ -50,7 +51,7 @@ public class Npc extends StandardObject {
     }
 
 
-    protected BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
+    public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
 
         int spriteLayer = 0;
         switch (direction) {
@@ -100,11 +101,11 @@ public class Npc extends StandardObject {
             if (walkcyle == 4) {
                 walkcyle = 0;
             }
-
-
         }
     }
 
-
+    public Point2D getCords() {
+        return cords;
+    }
 }
 

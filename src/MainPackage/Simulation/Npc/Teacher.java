@@ -3,16 +3,16 @@ package MainPackage.Simulation.Npc;
 import OOFramework.FrameworkProgram;
 import org.jfree.fx.FXGraphics2D;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Teacher extends Npc {
-    //private BufferedImage[] mySprites = new BufferedImage[12];
 
 
 
 
-    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
-        super(frameworkProgram,graphics2D);
+    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D cords) {
+        super(frameworkProgram,graphics2D, cords);
 
     }
     @Override
