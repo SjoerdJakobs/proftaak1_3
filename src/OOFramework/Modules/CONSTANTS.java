@@ -1,10 +1,17 @@
 package OOFramework.Modules;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 public class CONSTANTS
 {
-    public static final String TITLE = "School simulation";        // title of the game
+    public static final String TITLE = "SNAVA simulation";        // title of the game
+    public static final String PROGRAM_ICON = "/icon.png";
     public static final int CANVAS_WIDTH = 1920;    // width and height of the drawing canvas
     public static final int CANVAS_HEIGHT = 1080;
+
+    public static final float CAMERAZOOM_SENSITIVIY = 350.0f; //Sensitivity of the zooming in the simulation. Higher = less zoom per step
 
     public static final String STANDARD_SAVE_FILE_PATH = "SchoolSimulationSaveFile";
 
