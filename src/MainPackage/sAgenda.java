@@ -1,6 +1,5 @@
 package MainPackage;
 
-import Data.Lesson;
 import Data.Rooms.ClassRoom;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
@@ -36,7 +35,6 @@ public class sAgenda extends StandardObject {
     private ArrayList<HourBlock> hourBlocks;
     private ArrayList<GroupData> groups = new ArrayList<>();
 
-
     private double hours;
     private double rooms;
 
@@ -59,19 +57,23 @@ public class sAgenda extends StandardObject {
         this.canvas = frameworkProgram.getCanvas();
         this.stage = frameworkProgram.getStage();
 
+        //Columns
         this.hours = 13;
+        //Rows
         this.rooms = 6;
+
         this.canvas.setWidth(1625);
         this.canvas.setHeight(900);
+
+        //This is to know when to start to draw the next line
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
-        //this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
 
         teachers = new ArrayList<>();
         classrooms = new ArrayList<>();
         studentGroups = new ArrayList<>();
 
-        //Load in teachers, classrooms and studentgroups later for now manual
+        //Load in teachers, classrooms and studentgroups for now manual
         teachers.add(new TeacherData("Johan", 30, 1, true));
         teachers.add(new TeacherData("Jessica", 30, 2, false));
         teachers.add(new TeacherData("Maurice", 30, 3, true));
@@ -90,51 +92,31 @@ public class sAgenda extends StandardObject {
         studentGroups.add(new GroupData("D"));
         studentGroups.add(new GroupData("E"));
 
-    }
-
-    @Override
-    protected void Awake() {
-        super.Awake();
-    }
-
-    @Override
-    protected void Sleep() {
-        super.Sleep();
-    }
-
-    @Override
-    protected void Start() {
-        super.Start();
         hourBlocks = new ArrayList<>();
-
-  }
+    }
 
     @Override
     protected void InputLoop(double deltaTime) {
         super.InputLoop(deltaTime);
-        //lets put stuff like adding data for a lesson here
-
         this.canvas.setOnMouseClicked(e -> {
+            //Check if the click is on an hourblock
             for (HourBlock block : this.hourBlocks) {
                 if (e.getX() > block.getTransformedShape().getBounds2D().getMinX() + xStepSize && e.getX() < block.getTransformedShape().getBounds2D().getMaxX() + xStepSize) {
                     if (e.getY() > block.getTransformedShape().getBounds2D().getMinY() + yStepSize && e.getY() < block.getTransformedShape().getBounds2D().getMaxY() + yStepSize) {
-                        popupStage(block);
+                        //Call method to make an edit popUp
+                        popup(block);
                     }
                 }
             }
 
         });
-
-
     }
 
     @Override
     protected void MainLoop(double deltaTime) {
         super.MainLoop(deltaTime);
-        //do general stuff here, no clear idea what yet because i dont think a agenda has much logic now that i think about it
-
         this.hourBlocks.clear();
-        //Color[] colors = {Color.GREEN,Color.RED,Color.BLACK,Color.BLUE,Color.PINK,Color.MAGENTA};
+        //Convert lessons to hourblocks to draww later
         for (LessonData lesson : savedData.getLessonData()) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
@@ -147,42 +129,40 @@ public class sAgenda extends StandardObject {
     @Override
     protected void RenderLoop(double deltaTime) {
         super.RenderLoop(deltaTime);
-        //lets draw all stuff here
 
         graphics2D.setColor(Color.white);
         graphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-//        graphics2D.fillRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-
-        this.xStepSize = canvas.getWidth() / hours;
-        this.yStepSize = canvas.getHeight() / rooms;
 
         graphics2D.setColor(Color.black);
 
+        //Draw vertical lines
         for (int i = 0; i < hours; i++) {
             graphics2D.drawLine((int) xStepSize * i, 0, (int) xStepSize * i, (int) canvas.getHeight());
         }
+        //Draw horizontal lines
         for (int i = 0; i < rooms; i++) {
             graphics2D.drawLine(0, (int) yStepSize * i, (int) canvas.getWidth(), (int) yStepSize * i);
         }
+        //Draw hours text
         for (int i = 0; i < hours; i++) {
             graphics2D.drawString(((i + 8) + ":00"), (int) (xStepSize * i + xStepSize), 10);
         }
+        //Draw room text
         for (int i = 0; i < rooms; i++) {
             graphics2D.drawString("LA:" + (i + 300), 0, (int) (yStepSize * i + yStepSize + 10));
         }
 
+        //Translate the canvas by one block so we can draw the block normally withouth worrying about a offset
         graphics2D.translate(xStepSize, yStepSize);
 
+        //Draw the hourblocks
         for (HourBlock h : hourBlocks) {
 
             h.draw(graphics2D);
         }
 
+        //Revert change
         graphics2D.translate(-xStepSize, -yStepSize);
-        //graphics2D.fill(hourBlock2.getTransformedShape());
-
-        //renderable has a draw function as well, you can choose if you want to draw it here or there.
-        //  this.stage.setScene(new Scene(borderPane));
     }
 
 
@@ -209,7 +189,7 @@ public class sAgenda extends StandardObject {
             popUpNew.initOwner(this.stage);
             popUpNew.initModality(Modality.APPLICATION_MODAL);
             popUpNew.setTitle("create a lesson");
-            popupStage(null);
+            popup(null);
         });
 
         buttonBox.getChildren().addAll(newOne, saveAgenda);
@@ -269,6 +249,7 @@ public class sAgenda extends StandardObject {
     private boolean isOccupied(ArrayList<LessonData> lessons, LessonData newLesson){
         for(LessonData lesson : lessons){
             System.out.println(lesson.getClassRoom().getRoomName());
+            //Checks for overlap in time blocks
             if((newLesson.getBeginTime().isAfter(lesson.getBeginTime()) && (newLesson.getBeginTime().isBefore(lesson.getEndTime())))){
                 return true;
             }
@@ -292,7 +273,8 @@ public class sAgenda extends StandardObject {
         return block.getLessonData();
     }
 
-    private void popupStage(HourBlock block){
+
+    private void popup(HourBlock block){
         Stage popUpEdit = new Stage();
         popUpEdit.initOwner(this.stage);
         popUpEdit.initModality(Modality.APPLICATION_MODAL);
@@ -309,6 +291,7 @@ public class sAgenda extends StandardObject {
 
         Label warning = new Label();
 
+        //Add al teachers and classrooms to the combobox
         for(int i = 0; i<5; i++){
             group.getItems().addAll(studentGroups.get(i));
             teacher.getItems().add(teachers.get(i));
