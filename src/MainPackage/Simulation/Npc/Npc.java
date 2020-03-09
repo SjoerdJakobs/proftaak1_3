@@ -86,7 +86,7 @@ public class Npc extends StandardObject {
 
                 default:
                     return mySprites[spriteLayer * 3 + 1];
-                
+
 
             }
         }
