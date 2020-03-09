@@ -64,7 +64,7 @@ public enum SavedData {
 
     public ArrayList<LessonData> getClassroomLessons(ClassRoom classRoom){
         ArrayList<LessonData> lessonsClassroom = new ArrayList<>();
-        if(this.lessonData.isEmpty()){
+        if(!this.lessonData.isEmpty()){
             for(LessonData lesson : this.lessonData){
                 if(lesson.getClassRoom().getRoomName() == classRoom.getRoomName()){
                     lessonsClassroom.add(lesson);
