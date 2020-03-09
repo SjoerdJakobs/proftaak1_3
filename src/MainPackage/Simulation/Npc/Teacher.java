@@ -11,7 +11,7 @@ public class Teacher extends Npc {
 
 
 
-    protected Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
+    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
         super(frameworkProgram,graphics2D);
 
     }
@@ -19,7 +19,10 @@ public class Teacher extends Npc {
     protected void initializeSprites(){
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
-                super.mySprites[i + j * 4] = super.spriteSheet[48 + 12 * j + i];
+
+
+                System.out.println(i+j *3);
+                super.mySprites[i + j *3 ] = super.spriteSheet[48 + 12 * j + i];
             }
         }
     }
