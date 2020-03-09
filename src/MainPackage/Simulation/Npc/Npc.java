@@ -16,6 +16,7 @@ protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
 
     protected Npc(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
+        initializeSprites();
 
     }
 
@@ -34,7 +35,7 @@ protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
     protected void RenderLoop(double deltaTime){}
 
 
-    private void initializeSprites(){
+    protected void initializeSprites(){
 
     }
 
