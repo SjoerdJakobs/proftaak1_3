@@ -14,13 +14,15 @@ protected LogicalTile currentTile;
 protected Point2D position;
 protected FXGraphics2D graphics2D;
 protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
+protected  BufferedImage[] mySprites = new BufferedImage[12];
+protected FXGraphics2D graphics2D;
 
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
         super(frameworkProgram);
         this.graphics2D = graphics2D;
         initializeSprites();
-
+        this.graphics2D = graphics2D;
     }
 
 
@@ -35,12 +37,19 @@ protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
     }
 
     @Override
-    protected void RenderLoop(double deltaTime){}
+    protected void RenderLoop(double deltaTime){
+
+
+
+    }
 
 
     protected void initializeSprites(){
-
     }
+
+
+    
+
 
 
 
