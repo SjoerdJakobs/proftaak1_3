@@ -1,5 +1,6 @@
 package TiledParser;
 
+import MainPackage.Simulation.Npc.Teacher;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 import javafx.animation.AnimationTimer;
@@ -15,6 +16,7 @@ import org.jfree.fx.FXGraphics2D;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 
 public class Simulation extends StandardObject {

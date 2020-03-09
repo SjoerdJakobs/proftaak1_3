@@ -3,6 +3,7 @@ package MainPackage.Simulation.Npc;
 import OOFramework.FrameworkProgram;
 import org.jfree.fx.FXGraphics2D;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -10,8 +11,8 @@ import java.util.Random;
 public class Student extends Npc {
     //private BufferedImage[] mySprites = new BufferedImage[12];
 
-    public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D) {
-        super(frameworkProgram, graphics2D);
+    public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
+        super(frameworkProgram, graphics2D, position);
     }
 
     @Override
