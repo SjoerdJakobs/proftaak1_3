@@ -15,8 +15,11 @@ public class Teacher extends Npc {
         super(frameworkProgram,graphics2D, cords);
 
     }
+
     @Override
-    protected void initializeSprites(){
+    protected void initializeSprites(){ //generates the sprites necessarry for allowing walkcylces
+
+
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
 

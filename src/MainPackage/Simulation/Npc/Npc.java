@@ -18,7 +18,7 @@ public class Npc extends StandardObject {
     protected FXGraphics2D graphics2D;
     protected int walkcyle = 0;
     protected double timePassed = 0;
-    protected double cycleTime = 100;
+    protected double cycleTime = 0.3;
 
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D cords) {
@@ -77,12 +77,16 @@ public class Npc extends StandardObject {
         } else {
             switch (walkcyle) {
                 case 0:
-                case 4:
+                    System.out.println("0");
+                case 2:
+                    System.out.println("0/2");
                     return mySprites[spriteLayer * 3 + 1];
                 case 1:
+                    System.out.println("1");
                     return mySprites[spriteLayer * 3];
 
-                case 2:
+                case 3:
+                    System.out.println(2);
                     return mySprites[spriteLayer * 3 + 2];
 
                 default:
@@ -95,6 +99,8 @@ public class Npc extends StandardObject {
 
     protected void testCyle(double deltatime) {
         timePassed += deltatime;
+
+
         if (timePassed > cycleTime) {
             timePassed = 0;
             walkcyle++;
