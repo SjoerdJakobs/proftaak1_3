@@ -2,6 +2,7 @@ package TiledParser;
 
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
+import gridMaker.GridMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import org.jfree.fx.FXGraphics2D;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Simulation extends StandardObject {
@@ -27,6 +29,8 @@ public class Simulation extends StandardObject {
 
     private BorderPane borderPane;
     private GridPane bottomPane;
+
+    private GridMap grid;
 
     public Simulation(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
@@ -45,11 +49,17 @@ public class Simulation extends StandardObject {
         this.borderPane.setCenter(this.canvas);
         this.borderPane.setBottom(bottomPane);
 
+        try {
+            this.grid = new GridMap();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void init() {
         try {
-            tileMap = new TileMap("resources/map.json");
+            tileMap = new TileMap("resources/mapTest.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,6 +100,7 @@ public class Simulation extends StandardObject {
         graphics.setTransform(camera.getTransform((int)canvas.getWidth(), (int)canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
+        this.grid.draw(graphics);
     }
 
 

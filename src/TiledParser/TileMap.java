@@ -36,12 +36,16 @@ public class TileMap {
         mapImage = new BufferedImage(mapImageWidth, mapImageHeight, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics imageGraphics = mapImage.getGraphics();
 
-        for (int layer = 0; layer < tileMapJSONParser.getLayersAmount() - 1; layer++) {
+        for (int layer = 0; layer < tileMapJSONParser.getLayersAmount(); layer++) {
             for (int yPos = 0; yPos < mapHeight; yPos++) {
                 for (int xPos = 0; xPos < mapWidth; xPos++) {
-                    int spriteID = tileMapJSONParser.getTileData(layer, xPos, yPos);
-                    if (spriteID != -1) {
-                        imageGraphics.drawImage(sprites[spriteID], (xPos * spriteWidth), (yPos * spriteHeight), null);
+                    if(!(tileMapJSONParser.getLayer(layer).getJsonArray("data") == null)){
+                        if (tileMapJSONParser.getLayer(layer).getBoolean("visible")) {
+                            int spriteID = tileMapJSONParser.getTileData(layer, xPos, yPos);
+                            if (spriteID != -1) {
+                                imageGraphics.drawImage(sprites[spriteID], (xPos * spriteWidth), (yPos * spriteHeight), null);
+                            }
+                        }
                     }
                 }
             }
