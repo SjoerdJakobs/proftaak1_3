@@ -57,7 +57,7 @@ public class Npc extends StandardObject {
 
 
     public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
-
+     //   System.out.println("drawing!");
         int spriteLayer = 0;
         switch (direction) {
 
@@ -82,16 +82,16 @@ public class Npc extends StandardObject {
         } else {
             switch (walkcyle) {
                 case 0:
-                    System.out.println("0");
+                    //System.out.println("0");
                 case 2:
-                    System.out.println("0/2");
+                    //System.out.println("0/2");
                     return mySprites[spriteLayer * 3 + 1];
                 case 1:
-                    System.out.println("1");
+                    //System.out.println("1");
                     return mySprites[spriteLayer * 3];
 
                 case 3:
-                    System.out.println(2);
+                    //System.out.println(2);
                     return mySprites[spriteLayer * 3 + 2];
 
                 default:

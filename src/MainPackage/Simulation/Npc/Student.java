@@ -32,7 +32,7 @@ public class Student extends Npc {
             case 3:
                 spriteOffset = 51;
                 break;
-            case 5:
+            case 4:
                 spriteOffset = 54;
                 break;
 
