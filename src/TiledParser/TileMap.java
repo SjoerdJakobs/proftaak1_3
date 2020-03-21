@@ -55,4 +55,9 @@ public class TileMap {
     public void draw(FXGraphics2D graphics2D, Camera camera) {
         graphics2D.drawImage(mapImage, 0, 0, null);
     }
+
+
+    public TileMapJSONParser getTileMapJSONParser() {
+        return tileMapJSONParser;
+    }
 }

@@ -16,6 +16,10 @@ public class TileMapJSONParser {
         jsonObject = jsonReader.readObject();
     }
 
+    public JsonObject getCompleteObject(){
+        return this.jsonObject;
+    }
+
     public JsonObject getTileset(int id) {
         JsonArray tilesets = jsonObject.getJsonArray("tilesets");
         return tilesets.getJsonObject(id);
@@ -83,4 +87,19 @@ public class TileMapJSONParser {
         return this.jsonObject;
     }
 
+
+
+
+    public JsonArray getObjectLayer(){
+        JsonArray allLayers = getLayers();
+
+        JsonArray objectLayer = null;
+
+        for(int i = 0; i < allLayers.size(); i++){
+            if(allLayers.getJsonObject(i).getString("name").equals("places")){
+                objectLayer = allLayers.getJsonObject(i).getJsonArray("objects");
+            }
+        }
+        return objectLayer;
+    }
 }

@@ -25,12 +25,17 @@ public class GridMap {
     private int mapWidth;
     private int mapHeight;
 
+    private JsonArray objectLayer;
 
-    public GridMap() throws FileNotFoundException {
 
-        InputStream inputStream = new FileInputStream(new File("resources/mapTest.json"));
-        JsonReader jsonReader = Json.createReader(inputStream);
-        object = jsonReader.readObject();
+    public GridMap(JsonArray objectLayer, JsonObject theJsonFile) throws FileNotFoundException {
+
+//        InputStream inputStream = new FileInputStream(new File("resources/mapTest.json"));
+//        JsonReader jsonReader = Json.createReader(inputStream);
+//        object = jsonReader.readObject();
+
+        this.object = theJsonFile;
+        this.objectLayer = objectLayer;
 
         this.collisonData = object.getJsonArray("layers").getJsonObject(object.getJsonArray("layers").size() - 2).getJsonArray("data");
 
@@ -38,7 +43,7 @@ public class GridMap {
         this.mapHeight = object.getInt("height");
 
 
-        this.map = new int[this.mapHeight][this.mapWidth];
+       // this.map = new int[this.mapHeight][this.mapWidth];
         this.tiles = new Tile[100][100];
 
 
@@ -48,25 +53,21 @@ public class GridMap {
                 Tile tile = new Tile(x * 16, y * 16);
                 int index = this.collisonData.getInt((y * this.mapWidth) + x);
 
-
                 if(index == 256){
                     tile.setWall(true);
-
                 }
 
                 this.tiles[y][x] = tile;
-                // hier eventueel een check om te kijken of deze tile in de object layer zit (dus ergens bij een lokaal)
             }
         }
 
-        BFS();
-
-
-
-
-
+       // BFS();
     }
 
+
+    /**
+     the method draw isn't important, its only purpose is to check if the algorithm works
+     **/
     public void draw(FXGraphics2D graphics){
 
         for(int y = 0; y < this.mapHeight; y++){
@@ -76,7 +77,7 @@ public class GridMap {
                     graphics.setColor(Color.red);
 
                 } else if(this.tiles[y][x].getDirections().get("route0") == Direction.ENDPOINT){
-                    graphics.setColor(Color.ORANGE);
+                    graphics.setColor(Color.white);
 
                 } else if(this.tiles[y][x].getDirections().get("route0") == Direction.RIGHT){
                     graphics.setColor(Color.yellow);
@@ -104,50 +105,48 @@ public class GridMap {
     }
 
 
-    public void BFS(){
-
-//        for(int y = 0; y < this.mapHeight; y++){
-//            for(int x = 0; x < this.mapWidth; x++){
-//
-//             if(!this.tiles[y][x].isWall()){
-//
-//                 if(this.tiles[y][x]){
-//
-//                 }
+//    public void setAllRoutes(){
 //
 //
-//             }
 //
-//            }
-//        }
-
-
-
-        addRoute(80, 59, "route0");
-    }
+//
+//        addRoute(80, 59, "route0");
+//    }
 
 
 
     private Queue<Tile> nextList;
-    public void addRoute(int x, int y, String route){
+    public void addRoute(int x1, int y1, int x2, int y2, String route){
 
-        if(isInGrid(x,y)){
+        if(isInGrid(x1,y1) && isInGrid(x2,y2)){
             nextList = new LinkedList<Tile>();
 
-            this.tiles[y][x].setDestination(true);
-            this.tiles[y][x].getDirections().put(route, Direction.ENDPOINT);
-            this.tiles[y][x].setHasBeenSet(true);
+            this.tiles[y1][x1].setDestination(true);
+            this.tiles[y1][x1].getDirections().put(route, Direction.ENDPOINT);
+            this.tiles[y1][x1].setHasBeenSet(true);
+
+            this.tiles[y2][x2].setDestination(true);
+            this.tiles[y2][x2].getDirections().put(route, Direction.ENDPOINT);
+            this.tiles[y2][x2].setHasBeenSet(true);
 
 
-            CheckNonDiagonalNeighbours(x, y, route);
+            CheckNonDiagonalNeighbours(x1, y1, route);
+            CheckNonDiagonalNeighbours(x2, y2, route);
 
             while(!nextList.isEmpty()){
 
                 Tile checkTile = nextList.poll();
                 CheckNonDiagonalNeighbours((int)checkTile.getGridPos().getX() / 16, (int)checkTile.getGridPos().getY() / 16, route);
-
             }
 
+            this.tiles[y1][x1].setDestination(false);
+            this.tiles[y2][x2].setDestination(false);
+
+            for(int yTile = 0; yTile < this.mapHeight; yTile++){
+                for(int xTile = 0; xTile < this.mapWidth; xTile++){
+                    this.tiles[yTile][xTile].setHasBeenSet(false);
+                }
+            }
         }
 
     }

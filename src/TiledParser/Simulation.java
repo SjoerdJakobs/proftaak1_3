@@ -3,12 +3,7 @@ package TiledParser;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 import gridMaker.GridMap;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -18,6 +13,7 @@ import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 
 public class Simulation extends StandardObject {
     private FXGraphics2D graphics2D;
@@ -50,7 +46,8 @@ public class Simulation extends StandardObject {
         this.borderPane.setBottom(bottomPane);
 
         try {
-            this.grid = new GridMap();
+            this.grid = new GridMap(this.tileMap.getTileMapJSONParser().getObjectLayer(), this.tileMap.getTileMapJSONParser().getCompleteObject());
+            this.grid.addRoute(80, 30, 80, 31, "route0");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -101,6 +98,7 @@ public class Simulation extends StandardObject {
 
         tileMap.draw(graphics, camera);
         this.grid.draw(graphics);
+
     }
 
 

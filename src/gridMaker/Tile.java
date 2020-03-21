@@ -135,4 +135,7 @@ public class Tile {
     public void setGridPos(Point2D gridPos) {
         this.gridPos = gridPos;
     }
+
+
+
 }
