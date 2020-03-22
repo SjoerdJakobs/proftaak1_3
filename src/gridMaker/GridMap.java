@@ -139,29 +139,29 @@ public class GridMap {
 
                     switch (name){
                         case "LA301":
-                            LA301.add(new Point2D.Double(object.getInt("x"), object.getInt("y")));
+                            LA301.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
                             break;
 
                         case "LA302":
-                            LA302.add(new Point2D.Double(object.getInt("x"), object.getInt("y")));
+                            LA302.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
                             break;
 
                         case "LA303":
-                            LA303.add(new Point2D.Double(object.getInt("x"), object.getInt("y")));
+                            LA303.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
                             break;
 
                         case "LA304":
-                            LA304.add(new Point2D.Double(object.getInt("x"), object.getInt("y")));
+                            LA304.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
                             break;
                     }
                 }
             }
             else if (object.getString("name").equals("LA305")) {
-                int height = object.getInt("height");
+                int width = object.getInt("width");
 
-                while(height != 0) {
-                    height -= 16;
-                    LA305.add(new Point2D.Double(object.getInt("x"), object.getInt("y")));
+                while(width != 0) {
+                    width -= 16;
+                    LA305.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
                 }
             }
         }
