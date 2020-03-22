@@ -100,7 +100,7 @@
          "name":"places",
          "objects":[
                 {
-                 "height":32,
+                 "height":16,
                  "id":3,
                  "name":"canteen",
                  "properties":[
@@ -114,7 +114,7 @@
                  "visible":true,
                  "width":64,
                  "x":768,
-                 "y":1184
+                 "y":1200
                 }, 
                 {
                  "height":32,

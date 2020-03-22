@@ -12,8 +12,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import javax.swing.border.Border;
-import java.awt.dnd.DropTarget;
 import java.io.IOException;
 
 

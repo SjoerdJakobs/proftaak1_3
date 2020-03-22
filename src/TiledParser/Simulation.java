@@ -47,7 +47,8 @@ public class Simulation extends StandardObject {
 
         try {
             this.grid = new GridMap(this.tileMap.getTileMapJSONParser().getObjectLayer(), this.tileMap.getTileMapJSONParser().getCompleteObject());
-            this.grid.addRoute(80, 30, 80, 31, "route0");
+            //this.grid.addRoute(80, 30, 80, 31, "route0");
+            this.grid.setAllRoutes();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
