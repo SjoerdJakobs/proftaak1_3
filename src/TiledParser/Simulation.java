@@ -116,9 +116,11 @@ public class Simulation extends StandardObject {
         tileMap.draw(graphics, camera);
         //System.out.println("got this far");
         //System.out.println(npcs);
+       /*
         for (Npc npc : npcs ) {
             graphics2D.drawImage(npc.getImageToDraw(Direction.RIGHT,true),(int)npc.getCords().getX(),(int)npc.getCords().getY(),32,32,null);
         }
+        */
     }
 
 
