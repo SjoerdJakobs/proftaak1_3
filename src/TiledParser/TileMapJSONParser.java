@@ -16,7 +16,7 @@ public class TileMapJSONParser {
         jsonObject = jsonReader.readObject();
     }
 
-    public JsonObject getCompleteObject(){
+    public JsonObject getGlobalObject(){
         return this.jsonObject;
     }
 
@@ -81,10 +81,6 @@ public class TileMapJSONParser {
 
     public int getTileID(int xPos, int yPos) {
         return (yPos * getWidth()) + xPos;
-    }
-
-    public JsonObject getJsonObject() {
-        return this.jsonObject;
     }
 
     public JsonObject getCollisionLayer(){
