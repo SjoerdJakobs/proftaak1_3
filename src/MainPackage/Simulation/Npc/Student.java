@@ -1,6 +1,8 @@
 package MainPackage.Simulation.Npc;
 
 import OOFramework.FrameworkProgram;
+import gridMaker.GridMap;
+import gridMaker.Tile;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.geom.Point2D;

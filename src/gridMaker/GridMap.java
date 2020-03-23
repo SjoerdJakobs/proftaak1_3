@@ -49,6 +49,7 @@ public class GridMap {
         // this.map = new int[this.mapHeight][this.mapWidth];
         this.tiles = new Tile[100][100];
 
+        System.out.println(tiles[18][81]);
 
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapWidth; x++) {

@@ -23,7 +23,7 @@ public class Npc extends StandardObject {
     protected double speed = 100;
     protected double straightspeed = speed;
     protected double diagonalSpeed = speed/2;
-    protected Point2D target = new Point2D.Double(1300, 300);
+    protected Point2D target = null;
     protected double cycleTime = 0.3;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
@@ -42,9 +42,12 @@ public class Npc extends StandardObject {
     @Override
     protected void MainLoop(double deltaTime) {
         testCycle(deltaTime);
-        if(moveTo(deltaTime, target)){
-            position.setLocation(target);
+        if(target != null){
+            if(moveTo(deltaTime, target)){
+                position.setLocation(target);
+            }
         }
+
     }
 
     @Override
@@ -115,7 +118,7 @@ public class Npc extends StandardObject {
         }
     }
 
-    protected boolean moveTo(double deltaTime, Point2D target) {
+    public boolean moveTo(double deltaTime, Point2D target) {
         int moveDirectionX, moveDirectionY;
         if((int)target.getX() - (int)position.getX() < 0) {
             moveDirectionX = -1;
@@ -151,6 +154,10 @@ public class Npc extends StandardObject {
 
     protected void draw(){
         graphics2D.drawImage(getImageToDraw(direction, true), (int)position.getX(), (int)position.getY(), null);
+    }
+
+    public Point2D getPosition(){
+        return position;
     }
 
 

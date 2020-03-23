@@ -1,11 +1,12 @@
 package TiledParser;
 
-import MainPackage.Simulation.Logic.Direction;
 import MainPackage.Simulation.Npc.Npc;
 import MainPackage.Simulation.Npc.Student;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
+import gridMaker.Direction;
 import gridMaker.GridMap;
+import gridMaker.Tile;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -54,14 +55,10 @@ public class Simulation extends StandardObject {
 
         this.borderPane.setCenter(this.canvas);
         this.borderPane.setBottom(bottomPane);
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,100)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,200)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,300)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,400)));
-
-
-
-
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
+        for(int i=18; i<70; i++){
+            npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(i*16,19*16)));
+        }
 
 
     }
@@ -96,6 +93,32 @@ public class Simulation extends StandardObject {
         super.MainLoop(deltaTime);
         this.canvas.setWidth(this.stage.getWidth());
         this.canvas.setHeight(this.stage.getHeight());
+        for(Npc npc : npcs){
+            Tile[][] tiles = gridMap.getTiles();
+            Direction direction = tiles[(int)(Math.round(npc.getPosition().getY()/16))][(int)(Math.round(npc.getPosition().getX()/16))].getDirections().get("canteen");
+            System.out.println(direction);
+//            System.out.println((int)npc.getPosition().getX()/16 + " " + (int)npc.getPosition().getY()/16);
+//            System.out.println(tiles[18][81].getDirections().get("canteen"));
+            if(direction == Direction.ENDPOINT){
+                System.out.println("reached destination");
+            }
+            else if(direction == Direction.DOWN){
+                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()+16));
+            }
+            else if(direction == Direction.UP){
+                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()-16));
+            }
+            else if(direction == Direction.LEFT){
+                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX()-16,npc.getPosition().getY()));
+            }
+            else if(direction == Direction.RIGHT){
+                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX()+16,npc.getPosition().getY()));
+            }
+            else {
+                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()));
+            }
+        }
+
     }
 
     @Override
