@@ -54,7 +54,7 @@ public class Simulation extends StandardObject {
             e.printStackTrace();
         }
 
-        this.grid = new GridMap(this.tileMap.getTileMapJSONParser());
+        this.grid = new GridMap(this.tileMap.getTileMapJSONParser(), this.tileMap.getSprites());
         //this.grid.addRoute(80, 30, 80, 31, "route0");
         this.grid.setAllRoutes();
     }

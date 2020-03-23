@@ -7,15 +7,19 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import static OOFramework.Modules.CONSTANTS.*;
 
 public class GridMap {
     private Tile[][] tiles;
     private JsonArray collisonLayer;
 
     private TileMapJSONParser tileMapJSONParser;
+    private BufferedImage[] sprites;
     private int mapWidth;
     private int mapHeight;
     private int tileWidth;
@@ -24,8 +28,9 @@ public class GridMap {
     private JsonArray objectLayer;
 
 
-    public GridMap(TileMapJSONParser tileMapJSONParser) {
+    public GridMap(TileMapJSONParser tileMapJSONParser, BufferedImage[] sprites) {
         this.tileMapJSONParser = tileMapJSONParser;
+        this.sprites = sprites;
 
         this.collisonLayer = tileMapJSONParser.getCollisionData();
         this.objectLayer = tileMapJSONParser.getObjectLayer();
@@ -59,37 +64,31 @@ public class GridMap {
      * the method draw isn't important, its only purpose is to check if the algorithm works
      **/
     public void draw(FXGraphics2D graphics) {
-        String layerToShow = "LA302";
-        for (int y = 0; y < this.mapHeight; y++) {
-            for (int x = 0; x < this.mapWidth; x++) {
+        if (!DIRLAYER_TOSHOW.equals("")) {
+            for (int y = 0; y < this.mapHeight; y++) {
+                for (int x = 0; x < this.mapWidth; x++) {
+                    int pixelX = x * 16;
+                    int pixelY = y * 16;
 
-                if (this.tiles[x][y].isWall()) {
-                    graphics.setColor(Color.red);
+                    if (this.tiles[x][y].getDirections().get(DIRLAYER_TOSHOW) == Direction.ENDPOINT) {
+                        graphics.drawImage(sprites[118], pixelX, pixelY, null);
 
-                } else if (this.tiles[x][y].getDirections().get(layerToShow) == Direction.ENDPOINT) {
-                    graphics.setColor(Color.white);
+                    } else if (this.tiles[x][y].getDirections().get(DIRLAYER_TOSHOW) == Direction.RIGHT) {
+                        graphics.drawImage(sprites[101], pixelX, pixelY, null);
 
-                } else if (this.tiles[x][y].getDirections().get(layerToShow) == Direction.RIGHT) {
-                    graphics.setColor(Color.yellow);
+                    } else if (this.tiles[x][y].getDirections().get(DIRLAYER_TOSHOW) == Direction.LEFT) {
+                        graphics.drawImage(sprites[103], pixelX, pixelY, null);
 
-                } else if (this.tiles[x][y].getDirections().get(layerToShow) == Direction.LEFT) {
-                    graphics.setColor(Color.blue);
+                    } else if (this.tiles[x][y].getDirections().get(DIRLAYER_TOSHOW) == Direction.DOWN) {
+                        graphics.drawImage(sprites[102], pixelX, pixelY, null);
 
-                } else if (this.tiles[x][y].getDirections().get(layerToShow) == Direction.DOWN) {
-                    graphics.setColor(Color.pink);
+                    } else if (this.tiles[x][y].getDirections().get(DIRLAYER_TOSHOW) == Direction.UP) {
+                        graphics.drawImage(sprites[117], pixelX, pixelY, null);
+                    }
 
-                } else if (this.tiles[x][y].getDirections().get(layerToShow) == Direction.UP) {
-                    graphics.setColor(Color.green);
-
-                } else {
-                    graphics.setColor(Color.black);
                 }
-
-                graphics.draw(this.tiles[x][y].getGridRect());
-
             }
         }
-
     }
 
 
@@ -258,7 +257,7 @@ public class GridMap {
 
         if (isInGrid(x, y - 1)) {
 
-            final Tile checkTile = this.tiles[x][y-1];
+            final Tile checkTile = this.tiles[x][y - 1];
             if (!checkTile.isWall() && !checkTile.isHasBeenSet() && !checkTile.isDestination()) {
 
                 checkTile.getDirections().put(route, Direction.DOWN);
@@ -269,7 +268,7 @@ public class GridMap {
 
         if (isInGrid(x - 1, y)) {
 
-            final Tile checkTile = this.tiles[x-1][y];
+            final Tile checkTile = this.tiles[x - 1][y];
             if (!checkTile.isWall() && !checkTile.isHasBeenSet() && !checkTile.isDestination()) {
 
                 checkTile.getDirections().put(route, Direction.RIGHT);

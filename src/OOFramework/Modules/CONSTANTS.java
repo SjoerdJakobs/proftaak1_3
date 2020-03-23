@@ -12,6 +12,7 @@ public class CONSTANTS
     public static final int CANVAS_HEIGHT = 1080;
 
     public static final String MAP_JSONFILE = "resources/mapTest.json";
+    public static final String DIRLAYER_TOSHOW = "canteen";
 
     public static final float CAMERAZOOM_SENSITIVIY = 350.0f; //Sensitivity of the zooming in the simulation. Higher = less zoom per step
 
