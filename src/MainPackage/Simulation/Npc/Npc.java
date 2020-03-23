@@ -57,7 +57,9 @@ public class Npc extends StandardObject {
 
 
     public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
-
+        /* this method returns the image needed to draw the Npc given the direction and if the npc is walking or not, the cycle
+        is handled internally so it returns a natural walkcycle.
+         */
         int spriteLayer = 0;
         switch (direction) {
 
@@ -101,8 +103,10 @@ public class Npc extends StandardObject {
             }
         }
     }
-
     protected void testCycle(double deltatime) {
+
+     //Handles the walkcylcle so walking looks natural
+
         timePassed += deltatime;
 
 
@@ -116,6 +120,7 @@ public class Npc extends StandardObject {
     }
 
     protected boolean moveTo(double deltaTime, Point2D target) {
+        //moves the npc tp a certain target
         int moveDirectionX, moveDirectionY;
         if((int)target.getX() - (int)position.getX() < 0) {
             moveDirectionX = -1;
