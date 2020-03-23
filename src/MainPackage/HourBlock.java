@@ -26,6 +26,11 @@ public class HourBlock extends Renderable
 
     private static Font sanSerifFont = new Font("SanSerif", Font.PLAIN, 12);
 
+    /**
+     * an hourblock is the way we represent the schedule in the calendar,
+     * it also sores all the necessary data it needs like the starting end ending times.
+     **/
+
     public HourBlock(Shape shape, Point2D position, LessonData lesson, Color color) {
         super(shape, position, 0, 1);
         this.lessonData = lesson;
@@ -40,10 +45,11 @@ public class HourBlock extends Renderable
 
     @Override
     public void draw(FXGraphics2D g2d) {
+   //draws the hourblock in de calender
+
         g2d.draw(shape);
         super.draw(g2d);
         g2d.setColor(this.color);
-        //System.out.println("draw1");
         g2d.fill(shape);
         g2d.setFont(sanSerifFont);
         FontMetrics fm = g2d.getFontMetrics();
@@ -53,6 +59,8 @@ public class HourBlock extends Renderable
         g2d.drawString(text, (int)position.getX(), (int) position.getY());
     }
 
+
+    //necessary getters and setters
     public LocalTime getBeginTime() {
         return lessonData.getBeginTime();
     }
@@ -65,8 +73,7 @@ public class HourBlock extends Renderable
         return lessonData.getEndTime();
     }
 
-    public void setEndTime(LocalTime endTime) { lessonData.setEndTime(endTime);
-    }
+    public void setEndTime(LocalTime endTime) { lessonData.setEndTime(endTime); }
 
     public String getClassId() {
         return lessonData.getStudentGroup().getName();

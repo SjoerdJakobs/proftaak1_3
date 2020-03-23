@@ -22,6 +22,7 @@ public class TileMapJSONParser {
     }
 
     public JsonObject getTileset(int id) {
+
         JsonArray tilesets = jsonObject.getJsonArray("tilesets");
         return tilesets.getJsonObject(id);
     }
@@ -91,9 +92,6 @@ public class TileMapJSONParser {
     public JsonObject getJsonObject() {
         return this.jsonObject;
     }
-
-
-
 
     public JsonArray getObjectLayer(){
         JsonArray allLayers = getLayers();

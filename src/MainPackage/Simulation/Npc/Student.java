@@ -16,6 +16,14 @@ public class Student extends Npc {
 
     @Override
     protected void initializeSprites() {
+        /*
+        when a student is initialised it needs it's own sprite.
+        all students pick a random sprite out of five options
+        the number it generates using the random object will return a spriteOffset necessary for
+        picking the right sprite out of the spritesheet.
+
+        */
+
         Random random = new Random();
         int spriteSeed = random.nextInt(5);
         int spriteOffset;
@@ -38,6 +46,7 @@ public class Student extends Npc {
 
             default:
                 spriteOffset = 0;
+                //if for some reason the random number is ivalid the sprute will be the basic sprite
                 break;
         }
 

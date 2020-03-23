@@ -17,8 +17,9 @@ public class Teacher extends Npc {
     }
 
     @Override
-    protected void initializeSprites(){ //generates the sprites necessarry for allowing walkcylces
-
+    protected void initializeSprites(){
+        //generates the sprites necessary for allowing walkcylces
+        //every teacher uses the same spriteSet
 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
