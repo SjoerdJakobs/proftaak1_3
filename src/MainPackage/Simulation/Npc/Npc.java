@@ -121,6 +121,9 @@ public class Npc extends StandardObject {
 
     protected boolean moveTo(double deltaTime, Point2D target) {
         //moves the npc tp a certain target
+
+
+        //check if the npc is moving right or left relatively to itself
         int moveDirectionX, moveDirectionY;
         if((int)target.getX() - (int)position.getX() < 0) {
             moveDirectionX = -1;
@@ -132,6 +135,7 @@ public class Npc extends StandardObject {
             moveDirectionX = 0;
         }
 
+        //checks if the npc needs to move up or down relatively
         if((int)target.getY() - (int)position.getY() < 0) {
             moveDirectionY = -1;
             direction = Direction.UP;

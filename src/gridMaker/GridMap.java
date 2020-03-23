@@ -128,16 +128,15 @@ public class GridMap {
                     canteen.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
                 }
 
-            }
-            else if (object.getString("name").equals("LA301") || object.getString("name").equals("LA302") || object.getString("name").equals("LA303") || object.getString("name").equals("LA304")){
+            } else if (object.getString("name").equals("LA301") || object.getString("name").equals("LA302") || object.getString("name").equals("LA303") || object.getString("name").equals("LA304")) {
                 int height = object.getInt("height");
 
                 String name = object.getString("name");
 
-                while(height != 0){
+                while (height != 0) {
                     height -= 16;
 
-                    switch (name){
+                    switch (name) {
                         case "LA301":
                             LA301.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
                             break;
@@ -155,11 +154,10 @@ public class GridMap {
                             break;
                     }
                 }
-            }
-            else if (object.getString("name").equals("LA305")) {
+            } else if (object.getString("name").equals("LA305")) {
                 int width = object.getInt("width");
 
-                while(width != 0) {
+                while (width != 0) {
                     width -= 16;
                     LA305.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
                 }
@@ -235,7 +233,6 @@ public class GridMap {
             }
         }
     }
-
 
 
     private boolean isInGrid(int x, int y) {

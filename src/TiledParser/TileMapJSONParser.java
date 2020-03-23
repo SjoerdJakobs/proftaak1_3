@@ -11,6 +11,7 @@ public class TileMapJSONParser {
     private JsonObject jsonObject;
 
     public TileMapJSONParser(File file) throws FileNotFoundException {
+        //starts the jsonparser by opening a new jsonFile
         InputStream inputStream = new FileInputStream(file);
         JsonReader jsonReader = Json.createReader(inputStream);
         jsonObject = jsonReader.readObject();
@@ -26,6 +27,7 @@ public class TileMapJSONParser {
     }
 
     public String getTilesetImageSource() {
+        //returns the spriteSheet that is needed to draw this tilemap
         JsonObject tileset = getTileset(0);
         return tileset.getString("image");
     }
@@ -55,11 +57,13 @@ public class TileMapJSONParser {
     }
 
     public JsonObject getLayer(int layer) {
+        //returns a certain layer based on the imteger id
         JsonArray layersArray = getLayers();
         return layersArray.getJsonObject(layer);
     }
 
     public JsonObject getLayer(String layer) {
+        //returns the layer given the name of the layer
         JsonArray layersArray = getLayers();
         for (int i = 0; i < layersArray.size(); i++) {
             String layerName = layersArray.getJsonObject(i).getString("name");
@@ -72,6 +76,7 @@ public class TileMapJSONParser {
 
 
     public int getTileData(int layer, int xPos, int yPos) {
+        //returns the information about the specific tile in a layer in the tileMap
         JsonObject layerObject = getLayer(layer);
         int tileID = getTileID(xPos, yPos);
         int data = layerObject.getJsonArray("data").getInt(tileID) - 1;

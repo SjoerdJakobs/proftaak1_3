@@ -15,7 +15,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 public class Tile {
-
+/*
+a tile is a simple object that can give an npc the data it needs to get to a new direction.
+an npc can get the direction it needs from this tile with the getDirections method.
+ */
 
     private Rectangle2D.Double gridRect;
     private Point2D gridPos;
@@ -23,9 +26,11 @@ public class Tile {
     private int tileWidth = 16;
     private int tileHeight = 16;
 
-    private HashMap<String,Direction> directions;
-
+    private HashMap<String, Direction> directions;
+    // if the tile itself is an impenetrable wall
     private boolean isWall = false;
+
+    //if the tile has any neighbors that are walls
     private boolean hasTopWall = false;
     private boolean hasBollomWall = false;
     private boolean hasRightWall = false;
@@ -33,11 +38,10 @@ public class Tile {
 
     private boolean hasBeenSet = false;
 
+    //if the tile itself is a destination for one of the Npc's
     private boolean isDestination;
 
-
-
-    public Tile(int x, int y){
+    public Tile(int x, int y) {
 
         directions = new HashMap<>();
         this.gridPos = new Point2D.Double(x, y);
@@ -118,8 +122,6 @@ public class Tile {
     }
 
 
-
-
     public Rectangle2D.Double getGridRect() {
         return gridRect;
     }
@@ -135,7 +137,6 @@ public class Tile {
     public void setGridPos(Point2D gridPos) {
         this.gridPos = gridPos;
     }
-
 
 
 }

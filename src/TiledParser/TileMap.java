@@ -18,6 +18,7 @@ public class TileMap {
     private int spriteWidth, spriteHeight;
 
     public TileMap(String jsonFilename) throws IOException {
+
         this.tileMapJSONParser = new TileMapJSONParser(new File(jsonFilename));
 
         this.mapWidth = tileMapJSONParser.getWidth();
@@ -25,7 +26,7 @@ public class TileMap {
         this.spriteWidth = tileMapJSONParser.getTileWidth();
         this.spriteHeight = tileMapJSONParser.getTileHeight();
 
-        //this.sourceImage = ImageIO.read(getClass().getResource("resources/" + tileMapJSONParser.getTilesetImageSource()));
+
         this.sourceImage = ImageIO.read(new File("resources/" + tileMapJSONParser.getTilesetImageSource()));
         this.sprites = Spriteloader.getImages(sourceImage, spriteWidth, spriteHeight);
 
@@ -39,7 +40,7 @@ public class TileMap {
         for (int layer = 0; layer < tileMapJSONParser.getLayersAmount(); layer++) {
             for (int yPos = 0; yPos < mapHeight; yPos++) {
                 for (int xPos = 0; xPos < mapWidth; xPos++) {
-                    if(!(tileMapJSONParser.getLayer(layer).getJsonArray("data") == null)){
+                    if (!(tileMapJSONParser.getLayer(layer).getJsonArray("data") == null)) {
                         if (tileMapJSONParser.getLayer(layer).getBoolean("visible")) {
                             int spriteID = tileMapJSONParser.getTileData(layer, xPos, yPos);
                             if (spriteID != -1) {
