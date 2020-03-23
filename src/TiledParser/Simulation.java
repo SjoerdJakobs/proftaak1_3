@@ -1,6 +1,8 @@
 package TiledParser;
 
-import MainPackage.Simulation.Npc.Teacher;
+import MainPackage.Simulation.Logic.Direction;
+import MainPackage.Simulation.Npc.Npc;
+import MainPackage.Simulation.Npc.Student;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 import gridMaker.GridMap;
@@ -15,11 +17,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Simulation extends StandardObject {
     private FXGraphics2D graphics2D;
@@ -33,6 +36,7 @@ public class Simulation extends StandardObject {
 
     private BorderPane borderPane;
     private GridPane bottomPane;
+    ArrayList<Npc> npcs = new ArrayList<>();
 
     public Simulation(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
@@ -50,6 +54,15 @@ public class Simulation extends StandardObject {
 
         this.borderPane.setCenter(this.canvas);
         this.borderPane.setBottom(bottomPane);
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,100)));
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,200)));
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,300)));
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(100,400)));
+
+
+
+
+
 
     }
 
@@ -94,8 +107,12 @@ public class Simulation extends StandardObject {
 
     public void start(Stage stage) throws Exception {
         draw(graphics2D);
+
+
+
         stage.setTitle("Simulation");
         stage.show();
+
     }
 
     public void draw(FXGraphics2D graphics) {
