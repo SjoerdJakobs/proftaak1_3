@@ -424,6 +424,9 @@ public class sAgenda extends StandardObject {
             else if((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))){
                 return false;
             }
+            else if((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(teacherLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                return false;
+            }
             else if(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime())==0){
                 return false;
             }
@@ -441,6 +444,9 @@ public class sAgenda extends StandardObject {
                 return false;
             }
             else if((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))){
+                return false;
+            }
+            else if((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(classroomLesson.getEndTime().isBefore(lesson.getEndTime()))){
                 return false;
             }
             else if(lesson.getBeginTime().compareTo(classroomLesson.getBeginTime())==0){
@@ -461,6 +467,9 @@ public class sAgenda extends StandardObject {
                 return false;
             }
             else if((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))){
+                return false;
+            }
+            else if((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))){
                 return false;
             }
             else if(lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime())==0){
