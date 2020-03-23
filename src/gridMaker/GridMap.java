@@ -77,6 +77,10 @@ public class GridMap {
                 if (this.tiles[y][x].isWall()) {
                     graphics.setColor(Color.red);
 
+                    /**
+                     * down here, you can change the .get("...") tot check for the other paths if you want to be sure you get the right one.
+                     */
+
                 } else if (this.tiles[y][x].getDirections().get("canteen") == Direction.ENDPOINT) {
                     graphics.setColor(Color.white);
 

@@ -3,6 +3,7 @@ package TiledParser;
 import MainPackage.Simulation.Npc.Teacher;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
+import gridMaker.GridMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import org.jfree.fx.FXGraphics2D;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Simulation extends StandardObject {
@@ -26,6 +28,8 @@ public class Simulation extends StandardObject {
 
     private TileMap tileMap;
     private Camera camera;
+
+    private GridMap gridMap;
 
     private BorderPane borderPane;
     private GridPane bottomPane;
@@ -53,10 +57,18 @@ public class Simulation extends StandardObject {
     public void init() {
         try {
             //Load the tilemap with the map.json file
-            tileMap = new TileMap("resources/map.json");
+            tileMap = new TileMap("resources/mapTest.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            this.gridMap = new GridMap(this.tileMap.getTileMapJSONParser().getObjectLayer(), this.tileMap.getTileMapJSONParser().getCompleteObject());
+            this.gridMap.setAllRoutes();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -97,6 +109,7 @@ public class Simulation extends StandardObject {
 
         //Draw the map
         tileMap.draw(graphics, camera);
+        this.gridMap.draw(graphics);
     }
 
 
