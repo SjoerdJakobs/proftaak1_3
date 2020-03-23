@@ -2,12 +2,8 @@ package TiledParser;
 
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.Scene;
+import gridMaker.GridMap;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -15,7 +11,9 @@ import org.jfree.fx.FXGraphics2D;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
 
 public class Simulation extends StandardObject {
     private FXGraphics2D graphics2D;
@@ -27,6 +25,8 @@ public class Simulation extends StandardObject {
 
     private BorderPane borderPane;
     private GridPane bottomPane;
+
+    private GridMap grid;
 
     public Simulation(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
@@ -45,13 +45,19 @@ public class Simulation extends StandardObject {
         this.borderPane.setCenter(this.canvas);
         this.borderPane.setBottom(bottomPane);
 
+        try {
+            this.grid = new GridMap(this.tileMap.getTileMapJSONParser().getObjectLayer(), this.tileMap.getTileMapJSONParser().getCompleteObject());
+            //this.grid.addRoute(80, 30, 80, 31, "route0");
+            this.grid.setAllRoutes();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    //1st method called, before the program launches.
     public void init() {
         try {
-            //Load the tilemap with the map.json file
-            tileMap = new TileMap("resources/map.json");
+            tileMap = new TileMap("resources/mapTest.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,16 +91,15 @@ public class Simulation extends StandardObject {
     }
 
     public void draw(FXGraphics2D graphics) {
-        //Clear the old frame off the screen
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
-        //Transform everything around the camera
         graphics.setTransform(camera.getTransform((int)canvas.getWidth(), (int)canvas.getHeight()));
 
-        //Draw the map
         tileMap.draw(graphics, camera);
+        this.grid.draw(graphics);
+
     }
 
 
