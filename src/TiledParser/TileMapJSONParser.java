@@ -87,8 +87,26 @@ public class TileMapJSONParser {
         return this.jsonObject;
     }
 
+    public JsonObject getCollisionLayer(){
+        return this.getLayer("collision");
+    }
 
+    public JsonArray getCollisionData(){
+        return getCollisionLayer().getJsonArray("data");
+    }
 
+    public boolean isTraversable(int x, int y){
+        int tileID = getTileID(x, y);
+        JsonArray collisionData = getCollisionData();
+
+        int tileData = collisionData.getInt(tileID);
+        if (tileData == 0){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
     public JsonArray getObjectLayer(){
         JsonArray allLayers = getLayers();
@@ -102,4 +120,6 @@ public class TileMapJSONParser {
         }
         return objectLayer;
     }
+
+
 }

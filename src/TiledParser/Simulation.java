@@ -1,6 +1,7 @@
 package TiledParser;
 
 import OOFramework.FrameworkProgram;
+import OOFramework.Modules.CONSTANTS;
 import OOFramework.StandardObject;
 import gridMaker.GridMap;
 import javafx.scene.canvas.Canvas;
@@ -44,25 +45,19 @@ public class Simulation extends StandardObject {
 
         this.borderPane.setCenter(this.canvas);
         this.borderPane.setBottom(bottomPane);
-
-        try {
-            this.grid = new GridMap(this.tileMap.getTileMapJSONParser().getObjectLayer(), this.tileMap.getTileMapJSONParser().getCompleteObject());
-            //this.grid.addRoute(80, 30, 80, 31, "route0");
-            this.grid.setAllRoutes();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void init() {
         try {
-            tileMap = new TileMap("resources/mapTest.json");
+            tileMap = new TileMap(CONSTANTS.MAP_JSONFILE);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
+        this.grid = new GridMap(this.tileMap.getTileMapJSONParser());
+        //this.grid.addRoute(80, 30, 80, 31, "route0");
+        this.grid.setAllRoutes();
+    }
 
 
     @Override
@@ -84,7 +79,7 @@ public class Simulation extends StandardObject {
     }
 
 
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         draw(graphics2D);
         stage.setTitle("Simulation");
         stage.show();
@@ -95,7 +90,7 @@ public class Simulation extends StandardObject {
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
-        graphics.setTransform(camera.getTransform((int)canvas.getWidth(), (int)canvas.getHeight()));
+        graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
         this.grid.draw(graphics);
@@ -103,7 +98,7 @@ public class Simulation extends StandardObject {
     }
 
 
-    public BorderPane getBorderPane(){
+    public BorderPane getBorderPane() {
         return this.borderPane;
     }
 
