@@ -7,9 +7,7 @@ import java.io.File;
 public class CONSTANTS
 {
     public static final String TITLE = "SNAVA simulation";        // title of the game
-    public static final String PROGRAM_ICON = "/icon.png";
-    public static final int CANVAS_WIDTH = 1920;    // width and height of the drawing canvas
-    public static final int CANVAS_HEIGHT = 1080;
+    public static final String PROGRAM_ICON = "/icon.png"; //Remember to mark resources as "resources root" otherwise it wont work
 
     public static final String MAP_JSONFILE = "resources/mapTest.json";
     public static final String DIRLAYER_TOSHOW = "canteen";
