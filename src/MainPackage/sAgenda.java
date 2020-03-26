@@ -135,16 +135,6 @@ public class sAgenda extends StandardObject {
 
                         Label warning = new Label();
 
-                        //this.groups.clear();
-//                        this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
-//                        for (Lesson lesson : savedData.getLessonData()) {
-//                            this.groups.add(lesson.getStudentGroup());
-//                                      teacher.getItems().add(lesson.getTeacher());
-//                            room.getItems().add(lesson.getClassRoom());
-//                        }
-//                        for (StudentGroup sg : this.groups) {
-//                            group.getItems().add(sg);
-//                        }
                         for(int i = 0; i<5; i++){
                             group.getItems().addAll(studentGroups.get(i));
                             teacher.getItems().add(teachers.get(i));
@@ -187,18 +177,10 @@ public class sAgenda extends StandardObject {
                                     else {
                                         warning.setText("Cant edit");
                                     }
-//                                    block.getLesson().setBeginTime(LocalTime.parse(beginTime.getText()));
-//                                    block.getLesson().setEndTime(LocalTime.parse(endTime.getText()));
-//                                    block.getLesson().setStudentGroup(group.getValue());
-//                                    block.getLesson().setClassRoom(room.getValue());
-//                                    block.getLesson().setTeacher(teacher.getValue());
-
                                 }
                             } catch (DateTimeParseException dtpe) {
                                 warning.setText("Please enter a valid time in a form of 08:00, not something else!");
                             }
-
-
                         });
 
 
@@ -221,7 +203,6 @@ public class sAgenda extends StandardObject {
                     }
                 }
             }
-
         });
 
 
@@ -250,7 +231,6 @@ public class sAgenda extends StandardObject {
 
         graphics2D.setColor(Color.white);
         graphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-//        graphics2D.fillRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
@@ -324,17 +304,6 @@ public class sAgenda extends StandardObject {
             ComboBox<GroupData> group = new ComboBox();
             ComboBox<TeacherData> teacher = new ComboBox<>();
             ComboBox<ClassRoom> room = new ComboBox<>();
-
-//            this.groups.clear();
-//            this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
-//            for (Lesson lesson : savedData.getLessonData()) {
-//                this.groups.add(lesson.getStudentGroup());
-//                teachers.getItems().add(lesson.getTeacher());
-//                rooms.getItems().add(lesson.getClassRoom());
-//            }
-//            for (StudentGroup sg : this.groups) {
-//                group.getItems().add(sg);
-//            }
 
             for(int i = 0; i<5; i++){
                 group.getItems().addAll(studentGroups.get(i));
@@ -410,7 +379,6 @@ public class sAgenda extends StandardObject {
                 group.getItems().addAll(studentGroups.get(i));
             }
 
-
             popVBoxInformation.getChildren().add(name);
             popVBoxInformation.getChildren().add(age);
             popVBoxInformation.getChildren().add(studentID);
@@ -421,23 +389,21 @@ public class sAgenda extends StandardObject {
 
             savePopUp.setOnAction(ex -> {
                 if (name.getText().isEmpty()) {
-                    warningLabel.setText("please enter a name.");
+                    warningLabel.setText("Please enter a name.");
                 } else if (age.getText().isEmpty()) {
-                    warningLabel.setText("please enter an age.");
+                    warningLabel.setText("Please enter an age.");
                 } else if (studentID.getText().isEmpty()) {
-                    warningLabel.setText("please enter a studentID");
+                    warningLabel.setText("Please enter a studentID");
                 } else if (group.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("please fill in a gender.");
+                    warningLabel.setText("Please select a gender.");
                 } else if (gender.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("please fill in a group.");
+                    warningLabel.setText("Please select a group.");
                 } else {
                     StudentData newStudent = new StudentData(name.getText(), group.getValue().name, Integer.parseInt(age.getText()), Integer.parseInt(studentID.getText()), gender.getValue());
                     if (canAddStudent(newStudent)) {
-                        System.out.println("added new student");
                         this.savedData.getStudentData().add(newStudent);
                         popUpNew.close();
                     } else {
-                        System.out.println("not valid");
                         warningLabel.setText("Student already exists.");
                     }
                 }
@@ -454,7 +420,7 @@ public class sAgenda extends StandardObject {
             final Stage popUpNew = new Stage();
             popUpNew.initOwner(this.stage);
             popUpNew.initModality(Modality.APPLICATION_MODAL);
-            popUpNew.setTitle("add a teacher");
+            popUpNew.setTitle("Add a teacher");
 
             HBox hbox = makeSceneLabelsForPopUp(new String[]{"Name: ", "Age: ", "TeacherID: ", "Gender: "});
             VBox popVBoxInformation = new VBox(10);
@@ -476,21 +442,20 @@ public class sAgenda extends StandardObject {
 
             savePopUp.setOnAction(ex -> {
                 if (name.getText().isEmpty()) {
-                    warningLabel.setText("please enter a name.");
+                    warningLabel.setText("Please enter a name.");
                 } else if (age.getText().isEmpty()) {
-                    warningLabel.setText("please enter an age.");
+                    warningLabel.setText("Please enter an age.");
                 } else if (teacherID.getText().isEmpty()) {
-                    warningLabel.setText("please enter a teacherID");
+                    warningLabel.setText("Please enter a teacherID");
                 } else if (gender.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("please fill in a group.");
+                    warningLabel.setText("Please select a group.");
                 } else {
                     TeacherData newTeacher = new TeacherData(name.getText(), Integer.parseInt(age.getText()), Integer.parseInt(teacherID.getText()), gender.getValue());
                     if (canAddTeacher(newTeacher)) {
-                        System.out.println("added new student");
+                        System.out.println("Added new student");
                         this.savedData.getTeacherData().add(newTeacher);
                         popUpNew.close();
                     } else {
-                        System.out.println("not valid");
                         warningLabel.setText("Teacher already exists.");
                     }
                 }
@@ -522,7 +487,6 @@ public class sAgenda extends StandardObject {
         return popHBox;
     }
 
-
     private boolean canAddLesson(LessonData lesson){
         ArrayList<LessonData> teachersavedData = this.savedData.getTeacherLessons(lesson.getTeacher());
         ArrayList<LessonData> classRoomsavedData = this.savedData.getClassroomLessons(lesson.getClassRoom());
@@ -531,71 +495,68 @@ public class sAgenda extends StandardObject {
         //Check if teacher is available
         if(teachersavedData != null){
 
-        for(LessonData teacherLesson : teachersavedData){
-            //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
-            if((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))){
-                return false;
+            for(LessonData teacherLesson : teachersavedData){
+                if((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))){
+                    return false;
+                }
+                else if((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))){
+                    return false;
+                }
+                else if((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(teacherLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                    return false;
+                }
+                else if(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime())==0){
+                    return false;
+                }
+                else if(lesson.getEndTime().compareTo(teacherLesson.getEndTime())==0){
+                    return false;
+                }
             }
-            else if((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))){
-                return false;
-            }
-            else if((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(teacherLesson.getEndTime().isBefore(lesson.getEndTime()))){
-                return false;
-            }
-            else if(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime())==0){
-                return false;
-            }
-            else if(lesson.getEndTime().compareTo(teacherLesson.getEndTime())==0){
-                return false;
-            }
-        }
         }
 
         //Check if classroom is available
         if(classRoomsavedData != null){
 
-        for(LessonData classroomLesson : classRoomsavedData){
-            if((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))){
-                return false;
+            for(LessonData classroomLesson : classRoomsavedData){
+                if((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))){
+                    return false;
+                }
+                else if((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))){
+                    return false;
+                }
+                else if((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(classroomLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                    return false;
+                }
+                else if(lesson.getBeginTime().compareTo(classroomLesson.getBeginTime())==0){
+                    return false;
+                }
+                else if(lesson.getEndTime().compareTo(classroomLesson.getEndTime())==0){
+                    return false;
+                }
             }
-            else if((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))){
-                return false;
-            }
-            else if((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(classroomLesson.getEndTime().isBefore(lesson.getEndTime()))){
-                return false;
-            }
-            else if(lesson.getBeginTime().compareTo(classroomLesson.getBeginTime())==0){
-                return false;
-            }
-            else if(lesson.getEndTime().compareTo(classroomLesson.getEndTime())==0){
-                return false;
-            }
-        }
         }
 
         //Check if StudentGroup is available
         if(studentGroupsavedData != null){
 
-        for(LessonData studentGroupLesson : studentGroupsavedData){
-            //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
-            if((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))){
-                return false;
-            }
-            else if((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))){
-                return false;
-            }
-            else if((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))){
-                return false;
-            }
-            else if(lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime())==0){
-                return false;
-            }
-            else if(lesson.getEndTime().compareTo(studentGroupLesson.getEndTime())==0){
-                return false;
+            for(LessonData studentGroupLesson : studentGroupsavedData){
+                if((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))){
+                    return false;
+                }
+                else if((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))){
+                    return false;
+                }
+                else if((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                    return false;
+                }
+                else if(lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime())==0){
+                    return false;
+                }
+                else if(lesson.getEndTime().compareTo(studentGroupLesson.getEndTime())==0){
+                    return false;
+                }
             }
         }
-        }
-
         return true;
     }
 
@@ -631,5 +592,4 @@ public class sAgenda extends StandardObject {
     private LessonData getClickedBlockLesson(HourBlock block){
         return block.getLessonData();
     }
-
 }
