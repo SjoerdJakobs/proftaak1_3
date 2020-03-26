@@ -87,7 +87,7 @@ public class Simulation extends StandardObject {
 
         for(Npc npc : npcs){
             Tile[][] tiles = this.grid.getTiles();
-            Direction direction = tiles[(int)(Math.round(npc.getPosition().getY()/16))][(int)(Math.round(npc.getPosition().getX()/16))].getDirections().get("canteen");
+            Direction direction = tiles[(int)(Math.round(npc.getPosition().getX()/16))][(int)(Math.round(npc.getPosition().getY()/16))].getDirections().get("canteen");
            // System.out.println(direction);
 //            System.out.println((int)npc.getPosition().getX()/16 + " " + (int)npc.getPosition().getY()/16);
 //            System.out.println(tiles[18][81].getDirections().get("canteen"));

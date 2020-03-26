@@ -8,6 +8,7 @@ import OOFramework.StandardObject;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -108,7 +109,6 @@ public class Npc extends StandardObject {
     protected void testCycle(double deltatime) {
         timePassed += deltatime;
 
-
         if (timePassed > cycleTime) {
             timePassed = 0;
             walkcyle++;
@@ -153,7 +153,14 @@ public class Npc extends StandardObject {
     }
 
     protected void draw(){
-        graphics2D.drawImage(getImageToDraw(direction, true), (int)position.getX(), (int)position.getY(), null);
+        graphics2D.drawImage(getImageToDraw(direction, true), getTransform(), null);
+    }
+
+    private AffineTransform getTransform() {
+        AffineTransform tx = new AffineTransform();
+        tx.translate(position.getX() , position.getY() + 8);
+      //  tx.rotate(0, 16, 16);
+        return tx;
     }
 
     public Point2D getPosition(){
