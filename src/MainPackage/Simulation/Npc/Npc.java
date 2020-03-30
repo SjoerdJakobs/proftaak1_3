@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Npc extends StandardObject {
     protected LogicalTile currentTile;
@@ -26,6 +27,8 @@ public class Npc extends StandardObject {
     protected double diagonalSpeed = speed/2;
     protected Point2D target = null;
     protected double cycleTime = 0.3;
+    protected ArrayList<Npc> npcs = new ArrayList();
+    public boolean waiting = false;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
         super(frameworkProgram);
@@ -143,7 +146,24 @@ public class Npc extends StandardObject {
         if(moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
         else this.speed = straightspeed;
 
-        position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+        Point2D.Double newPosition = new Point2D.Double(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+
+        boolean collided = false;
+
+        for(Npc npc : npcs){
+            if(npc != this && newPosition.distance(npc.position) < 32){
+                collided = true;
+                if(npc.waiting){
+                    waiting = false;
+                }
+                else {
+                    waiting = true;
+                }
+            }
+        }
+        if(!collided){
+            position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+        }
 
         if(target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
             target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10){
@@ -161,6 +181,10 @@ public class Npc extends StandardObject {
         tx.translate(position.getX() , position.getY() + 8);
       //  tx.rotate(0, 16, 16);
         return tx;
+    }
+
+    public void setNpcs(ArrayList<Npc> npcs){
+        this.npcs = npcs;
     }
 
     public Point2D getPosition(){
