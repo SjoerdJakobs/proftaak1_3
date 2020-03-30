@@ -11,13 +11,16 @@ import gridMaker.Direction;
 import gridMaker.GridMap;
 import gridMaker.Tile;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
@@ -47,6 +50,8 @@ public class Simulation extends StandardObject {
     private LocalTime time;
 
     private SavedData savedData = SavedData.INSTANCE;
+
+    private TextField textField;
 
     public Simulation(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
@@ -134,7 +139,7 @@ public class Simulation extends StandardObject {
         }
 
         for(LessonData lessonData : savedData.getLessonData()){
-            if(lessonData.beginTime.isBefore(time)){
+            if(lessonData.beginTime.isBefore(time) || lessonData.beginTime.equals(time)){
                 System.out.println(lessonData.teacherId);
             }
         }
@@ -171,6 +176,21 @@ public class Simulation extends StandardObject {
 
 
     public BorderPane getBorderPane() {
+        HBox hBox = new HBox();
+        Button slowDown = new Button("0.5");
+        slowDown.setOnAction(event -> {
+            getFrameworkProgram().setFactor(0.5);
+        });
+        Button normal = new Button("1");
+        normal.setOnAction(event -> {
+            getFrameworkProgram().setFactor(1);
+        });
+        Button speedUp = new Button("2");
+        speedUp.setOnAction(event -> {
+            getFrameworkProgram().setFactor(2);
+        });
+        hBox.getChildren().addAll(slowDown,normal,speedUp);
+        borderPane.setTop(hBox);
         return this.borderPane;
     }
 
