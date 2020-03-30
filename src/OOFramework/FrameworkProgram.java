@@ -25,6 +25,7 @@ public abstract class FrameworkProgram extends Application
     private boolean paused  = false;
 
     private ArrayList<BaseObject> objects = new ArrayList<BaseObject>();
+    private double factor;
 
     private ArrayList<StandardObject> inputObjects  = new ArrayList<StandardObject>();
     private ArrayList<StandardObject> mainObjects   = new ArrayList<StandardObject>();
@@ -84,7 +85,7 @@ public abstract class FrameworkProgram extends Application
          * calculate deltatime
          */
         long time = System.nanoTime();
-        deltaTime = ((double) (time - lastTime) / 1000_000_000);//delta time in seconds
+        deltaTime = ((double) (time - lastTime) / 1000_000_000) * factor;//delta time in seconds
         lastTime = time;
 
         //uncomment to print the deltatime in seconds
@@ -195,6 +196,10 @@ public abstract class FrameworkProgram extends Application
 
     public FXGraphics2D getGraphics2DSimulation() {
         return graphics2DSimulation;
+    }
+
+    public void setFactor(double factor){
+        this.factor = factor;
     }
 }
 
