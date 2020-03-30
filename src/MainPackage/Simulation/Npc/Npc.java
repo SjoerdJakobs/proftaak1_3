@@ -164,6 +164,11 @@ public class Npc extends StandardObject {
         if(!collided){
             position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
         }
+        else {
+            if(!waiting){
+                position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+            }
+        }
 
         if(target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
             target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10){

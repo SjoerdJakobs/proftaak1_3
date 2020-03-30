@@ -1,5 +1,7 @@
 package TiledParser;
 
+import MainPackage.ReadWriteData.DataClasses.LessonData;
+import MainPackage.ReadWriteData.SavedData;
 import MainPackage.Simulation.Npc.Npc;
 import MainPackage.Simulation.Npc.Student;
 import OOFramework.FrameworkProgram;
@@ -9,6 +11,7 @@ import gridMaker.Direction;
 import gridMaker.GridMap;
 import gridMaker.Tile;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -19,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 
@@ -37,9 +41,18 @@ public class Simulation extends StandardObject {
 
     private GridMap grid;
 
+    private int timeHours;
+    private double timeMinutes;
+
+    private LocalTime time;
+
+    private SavedData savedData = SavedData.INSTANCE;
+
     public Simulation(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
-
+        this.timeHours=7;
+        this.timeMinutes=0;
+        time = LocalTime.of(timeHours,(int)timeMinutes);
         this.canvas = frameworkProgram.getCanvasSimulation();
         this.graphics2D = frameworkProgram.getGraphics2DSimulation();
         this.stage = frameworkProgram.getStage();
@@ -56,6 +69,10 @@ public class Simulation extends StandardObject {
 
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(19*16,19*16)));
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
+
 
     }
 
@@ -75,11 +92,17 @@ public class Simulation extends StandardObject {
     @Override
     protected void InputLoop(double deltaTime) {
         super.InputLoop(deltaTime);
+        timeMinutes +=deltaTime;
     }
 
     @Override
     protected void MainLoop(double deltaTime) {
         super.MainLoop(deltaTime);
+        if(timeMinutes>=60){
+            timeMinutes=0;
+            timeHours++;
+        }
+        time=LocalTime.of(timeHours,(int)timeMinutes);
         this.canvas.setWidth(this.stage.getWidth());
         this.canvas.setHeight(this.stage.getHeight());
 
@@ -110,6 +133,14 @@ public class Simulation extends StandardObject {
             }
         }
 
+        for(LessonData lessonData : savedData.getLessonData()){
+            if(lessonData.beginTime.isBefore(time)){
+                System.out.println(lessonData.teacherId);
+            }
+        }
+
+
+
     }
 
     @Override
@@ -129,7 +160,8 @@ public class Simulation extends StandardObject {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-
+        graphics.setColor(Color.white);
+        graphics.drawString(time.toString(),100,100);
         graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
