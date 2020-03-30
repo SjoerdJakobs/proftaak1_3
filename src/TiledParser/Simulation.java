@@ -1,6 +1,8 @@
 package TiledParser;
 
+import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
+import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.SavedData;
 import MainPackage.Simulation.Npc.Npc;
 import MainPackage.Simulation.Npc.Student;
@@ -72,13 +74,27 @@ public class Simulation extends StandardObject {
         this.borderPane.setCenter(this.canvas);
         this.borderPane.setBottom(bottomPane);
 
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(19*16,19*16)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
-        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
+//        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16), ));
+//        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
+//        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(19*16,19*16)));
+//        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
+//        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
 
 
+
+    }
+
+    public void setAllNPCStudents(){
+
+        for(GroupData group : this.savedData.getGroupData()){
+            for(StudentData studentData : group.getStudentData()){
+                npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16, 19*16), studentData));
+            }
+        }
+    }
+
+    public void clearNPCS(){
+        this.npcs.clear();
     }
 
     public void init() {

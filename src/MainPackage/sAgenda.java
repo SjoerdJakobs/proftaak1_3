@@ -75,6 +75,7 @@ public class sAgenda extends StandardObject {
 
         //Load in teachers, classrooms and studentgroups later for now manual
         teachers = this.savedData.getTeacherData();
+        studentGroups = this.savedData.getGroupData();
 
         classrooms.add(new ClassRoom(300));
         classrooms.add(new ClassRoom(301));
@@ -82,11 +83,11 @@ public class sAgenda extends StandardObject {
         classrooms.add(new ClassRoom(303));
         classrooms.add(new ClassRoom(304));
 
-        studentGroups.add(new GroupData("A"));
-        studentGroups.add(new GroupData("B"));
-        studentGroups.add(new GroupData("C"));
-        studentGroups.add(new GroupData("D"));
-        studentGroups.add(new GroupData("E"));
+//        studentGroups.add(new GroupData("A"));
+//        studentGroups.add(new GroupData("B"));
+//        studentGroups.add(new GroupData("C"));
+//        studentGroups.add(new GroupData("D"));
+//        studentGroups.add(new GroupData("E"));
 
     }
 
@@ -309,15 +310,27 @@ public class sAgenda extends StandardObject {
             ComboBox<GroupData> group = new ComboBox();
             ComboBox<TeacherData> teacher = new ComboBox<>();
             ComboBox<ClassRoom> room = new ComboBox<>();
-
-            for (int i = 0; i < 5; i++) {
-                group.getItems().addAll(studentGroups.get(i));
+//
+//            for (int i = 0; i < 5; i++) {
+//                group.getItems().addAll(studentGroups.get(i));
+//                room.getItems().add(classrooms.get(i));
+//            }
+//
+//            for (TeacherData t : teachers) {
+//                teacher.getItems().add(t);
+//            }
+            for (int i = 0; i < this.classrooms.size(); i++) {
                 room.getItems().add(classrooms.get(i));
             }
 
-            for (TeacherData t : teachers) {
-                teacher.getItems().add(t);
+            for (int i = 0; i < this.studentGroups.size(); i++) {
+                group.getItems().addAll(studentGroups.get(i));
             }
+
+            for (int i = 0; i < this.teachers.size(); i++) {
+                teacher.getItems().add(teachers.get(i));
+            }
+
 
 
             popVBoxInformation.getChildren().add(beginTime);

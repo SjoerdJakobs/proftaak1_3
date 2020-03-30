@@ -1,5 +1,6 @@
 package MainPackage.Simulation.Npc;
 
+import MainPackage.ReadWriteData.DataClasses.StudentData;
 import OOFramework.FrameworkProgram;
 import gridMaker.GridMap;
 import gridMaker.Tile;
@@ -12,8 +13,11 @@ import java.util.Random;
 public class Student extends Npc {
     //private BufferedImage[] mySprites = new BufferedImage[12];
 
-    public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
+    private StudentData studentData;
+
+    public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
         super(frameworkProgram, graphics2D, position);
+        this.studentData = studentData;
     }
 
     @Override

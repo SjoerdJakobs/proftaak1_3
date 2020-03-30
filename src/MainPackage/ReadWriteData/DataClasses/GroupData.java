@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class GroupData implements Serializable {
     public String name;
    // public int groupID;
-   // public ArrayList<StudentData> students;
+    public ArrayList<StudentData> students;
 
     public GroupData()
     {
@@ -17,32 +17,32 @@ public class GroupData implements Serializable {
     {
         this.name = name;
        // this.groupID = groupID;
-     //   this.students = students;
+        this.students = new ArrayList<>();
     }
 
 
-//    public void addStudent(StudentData studentData){
-//        this.students.add(studentData);
-//    }
-//
-//    public void removeStudent(StudentData studentData){
-//        this.students.remove(studentData);
-//    }
-//
-//    public StudentData getStudent(String name){
-//        for (StudentData studentData : this.students){
-//            if(studentData.getName().equals(name)) {
-//                return studentData;
-//            }
-//        }
-//        return null;
-//    }
+    public void addStudent(StudentData studentData){
+        this.students.add(studentData);
+    }
+
+    public void removeStudent(StudentData studentData){
+        this.students.remove(studentData);
+    }
+
+    public StudentData getStudent(String name){
+        for (StudentData studentData : this.students){
+            if(studentData.getName().equals(name)) {
+                return studentData;
+            }
+        }
+        return null;
+    }
 
 
     //Getters and Setters
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
-//    public ArrayList<StudentData> getStudentData(){ return this.students; }
+    public ArrayList<StudentData> getStudentData(){ return this.students; }
 //    public void setStudentData(ArrayList<StudentData> studentData) { this.students = studentData; }
 
 
