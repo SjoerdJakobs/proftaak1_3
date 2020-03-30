@@ -55,9 +55,7 @@ public class Simulation extends StandardObject {
         this.borderPane.setBottom(bottomPane);
 
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
-        for(int i=18; i<70; i++){
-            npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(i*16,19*16)));
-        }
+        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
 
     }
 
@@ -86,6 +84,7 @@ public class Simulation extends StandardObject {
         this.canvas.setHeight(this.stage.getHeight());
 
         for(Npc npc : npcs){
+            npc.setNpcs(npcs);
             Tile[][] tiles = this.grid.getTiles();
             Direction direction = tiles[(int)(Math.round(npc.getPosition().getX()/16))][(int)(Math.round(npc.getPosition().getY()/16))].getDirections().get("canteen");
            // System.out.println(direction);
