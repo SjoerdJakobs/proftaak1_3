@@ -69,13 +69,10 @@ public class Simulation extends StandardObject {
 
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
-<<<<<<< HEAD
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(19*16,19*16)));
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16,19*16)));
         npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
 
-=======
->>>>>>> Fabians
 
     }
 
