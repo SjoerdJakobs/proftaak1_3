@@ -55,6 +55,5 @@ public class Camera {
             zoom = newZoom;
             resizable.draw(g2d);
         }
-        System.out.println(zoom);
     }
 }

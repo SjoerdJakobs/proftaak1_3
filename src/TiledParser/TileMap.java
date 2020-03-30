@@ -56,6 +56,9 @@ public class TileMap {
         graphics2D.drawImage(mapImage, 0, 0, null);
     }
 
+    public BufferedImage[] getSprites(){
+        return sprites;
+    }
 
     public TileMapJSONParser getTileMapJSONParser() {
         return tileMapJSONParser;

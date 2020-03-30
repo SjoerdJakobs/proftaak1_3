@@ -8,6 +8,7 @@ import OOFramework.StandardObject;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -23,7 +24,7 @@ public class Npc extends StandardObject {
     protected double speed = 100;
     protected double straightspeed = speed;
     protected double diagonalSpeed = speed/2;
-    protected Point2D target = new Point2D.Double(1300, 300);
+    protected Point2D target = null;
     protected double cycleTime = 0.3;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
@@ -42,9 +43,12 @@ public class Npc extends StandardObject {
     @Override
     protected void MainLoop(double deltaTime) {
         testCycle(deltaTime);
-        if(moveTo(deltaTime, target)){
-            position.setLocation(target);
+        if(target != null){
+            if(moveTo(deltaTime, target)){
+                position.setLocation(target);
+            }
         }
+
     }
 
     @Override
@@ -57,7 +61,7 @@ public class Npc extends StandardObject {
 
 
     public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
-
+     //   System.out.println("drawing!");
         int spriteLayer = 0;
         switch (direction) {
 
@@ -82,16 +86,16 @@ public class Npc extends StandardObject {
         } else {
             switch (walkcyle) {
                 case 0:
-                    System.out.println("0");
+                    //System.out.println("0");
                 case 2:
-                    System.out.println("0/2");
+                    //System.out.println("0/2");
                     return mySprites[spriteLayer * 3 + 1];
                 case 1:
-                    System.out.println("1");
+                    //System.out.println("1");
                     return mySprites[spriteLayer * 3];
 
                 case 3:
-                    System.out.println(2);
+                    //System.out.println(2);
                     return mySprites[spriteLayer * 3 + 2];
 
                 default:
@@ -105,7 +109,6 @@ public class Npc extends StandardObject {
     protected void testCycle(double deltatime) {
         timePassed += deltatime;
 
-
         if (timePassed > cycleTime) {
             timePassed = 0;
             walkcyle++;
@@ -115,7 +118,7 @@ public class Npc extends StandardObject {
         }
     }
 
-    protected boolean moveTo(double deltaTime, Point2D target) {
+    public boolean moveTo(double deltaTime, Point2D target) {
         int moveDirectionX, moveDirectionY;
         if((int)target.getX() - (int)position.getX() < 0) {
             moveDirectionX = -1;
@@ -150,7 +153,18 @@ public class Npc extends StandardObject {
     }
 
     protected void draw(){
-        graphics2D.drawImage(getImageToDraw(direction, true), (int)position.getX(), (int)position.getY(), null);
+        graphics2D.drawImage(getImageToDraw(direction, true), getTransform(), null);
+    }
+
+    private AffineTransform getTransform() {
+        AffineTransform tx = new AffineTransform();
+        tx.translate(position.getX() , position.getY() + 8);
+      //  tx.rotate(0, 16, 16);
+        return tx;
+    }
+
+    public Point2D getPosition(){
+        return position;
     }
 
 

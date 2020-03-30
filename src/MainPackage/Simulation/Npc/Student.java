@@ -1,6 +1,8 @@
 package MainPackage.Simulation.Npc;
 
 import OOFramework.FrameworkProgram;
+import gridMaker.GridMap;
+import gridMaker.Tile;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.geom.Point2D;
@@ -32,7 +34,7 @@ public class Student extends Npc {
             case 3:
                 spriteOffset = 51;
                 break;
-            case 5:
+            case 4:
                 spriteOffset = 54;
                 break;
 

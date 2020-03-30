@@ -105,7 +105,7 @@ public class sAgenda extends StandardObject {
         super.Start();
         hourBlocks = new ArrayList<HourBlock>();
 
-  }
+    }
 
     @Override
     protected void InputLoop(double deltaTime) {
@@ -135,11 +135,18 @@ public class sAgenda extends StandardObject {
 
                         Label warning = new Label();
 
-                        for(int i = 0; i<5; i++){
-                            group.getItems().addAll(studentGroups.get(i));
-                            teacher.getItems().add(teachers.get(i));
+                        for (int i = 0; i < this.classrooms.size(); i++) {
                             room.getItems().add(classrooms.get(i));
                         }
+
+                        for (int i = 0; i < this.studentGroups.size(); i++) {
+                            group.getItems().addAll(studentGroups.get(i));
+                        }
+
+                        for (int i = 0; i < this.teachers.size(); i++) {
+                            teacher.getItems().add(teachers.get(i));
+                        }
+
 
 
                         popVBoxInformation.getChildren().add(beginTime);
@@ -164,7 +171,7 @@ public class sAgenda extends StandardObject {
                                 } else {
                                     LessonData clickedBlockLesson = getClickedBlockLesson(block);
                                     savedData.getLessonData().remove(clickedBlockLesson);
-                                    if(canAddLesson(clickedBlockLesson)){
+                                    if (canAddLesson(clickedBlockLesson)) {
                                         System.out.println("Edit");
                                         clickedBlockLesson.setTeacher(teacher.getValue());
                                         clickedBlockLesson.setClassRoom(room.getValue());
@@ -173,8 +180,7 @@ public class sAgenda extends StandardObject {
                                         clickedBlockLesson.setEndTime(LocalTime.parse(endTime.getText()));
                                         this.savedData.getLessonData().add(clickedBlockLesson);
                                         popUpEdit.close();
-                                    }
-                                    else {
+                                    } else {
                                         warning.setText("Cant edit");
                                     }
                                 }
@@ -204,9 +210,8 @@ public class sAgenda extends StandardObject {
                 }
             }
         });
-
-
     }
+
 
     @Override
     protected void MainLoop(double deltaTime) {
@@ -305,12 +310,12 @@ public class sAgenda extends StandardObject {
             ComboBox<TeacherData> teacher = new ComboBox<>();
             ComboBox<ClassRoom> room = new ComboBox<>();
 
-            for(int i = 0; i<5; i++){
+            for (int i = 0; i < 5; i++) {
                 group.getItems().addAll(studentGroups.get(i));
                 room.getItems().add(classrooms.get(i));
             }
 
-            for(TeacherData t : teachers){
+            for (TeacherData t : teachers) {
                 teacher.getItems().add(t);
             }
 
@@ -335,12 +340,11 @@ public class sAgenda extends StandardObject {
                         warningLabel.setText("please enter a correct value at teacher.");
                     } else {
                         LessonData newLesson = new LessonData(group.getValue(), teacher.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), room.getValue());
-                        if(canAddLesson(newLesson)){
+                        if (canAddLesson(newLesson)) {
                             System.out.println("added new lesson");
                             this.savedData.getLessonData().add(newLesson);
                             popUpNew.close();
-                        }
-                        else {
+                        } else {
                             System.out.println("not valid");
                             warningLabel.setText("This lesson cannot be added");
                         }
@@ -375,7 +379,7 @@ public class sAgenda extends StandardObject {
 
             gender.getItems().add(0, Gender.MALE);
             gender.getItems().add(1, Gender.FEMALE);
-            for(int i = 0; i<5; i++){
+            for (int i = 0; i < 5; i++) {
                 group.getItems().addAll(studentGroups.get(i));
             }
 
@@ -474,12 +478,12 @@ public class sAgenda extends StandardObject {
         return agendaPane;
     }
 
-    private HBox makeSceneLabelsForPopUp(String[] labels){
+    private HBox makeSceneLabelsForPopUp(String[] labels) {
         HBox popHBox = new HBox(20);
 
         VBox popVBoxLabels = new VBox(20);
 
-        for(String l : labels){
+        for (String l : labels) {
             popVBoxLabels.getChildren().add(new Label(l));
         }
 
@@ -487,72 +491,60 @@ public class sAgenda extends StandardObject {
         return popHBox;
     }
 
-    private boolean canAddLesson(LessonData lesson){
+    private boolean canAddLesson(LessonData lesson) {
         ArrayList<LessonData> teachersavedData = this.savedData.getTeacherLessons(lesson.getTeacher());
         ArrayList<LessonData> classRoomsavedData = this.savedData.getClassroomLessons(lesson.getClassRoom());
         ArrayList<LessonData> studentGroupsavedData = this.savedData.getStudentGroupLessons(lesson.getStudentGroup());
 
         //Check if teacher is available
-        if(teachersavedData != null){
+        if (teachersavedData != null) {
 
-            for(LessonData teacherLesson : teachersavedData){
-                if((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))){
+            for (LessonData teacherLesson : teachersavedData) {
+                if ((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))) {
                     return false;
-                }
-                else if((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))){
+                } else if ((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))) {
                     return false;
-                }
-                else if((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(teacherLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                } else if ((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime())) && (teacherLesson.getEndTime().isBefore(lesson.getEndTime()))) {
                     return false;
-                }
-                else if(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime())==0){
+                } else if (lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()) == 0) {
                     return false;
-                }
-                else if(lesson.getEndTime().compareTo(teacherLesson.getEndTime())==0){
+                } else if (lesson.getEndTime().compareTo(teacherLesson.getEndTime()) == 0) {
                     return false;
                 }
             }
         }
 
         //Check if classroom is available
-        if(classRoomsavedData != null){
+        if (classRoomsavedData != null) {
 
-            for(LessonData classroomLesson : classRoomsavedData){
-                if((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))){
+            for (LessonData classroomLesson : classRoomsavedData) {
+                if ((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))) {
                     return false;
-                }
-                else if((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))){
+                } else if ((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))) {
                     return false;
-                }
-                else if((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(classroomLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                } else if ((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime())) && (classroomLesson.getEndTime().isBefore(lesson.getEndTime()))) {
                     return false;
-                }
-                else if(lesson.getBeginTime().compareTo(classroomLesson.getBeginTime())==0){
+                } else if (lesson.getBeginTime().compareTo(classroomLesson.getBeginTime()) == 0) {
                     return false;
-                }
-                else if(lesson.getEndTime().compareTo(classroomLesson.getEndTime())==0){
+                } else if (lesson.getEndTime().compareTo(classroomLesson.getEndTime()) == 0) {
                     return false;
                 }
             }
         }
 
         //Check if StudentGroup is available
-        if(studentGroupsavedData != null){
+        if (studentGroupsavedData != null) {
 
-            for(LessonData studentGroupLesson : studentGroupsavedData){
-                if((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))){
+            for (LessonData studentGroupLesson : studentGroupsavedData) {
+                if ((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))) {
                     return false;
-                }
-                else if((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))){
+                } else if ((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))) {
                     return false;
-                }
-                else if((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))){
+                } else if ((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime())) && (studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))) {
                     return false;
-                }
-                else if(lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime())==0){
+                } else if (lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime()) == 0) {
                     return false;
-                }
-                else if(lesson.getEndTime().compareTo(studentGroupLesson.getEndTime())==0){
+                } else if (lesson.getEndTime().compareTo(studentGroupLesson.getEndTime()) == 0) {
                     return false;
                 }
             }
@@ -560,11 +552,11 @@ public class sAgenda extends StandardObject {
         return true;
     }
 
-    private boolean canAddStudent(StudentData newStudent){
+    private boolean canAddStudent(StudentData newStudent) {
         ArrayList<StudentData> students = this.savedData.getStudentData();
 
-        for(StudentData s : students){
-            if(s.getName().equals(newStudent.getName())
+        for (StudentData s : students) {
+            if (s.getName().equals(newStudent.getName())
                     && s.getAge() == newStudent.getAge()
                     && s.getStudentID() == newStudent.getStudentID()
                     && s.getGender().equals(newStudent.getGender())
@@ -578,8 +570,8 @@ public class sAgenda extends StandardObject {
     private boolean canAddTeacher(TeacherData newTeacher) {
         ArrayList<TeacherData> teachers = this.savedData.getTeacherData();
 
-        for(TeacherData t : teachers){
-            if(t.getName().equals(newTeacher.getName())
+        for (TeacherData t : teachers) {
+            if (t.getName().equals(newTeacher.getName())
                     && t.getAge() == newTeacher.getAge()
                     && t.getTeacherId() == newTeacher.getTeacherId()
                     && t.getGender().equals(newTeacher.getGender())) {
@@ -589,7 +581,7 @@ public class sAgenda extends StandardObject {
         return true;
     }
 
-    private LessonData getClickedBlockLesson(HourBlock block){
+    private LessonData getClickedBlockLesson(HourBlock block) {
         return block.getLessonData();
     }
 }
