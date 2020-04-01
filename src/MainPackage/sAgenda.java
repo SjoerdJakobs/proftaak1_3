@@ -9,6 +9,7 @@ import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import MainPackage.ReadWriteData.DataWriter;
 import MainPackage.ReadWriteData.SavedData;
+import MainPackage.Simulation.Npc.Student;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
 import javafx.scene.Scene;
@@ -37,7 +38,7 @@ public class sAgenda extends StandardObject {
 
     private ArrayList<HourBlock> hourBlocks;
     private ArrayList<GroupData> groups = new ArrayList<>();
-
+    private ArrayList<ComboBox<String>> groupBoxes = new ArrayList<>();
 
     private double hours;
     private double rooms;
@@ -87,7 +88,6 @@ public class sAgenda extends StandardObject {
         studentGroups.add(new GroupData("C"));
         studentGroups.add(new GroupData("D"));
         studentGroups.add(new GroupData("E"));
-
     }
 
     @Override
@@ -275,10 +275,11 @@ public class sAgenda extends StandardObject {
         BorderPane agendaPane = new BorderPane();
         HBox buttonBox = new HBox(30);
 
-        Button newOne = new Button("NEW");
+        Button newOne = new Button("NEW LESSON");
         Button saveAgenda = new Button("SAVE");
         Button addStudent = new Button("ADD STUDENT");
         Button addTeacher = new Button("ADD TEACHER");
+        Button managePeople = new Button("PEOPLE MANAGER");
 
         Button savePopUp = new Button("SAVE");
         Button delete = new Button("DELETE");
@@ -407,6 +408,7 @@ public class sAgenda extends StandardObject {
                     if (canAddStudent(newStudent)) {
                         this.savedData.getStudentData().add(newStudent);
                         popUpNew.close();
+                        updateGroupBox(groupBoxes.get(studentGroups.indexOf(group.getValue())), group.getValue());
                     } else {
                         warningLabel.setText("Student already exists.");
                     }
@@ -459,6 +461,7 @@ public class sAgenda extends StandardObject {
                         System.out.println("Added new student");
                         this.savedData.getTeacherData().add(newTeacher);
                         popUpNew.close();
+                        updateTeacherBox();
                     } else {
                         warningLabel.setText("Teacher already exists.");
                     }
@@ -471,11 +474,103 @@ public class sAgenda extends StandardObject {
             popUpNew.show();
         });
 
-        buttonBox.getChildren().addAll(newOne, saveAgenda, addStudent, addTeacher);
+        managePeople.setOnAction(e -> {
+            final Stage popUpNew = new Stage();
+            popUpNew.initOwner(this.stage);
+            popUpNew.initModality(Modality.APPLICATION_MODAL);
+            popUpNew.setTitle("People manager");
+
+            HBox hBox = new HBox();
+            VBox vBoxLeft = new VBox();
+            VBox vBoxRight = new VBox();
+
+            vBoxLeft.getChildren().add(addStudent);
+
+            vBoxLeft.getChildren().add(new Label("Group A"));
+            vBoxLeft.getChildren().add(buildGroupRow(studentGroups.get(0)));
+
+            vBoxLeft.getChildren().add(new Label("Group B"));
+            vBoxLeft.getChildren().add(buildGroupRow(studentGroups.get(1)));
+
+            vBoxLeft.getChildren().add(new Label("Group C"));
+            vBoxLeft.getChildren().add(buildGroupRow(studentGroups.get(2)));
+
+            vBoxRight.getChildren().add(addTeacher);
+
+            vBoxRight.getChildren().add(new Label("Teachers"));
+            FlowPane teacherFlowPane = new FlowPane();
+            ComboBox<String> teacherBox = new ComboBox<>();
+            updateTeacherBox();
+            teacherFlowPane.getChildren().add(teacherBox);
+            Button deleteButton = new Button("Delete");
+            deleteButton.setOnAction(event -> {removeTeacherFromData(teacherBox.getValue()); updateTeacherBox();});
+            teacherFlowPane.getChildren().add(deleteButton);
+
+            vBoxRight.getChildren().add(new Label("Group D"));
+            vBoxRight.getChildren().add(buildGroupRow(studentGroups.get(3)));
+
+            vBoxRight.getChildren().add(new Label("Group E"));
+            vBoxRight.getChildren().add(buildGroupRow(studentGroups.get(4)));
+
+            groupBoxes.add(teacherBox);
+            vBoxRight.getChildren().add(2, teacherFlowPane);
+
+            hBox.getChildren().addAll(vBoxLeft, vBoxRight);
+            Scene popScene = new Scene(hBox, 600, 600);
+            popUpNew.setScene(popScene);
+            popUpNew.show();
+        });
+
+        buttonBox.getChildren().addAll(newOne, saveAgenda, managePeople);
         agendaPane.setBottom(buttonBox);
         agendaPane.setTop(this.canvas);
 
         return agendaPane;
+    }
+
+    private FlowPane buildGroupRow(GroupData groupData){
+        FlowPane flowPane = new FlowPane();
+        ComboBox<String> group = new ComboBox<>();
+        groupBoxes.add(group);
+        updateGroupBox(group, groupData);
+        flowPane.getChildren().add(group);
+        Button deleteButton = new Button("Delete");
+        deleteButton.setOnAction(event -> {removeStudentFromData(group.getValue()); updateGroupBox(group, groupData);});
+        flowPane.getChildren().add(deleteButton);
+        return flowPane;
+    }
+
+    private void updateGroupBox(ComboBox<String> group, GroupData groupData){
+        for(StudentData s : savedData.getStudentData()){
+            if(s.getGroup().equals(groupData.name))
+                group.getItems().add(s.getName() + " " + s.getStudentID());
+        }
+    }
+
+    private void updateTeacherBox(){
+        for(TeacherData t : savedData.getTeacherData()){
+            groupBoxes.get(5).getItems().add(t.getName() + " " + t.getTeacherId());
+        }
+    }
+
+    private void removeStudentFromData(String person){
+        while(person.contains(" ")){
+            person.substring(0, person.indexOf(" "));
+        }
+        for(StudentData s : savedData.getStudentData()){
+            if(s.getStudentID() == Integer.valueOf(person))
+                savedData.getStudentData().remove(s);
+        }
+    }
+
+    private void removeTeacherFromData(String person){
+        while(person.contains(" ")){
+            person.substring(0, person.indexOf(" "));
+        }
+        for(TeacherData t : savedData.getTeacherData()){
+            if(t.getTeacherId() == Integer.valueOf(person))
+                savedData.getTeacherData().remove(t);
+        }
     }
 
     private HBox makeSceneLabelsForPopUp(String[] labels) {
