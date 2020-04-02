@@ -90,7 +90,7 @@ public class Program extends FrameworkProgram {
 
 
         GroupData groupA = new GroupData("A");
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             groupA.addStudent(new StudentData("studentA" + (i + 1), "A", 16 + i % 2, i, getRandomGender()));
         }
 

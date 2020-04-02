@@ -239,11 +239,11 @@ public class Simulation extends StandardObject {
         });
         Button normal = new Button("1");
         normal.setOnAction(event -> {
-            getFrameworkProgram().setFactor(1);
+            getFrameworkProgram().setFactor(5);
         });
         Button speedUp = new Button("2");
         speedUp.setOnAction(event -> {
-            getFrameworkProgram().setFactor(2);
+            getFrameworkProgram().setFactor(10);
         });
         hBox.getChildren().addAll(slowDown, normal, speedUp);
         borderPane.setTop(hBox);

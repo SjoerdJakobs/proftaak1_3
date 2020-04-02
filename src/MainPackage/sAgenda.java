@@ -77,11 +77,11 @@ public class sAgenda extends StandardObject {
         teachers = this.savedData.getTeacherData();
         studentGroups = this.savedData.getGroupData();
 
-        classrooms.add(new ClassRoom(300));
         classrooms.add(new ClassRoom(301));
         classrooms.add(new ClassRoom(302));
         classrooms.add(new ClassRoom(303));
         classrooms.add(new ClassRoom(304));
+        classrooms.add(new ClassRoom(305));
 
 //        studentGroups.add(new GroupData("A"));
 //        studentGroups.add(new GroupData("B"));
