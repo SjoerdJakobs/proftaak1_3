@@ -118,4 +118,20 @@ public class TileMapJSONParser {
     }
 
 
+    public JsonObject getBeginArea(){
+
+        JsonArray allObjects = getObjectLayer();
+        JsonObject returnValue = null;
+
+        for (int i = 0; i < allObjects.size(); i++) {
+
+            if(allObjects.getJsonObject(i).getString("name").equals("entry")){
+                returnValue = allObjects.getJsonObject(i);
+            }
+
+        }
+        return returnValue;
+    }
+
+
 }

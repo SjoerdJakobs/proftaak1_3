@@ -31,6 +31,8 @@ public class Npc extends StandardObject {
     protected ArrayList<Npc> npcs = new ArrayList();
     public boolean waiting = false;
 
+    protected boolean hasBreak = false;
+
     protected StudentData studentData;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
@@ -206,6 +208,18 @@ public class Npc extends StandardObject {
 
     public StudentData getStudentData() {
         return studentData;
+    }
+
+    public boolean isHasBreak() {
+        return hasBreak;
+    }
+
+    public void setHasBreak(boolean hasBreak) {
+        this.hasBreak = hasBreak;
+    }
+
+    public String getNameStudent(){
+        return this.studentData.getName();
     }
 }
 
