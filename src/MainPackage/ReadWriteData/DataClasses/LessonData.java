@@ -76,4 +76,17 @@ public class LessonData implements Serializable {
 //    public void setLessonID(int lessonID) {
 //        this.lessonID = lessonID;
 //    }
+
+
+    @Override
+    public String toString() {
+        return "LessonData{" +
+                "studentGroupId=" + studentGroupId +
+                ", teacherId=" + teacherId +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", classRoomId=" + classRoomId +
+                ", lessonID=" + lessonID +
+                '}';
+    }
 }

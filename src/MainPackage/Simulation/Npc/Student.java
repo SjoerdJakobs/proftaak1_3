@@ -13,11 +13,10 @@ import java.util.Random;
 public class Student extends Npc {
     //private BufferedImage[] mySprites = new BufferedImage[12];
 
-    private StudentData studentData;
 
     public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
-        super(frameworkProgram, graphics2D, position);
-        this.studentData = studentData;
+        super(frameworkProgram, graphics2D, position, studentData);
+
     }
 
     @Override
@@ -54,6 +53,7 @@ public class Student extends Npc {
             }
         }
     }
+
 
     @Override
     protected void InputLoop(double deltaTime) {

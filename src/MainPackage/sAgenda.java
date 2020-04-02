@@ -355,6 +355,9 @@ public class sAgenda extends StandardObject {
                         LessonData newLesson = new LessonData(group.getValue(), teacher.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), room.getValue());
                         if (canAddLesson(newLesson)) {
                             System.out.println("added new lesson");
+                            System.out.println( newLesson.toString());
+                            System.out.println("de grote van de studenten lijst: " + group.getValue().getStudentData().size());
+
                             this.savedData.getLessonData().add(newLesson);
                             popUpNew.close();
                         } else {

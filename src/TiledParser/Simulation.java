@@ -1,5 +1,6 @@
 package TiledParser;
 
+import Data.Lesson;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
@@ -45,6 +46,7 @@ public class Simulation extends StandardObject {
     private ArrayList<Npc> npcs = new ArrayList<>();
 
     private GridMap grid;
+    private Tile[][] allTiles;
 
     private int timeHours;
     private double timeMinutes;
@@ -52,18 +54,18 @@ public class Simulation extends StandardObject {
     private LocalTime time;
 
     private SavedData savedData = SavedData.INSTANCE;
+    private boolean goToLesson = false;
 
     private TextField textField;
 
     public Simulation(FrameworkProgram frameworkProgram) {
         super(frameworkProgram);
-        this.timeHours=7;
-        this.timeMinutes=0;
-        time = LocalTime.of(timeHours,(int)timeMinutes);
+        this.timeHours = 7;
+        this.timeMinutes = 0;
+        time = LocalTime.of(timeHours, (int) timeMinutes);
         this.canvas = frameworkProgram.getCanvasSimulation();
         this.graphics2D = frameworkProgram.getGraphics2DSimulation();
         this.stage = frameworkProgram.getStage();
-
         this.camera = new Camera(canvas, g -> draw(g), graphics2D);
 
         this.borderPane = new BorderPane();
@@ -81,19 +83,21 @@ public class Simulation extends StandardObject {
 //        npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(17*16,19*16)));
 
 
-
     }
 
-    public void setAllNPCStudents(){
+    public void setAllNPCStudents() {
 
-        for(GroupData group : this.savedData.getGroupData()){
-            for(StudentData studentData : group.getStudentData()){
-                npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18*16, 19*16), studentData));
+        this.npcs.clear();
+        int index = 0;
+        for (GroupData group : this.savedData.getGroupData()) {
+            for (StudentData studentData : group.getStudentData()) {
+                npcs.add(new Student(getFrameworkProgram(), graphics2D, new Point2D.Double(18 * (16 + index), 19 * 16), studentData));
+                index++;
             }
         }
     }
 
-    public void clearNPCS(){
+    public void clearNPCS() {
         this.npcs.clear();
     }
 
@@ -107,59 +111,95 @@ public class Simulation extends StandardObject {
         this.grid = new GridMap(this.tileMap.getTileMapJSONParser(), this.tileMap.getSprites());
         //this.grid.addRoute(80, 30, 80, 31, "route0");
         this.grid.setAllRoutes();
+        this.allTiles = this.grid.getTiles();
     }
 
+//    public void setLessonData(ArrayList<LessonData> lessonData){
+//        this.lessonData = lessonData;
+//    }
 
     @Override
     protected void InputLoop(double deltaTime) {
         super.InputLoop(deltaTime);
-        timeMinutes +=deltaTime;
+        timeMinutes += deltaTime;
     }
 
     @Override
     protected void MainLoop(double deltaTime) {
         super.MainLoop(deltaTime);
-        if(timeMinutes>=60){
-            timeMinutes=0;
+        if (timeMinutes >= 60) {
+            timeMinutes = 0;
             timeHours++;
         }
-        time=LocalTime.of(timeHours,(int)timeMinutes);
+        time = LocalTime.of(timeHours, (int) timeMinutes);
         this.canvas.setWidth(this.stage.getWidth());
         this.canvas.setHeight(this.stage.getHeight());
 
-        for(Npc npc : npcs){
-            npc.setNpcs(npcs);
-            Tile[][] tiles = this.grid.getTiles();
-            Direction direction = tiles[(int)(Math.round(npc.getPosition().getX()/16))][(int)(Math.round(npc.getPosition().getY()/16))].getDirections().get("canteen");
-           // System.out.println(direction);
-//            System.out.println((int)npc.getPosition().getX()/16 + " " + (int)npc.getPosition().getY()/16);
-//            System.out.println(tiles[18][81].getDirections().get("canteen"));
-            if(direction == Direction.ENDPOINT){
-                System.out.println("reached destination");
-            }
-            else if(direction == Direction.DOWN){
-                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()+16));
-            }
-            else if(direction == Direction.UP){
-                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()-16));
-            }
-            else if(direction == Direction.LEFT){
-                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX()-16,npc.getPosition().getY()));
-            }
-            else if(direction == Direction.RIGHT){
-                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX()+16,npc.getPosition().getY()));
-            }
-            else {
-                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()));
+//        for(Npc npc : npcs){
+//            npc.setNpcs(npcs);
+//           // Tile[][] tiles = this.grid.getTiles();
+//            Direction direction = this.allTiles[(int)(Math.round(npc.getPosition().getX()/16))][(int)(Math.round(npc.getPosition().getY()/16))].getDirections().get("canteen");
+//           // System.out.println(direction);
+////            System.out.println((int)npc.getPosition().getX()/16 + " " + (int)npc.getPosition().getY()/16);
+////            System.out.println(tiles[18][81].getDirections().get("canteen"));
+//            if(direction == Direction.ENDPOINT){
+//            //    System.out.println("reached destination");
+//            }
+//            else if(direction == Direction.DOWN){
+//                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()+16));
+//            }
+//            else if(direction == Direction.UP){
+//                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()-16));
+//            }
+//            else if(direction == Direction.LEFT){
+//                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX()-16,npc.getPosition().getY()));
+//            }
+//            else if(direction == Direction.RIGHT){
+//                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX()+16,npc.getPosition().getY()));
+//            }
+//            else {
+//                npc.moveTo(deltaTime,new Point2D.Double(npc.getPosition().getX(),npc.getPosition().getY()));
+//            }
+//        }
+
+//        for (LessonData lessonData : savedData.getLessonData()) {
+//            if (lessonData.beginTime.isBefore(time) || lessonData.beginTime.equals(time)) {
+//                System.out.println(lessonData.teacherId);
+//            }
+//        }
+
+        for (LessonData lessonData : this.savedData.getLessonData()) {
+            if (this.time.isAfter(lessonData.getBeginTime()) && this.time.isBefore(lessonData.getEndTime())) {
+                this.goToLesson = true;
+                System.out.println( lessonData.getStudentGroup().getStudentData().size());
+                for (StudentData studentData : lessonData.getStudentGroup().getStudentData()) {
+                    for (Npc npc : this.npcs) {
+                        npc.setNpcs(this.npcs);
+                        if (npc.getStudentData().getName().equals(studentData.getName())) {
+                            Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("LA" + lessonData.getClassRoom().getRoomName());
+                            System.out.println(direction);
+                            System.out.println(lessonData.getClassRoom().getRoomName());
+                            if (direction == Direction.ENDPOINT) {
+                                System.out.println("reached destination");
+                                this.goToLesson = false;
+                            } else if (direction == Direction.DOWN) {
+                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
+                            } else if (direction == Direction.UP) {
+                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
+                            } else if (direction == Direction.LEFT) {
+                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
+                            } else if (direction == Direction.RIGHT) {
+                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
+                            } else {
+                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
-
-        for(LessonData lessonData : savedData.getLessonData()){
-            if(lessonData.beginTime.isBefore(time) || lessonData.beginTime.equals(time)){
-                System.out.println(lessonData.teacherId);
-            }
-        }
-
 
 
     }
@@ -182,11 +222,11 @@ public class Simulation extends StandardObject {
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         graphics.setColor(Color.white);
-        graphics.drawString(time.toString(),100,100);
+        graphics.drawString(time.toString(), 100, 100);
         graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
-        this.grid.draw(graphics);
+      //  this.grid.draw(graphics);
 
     }
 
@@ -205,7 +245,7 @@ public class Simulation extends StandardObject {
         speedUp.setOnAction(event -> {
             getFrameworkProgram().setFactor(2);
         });
-        hBox.getChildren().addAll(slowDown,normal,speedUp);
+        hBox.getChildren().addAll(slowDown, normal, speedUp);
         borderPane.setTop(hBox);
         return this.borderPane;
     }

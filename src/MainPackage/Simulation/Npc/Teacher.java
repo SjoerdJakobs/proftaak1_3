@@ -1,5 +1,7 @@
 package MainPackage.Simulation.Npc;
 
+import MainPackage.ReadWriteData.DataClasses.StudentData;
+import MainPackage.ReadWriteData.SavedData;
 import OOFramework.FrameworkProgram;
 import org.jfree.fx.FXGraphics2D;
 
@@ -11,8 +13,8 @@ public class Teacher extends Npc {
 
 
 
-    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
-        super(frameworkProgram,graphics2D, position);
+    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
+        super(frameworkProgram,graphics2D, position, studentData);
 
     }
 

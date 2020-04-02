@@ -1,5 +1,6 @@
 package MainPackage.Simulation.Npc;
 
+import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.Simulation.Logic.Direction;
 import MainPackage.Simulation.Logic.LogicalTile;
 
@@ -30,10 +31,13 @@ public class Npc extends StandardObject {
     protected ArrayList<Npc> npcs = new ArrayList();
     public boolean waiting = false;
 
-    protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position) {
+    protected StudentData studentData;
+
+    protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
         super(frameworkProgram);
         this.graphics2D = graphics2D;
         this.position = position;
+        this.studentData = studentData;
         initializeSprites();
     }
 
@@ -146,29 +150,32 @@ public class Npc extends StandardObject {
         if(moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
         else this.speed = straightspeed;
 
-        Point2D.Double newPosition = new Point2D.Double(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
 
-        boolean collided = false;
 
-        for(Npc npc : npcs){
-            if(npc != this && newPosition.distance(npc.position) < 32){
-                collided = true;
-                if(npc.waiting){
-                    waiting = false;
-                }
-                else {
-                    waiting = true;
-                }
-            }
-        }
-        if(!collided){
-            position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
-        }
-        else {
-            if(!waiting){
-                position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
-            }
-        }
+        position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+//        Point2D.Double newPosition = new Point2D.Double(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+//
+//        boolean collided = false;
+//
+//        for(Npc npc : npcs){
+//            if(npc != this && newPosition.distance(npc.position) < 32){
+//                collided = true;
+//                if(npc.waiting){
+//                    waiting = false;
+//                }
+//                else {
+//                    waiting = true;
+//                }
+//            }
+//        }
+//        if(!collided){
+//            position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+//        }
+//        else {
+//            if(!waiting){
+//                position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
+//            }
+//        }
 
         if(target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
             target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10){
@@ -197,5 +204,8 @@ public class Npc extends StandardObject {
     }
 
 
+    public StudentData getStudentData() {
+        return studentData;
+    }
 }
 
