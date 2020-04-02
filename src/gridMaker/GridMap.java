@@ -100,6 +100,7 @@ public class GridMap {
         ArrayList<Point2D> LA303 = new ArrayList<>();
         ArrayList<Point2D> LA304 = new ArrayList<>();
         ArrayList<Point2D> LA305 = new ArrayList<>();
+        ArrayList<Point2D> entry = new ArrayList<>();
 
 
         for (int i = 0; i < this.objectLayer.size(); i++) {
@@ -147,6 +148,14 @@ public class GridMap {
                     width -= 16;
                     LA305.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
                 }
+
+            } else if(object.getString("name").equals("entry")){
+                int width = object.getInt("width");
+                while (width != 0){
+                    width -= 16;
+                    entry.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
+
+                }
             }
         }
 
@@ -156,6 +165,7 @@ public class GridMap {
         addRoute(LA303, "LA303");
         addRoute(LA304, "LA304");
         addRoute(LA305, "LA305");
+        addRoute(entry, "entry");
 
     }
 
