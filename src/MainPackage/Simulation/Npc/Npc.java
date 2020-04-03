@@ -1,5 +1,6 @@
 package MainPackage.Simulation.Npc;
 
+import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.Simulation.Logic.Direction;
 import MainPackage.Simulation.Logic.LogicalTile;
@@ -32,6 +33,7 @@ public class Npc extends StandardObject {
     public boolean waiting = false;
 
     protected boolean hasBreak = false;
+    protected ArrayList<LessonData> lessons = new ArrayList<>();
 
     protected StudentData studentData;
 
@@ -221,5 +223,18 @@ public class Npc extends StandardObject {
     public String getNameStudent(){
         return this.studentData.getName();
     }
+
+
+    public ArrayList<LessonData> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(ArrayList<LessonData> lessons) {
+        this.lessons = lessons;
+    }
+
+
+
+
 }
 
