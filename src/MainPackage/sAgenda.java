@@ -416,7 +416,7 @@ public class sAgenda extends StandardObject {
             });
 
             hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
-            Scene popScene = new Scene(hbox, 800, 400);
+            Scene popScene = new Scene(hbox, 400, 400);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
@@ -458,7 +458,6 @@ public class sAgenda extends StandardObject {
                 } else {
                     TeacherData newTeacher = new TeacherData(name.getText(), Integer.parseInt(age.getText()), Integer.parseInt(teacherID.getText()), gender.getValue());
                     if (canAddTeacher(newTeacher)) {
-                        System.out.println("Added new student");
                         this.savedData.getTeacherData().add(newTeacher);
                         popUpNew.close();
                         updateTeacherBox();
@@ -469,7 +468,7 @@ public class sAgenda extends StandardObject {
             });
 
             hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
-            Scene popScene = new Scene(hbox, 800, 400);
+            Scene popScene = new Scene(hbox, 400, 400);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
@@ -479,6 +478,9 @@ public class sAgenda extends StandardObject {
             popUpNew.initOwner(this.stage);
             popUpNew.initModality(Modality.APPLICATION_MODAL);
             popUpNew.setTitle("People manager");
+            popUpNew.setOnCloseRequest(event -> {
+                groupBoxes.clear();
+            });
 
             HBox hBox = new HBox();
             VBox vBoxLeft = new VBox();
@@ -500,10 +502,14 @@ public class sAgenda extends StandardObject {
             vBoxRight.getChildren().add(new Label("Teachers"));
             FlowPane teacherFlowPane = new FlowPane();
             ComboBox<String> teacherBox = new ComboBox<>();
-            updateTeacherBox();
+            teacherBox.setMaxWidth(125);
+            teacherBox.setPrefWidth(125);
             teacherFlowPane.getChildren().add(teacherBox);
             Button deleteButton = new Button("Delete");
-            deleteButton.setOnAction(event -> {removeTeacherFromData(teacherBox.getValue()); updateTeacherBox();});
+            deleteButton.setOnAction(event -> {
+                removeTeacherFromData(teacherBox.getValue());
+                updateTeacherBox();
+            });
             teacherFlowPane.getChildren().add(deleteButton);
 
             vBoxRight.getChildren().add(new Label("Group D"));
@@ -514,12 +520,16 @@ public class sAgenda extends StandardObject {
 
             groupBoxes.add(teacherBox);
             vBoxRight.getChildren().add(2, teacherFlowPane);
+            updateTeacherBox();
 
             hBox.getChildren().addAll(vBoxLeft, vBoxRight);
-            Scene popScene = new Scene(hBox, 600, 600);
+            Scene popScene = new Scene(hBox, 600, 300);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
+
+
+
 
         buttonBox.getChildren().addAll(newOne, saveAgenda, managePeople);
         agendaPane.setBottom(buttonBox);
@@ -533,6 +543,8 @@ public class sAgenda extends StandardObject {
         ComboBox<String> group = new ComboBox<>();
         groupBoxes.add(group);
         updateGroupBox(group, groupData);
+        group.setMaxWidth(125);
+        group.setPrefWidth(125);
         flowPane.getChildren().add(group);
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(event -> {removeStudentFromData(group.getValue()); updateGroupBox(group, groupData);});
@@ -543,33 +555,47 @@ public class sAgenda extends StandardObject {
     private void updateGroupBox(ComboBox<String> group, GroupData groupData){
         for(StudentData s : savedData.getStudentData()){
             if(s.getGroup().equals(groupData.name))
-                group.getItems().add(s.getName() + " " + s.getStudentID());
+                if(!group.getItems().contains(s.getName() + " " + s.getStudentID()))
+                    group.getItems().add(s.getName() + " " + s.getStudentID());
         }
     }
 
     private void updateTeacherBox(){
         for(TeacherData t : savedData.getTeacherData()){
-            groupBoxes.get(5).getItems().add(t.getName() + " " + t.getTeacherId());
+            if(!groupBoxes.get(5).getItems().contains(t.getName() + " " + t.getTeacherId()))
+                groupBoxes.get(5).getItems().add(t.getName() + " " + t.getTeacherId());
         }
     }
 
     private void removeStudentFromData(String person){
         while(person.contains(" ")){
-            person.substring(0, person.indexOf(" "));
+            person = person.substring(person.indexOf(" ") + 1);
         }
         for(StudentData s : savedData.getStudentData()){
-            if(s.getStudentID() == Integer.valueOf(person))
+            if(s.getStudentID() == Integer.valueOf(person)) {
                 savedData.getStudentData().remove(s);
+                GroupData groupData = studentGroups.get(0);
+                for(GroupData gd : studentGroups){
+                    if(gd.name.equals(s.getGroup())) { groupData = gd; break; }
+                }
+                groupBoxes.get(studentGroups.indexOf(groupData)).getItems().remove(s.getName() + " " + s.getStudentID());
+                groupBoxes.get(studentGroups.indexOf(groupData)).getSelectionModel().select("");
+                break;
+            }
         }
     }
 
     private void removeTeacherFromData(String person){
         while(person.contains(" ")){
-            person.substring(0, person.indexOf(" "));
+            person = person.substring(person.indexOf(" ") + 1);
         }
         for(TeacherData t : savedData.getTeacherData()){
-            if(t.getTeacherId() == Integer.valueOf(person))
+            if(t.getTeacherId() == Integer.valueOf(person)) {
                 savedData.getTeacherData().remove(t);
+                groupBoxes.get(5).getItems().remove(t.getName() + " " + t.getTeacherId());
+                groupBoxes.get(5).getSelectionModel().select("");
+                break;
+            }
         }
     }
 
