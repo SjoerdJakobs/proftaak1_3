@@ -100,7 +100,7 @@
          "name":"places",
          "objects":[
                 {
-                 "height":16,
+                 "height":112,
                  "id":3,
                  "name":"canteen",
                  "properties":[
@@ -112,12 +112,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":64,
-                 "x":768,
-                 "y":1200
+                 "width":832,
+                 "x":384,
+                 "y":1104
                 }, 
                 {
-                 "height":32,
+                 "height":128,
                  "id":6,
                  "name":"LA301",
                  "properties":[
@@ -129,12 +129,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
+                 "width":368,
                  "x":384,
-                 "y":928
+                 "y":880
                 }, 
                 {
-                 "height":32,
+                 "height":128,
                  "id":8,
                  "name":"LA302",
                  "properties":[
@@ -146,12 +146,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
-                 "x":1200,
-                 "y":928
+                 "width":368,
+                 "x":848,
+                 "y":880
                 }, 
                 {
-                 "height":32,
+                 "height":128,
                  "id":9,
                  "name":"LA303",
                  "properties":[
@@ -163,12 +163,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
+                 "width":368,
                  "x":384,
-                 "y":528
+                 "y":480
                 }, 
                 {
-                 "height":32,
+                 "height":128,
                  "id":10,
                  "name":"LA304",
                  "properties":[
@@ -180,9 +180,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16,
-                 "x":1200,
-                 "y":528
+                 "width":368,
+                 "x":848,
+                 "y":480
                 }, 
                 {
                  "height":16,
@@ -222,7 +222,7 @@
  "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.3.3",
+ "tiledversion":"1.3.2",
  "tileheight":16,
  "tilesets":[
         {

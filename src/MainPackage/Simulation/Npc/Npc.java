@@ -17,25 +17,28 @@ import java.util.ArrayList;
 
 public class Npc extends StandardObject {
     protected LogicalTile currentTile;
-    protected Point2D position;
+    private Point2D position;
     protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
     protected BufferedImage[] mySprites = new BufferedImage[12];
-    protected FXGraphics2D graphics2D;
-    protected int walkcyle = 0;
-    protected double timePassed = 0;
-    protected Direction direction = Direction.DOWN;
-    protected double speed = 100;
-    protected double straightspeed = speed;
-    protected double diagonalSpeed = speed/2;
-    protected Point2D target = null;
-    protected double cycleTime = 0.3;
-    protected ArrayList<Npc> npcs = new ArrayList();
+    private FXGraphics2D graphics2D;
+    private int walkcyle = 0;
+    private double timePassed = 0;
+    private Direction direction = Direction.DOWN;
+    private double speed = 100;
+    private double straightspeed = speed;
+    private double diagonalSpeed = speed / 2;
+    private Point2D target = null;
+    private double cycleTime = 0.3;
+    private ArrayList<Npc> npcs = new ArrayList();
     public boolean waiting = false;
+    private Point2D seat = null;
 
-    protected boolean hasBreak = false;
-    protected ArrayList<LessonData> lessons = new ArrayList<>();
+    private boolean hasBreak = false;
+    private ArrayList<LessonData> lessons = new ArrayList<>();
 
-    protected StudentData studentData;
+    private StudentData studentData;
+    private boolean atTarget = false;
+    private int targetRoom;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
         super(frameworkProgram);
@@ -54,8 +57,8 @@ public class Npc extends StandardObject {
     @Override
     protected void MainLoop(double deltaTime) {
         testCycle(deltaTime);
-        if(target != null){
-            if(moveTo(deltaTime, target)){
+        if (target != null) {
+            if (moveTo(deltaTime, target)) {
                 position.setLocation(target);
             }
         }
@@ -72,7 +75,7 @@ public class Npc extends StandardObject {
 
 
     public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
-     //   System.out.println("drawing!");
+        //   System.out.println("drawing!");
         int spriteLayer = 0;
         switch (direction) {
 
@@ -129,31 +132,67 @@ public class Npc extends StandardObject {
         }
     }
 
+    public void setAtTarget(boolean atTarget) {
+        this.atTarget = atTarget;
+    }
+
+    public boolean getAtTarget() {
+        return atTarget;
+    }
+
+    public void goToSeat() {
+        if (this.seat == null) {
+            this.seat = getRandomSeat();
+        } else {
+            position.setLocation(seat);
+        }
+    }
+
+    public void clearSeat(){
+        seat = null;
+    }
+
+    private Point2D getRandomSeat() {
+        switch (targetRoom) {
+            case 301:
+                return SeatsHelper.getRandomSeatLA301();
+            case 302:
+                return SeatsHelper.getRandomSeatLA302();
+            case 303:
+                return SeatsHelper.getRandomSeatLA303();
+            case 304:
+                return SeatsHelper.getRandomSeatLA304();
+            case 305:
+                return SeatsHelper.getRandomSeatLA305();
+            default:
+                return SeatsHelper.getRandomSeatCanteen();
+        }
+    }
+
     public boolean moveTo(double deltaTime, Point2D target) {
         int moveDirectionX, moveDirectionY;
-        if((int)target.getX() - (int)position.getX() < 0) {
+        if ((int) target.getX() - (int) position.getX() < 0) {
             moveDirectionX = -1;
             direction = Direction.LEFT;
-        } else if((int)target.getX() - (int)position.getX() > 0) {
+        } else if ((int) target.getX() - (int) position.getX() > 0) {
             moveDirectionX = 1;
             direction = Direction.RIGHT;
         } else {
             moveDirectionX = 0;
         }
 
-        if((int)target.getY() - (int)position.getY() < 0) {
+        if ((int) target.getY() - (int) position.getY() < 0) {
             moveDirectionY = -1;
             direction = Direction.UP;
-        } else if ((int)target.getY() - (int)position.getY() > 0) {
+        } else if ((int) target.getY() - (int) position.getY() > 0) {
             moveDirectionY = 1;
             direction = Direction.DOWN;
         } else {
             moveDirectionY = 0;
         }
 
-        if(moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
+        if (moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
         else this.speed = straightspeed;
-
 
 
         position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
@@ -181,29 +220,29 @@ public class Npc extends StandardObject {
 //            }
 //        }
 
-        if(target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
-            target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10){
+        if (target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
+                target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10) {
             return true;
         }
         return false;
     }
 
-    protected void draw(){
+    protected void draw() {
         graphics2D.drawImage(getImageToDraw(direction, true), getTransform(), null);
     }
 
     private AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
         tx.translate(position.getX() + 8, position.getY() + 8);
-      //  tx.rotate(0, 16, 16);
+        //  tx.rotate(0, 16, 16);
         return tx;
     }
 
-    public void setNpcs(ArrayList<Npc> npcs){
+    public void setNpcs(ArrayList<Npc> npcs) {
         this.npcs = npcs;
     }
 
-    public Point2D getPosition(){
+    public Point2D getPosition() {
         return position;
     }
 
@@ -220,7 +259,7 @@ public class Npc extends StandardObject {
         this.hasBreak = hasBreak;
     }
 
-    public String getNameStudent(){
+    public String getNameStudent() {
         return this.studentData.getName();
     }
 
@@ -234,7 +273,8 @@ public class Npc extends StandardObject {
     }
 
 
-
-
+    public void setTargetRoom(int roomName) {
+        this.targetRoom = roomName;
+    }
 }
 
