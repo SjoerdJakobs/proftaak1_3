@@ -104,7 +104,6 @@ public class sAgenda extends StandardObject {
     protected void Start() {
         super.Start();
         hourBlocks = new ArrayList<HourBlock>();
-
     }
 
     @Override
@@ -122,6 +121,7 @@ public class sAgenda extends StandardObject {
                         Stage popUpEdit = new Stage();
                         popUpEdit.initOwner(this.stage);
                         popUpEdit.initModality(Modality.APPLICATION_MODAL);
+                        popUpEdit.setTitle("Edit lesson");
 
                         HBox hbox = makeSceneLabelsForPopUp(new String[]{"Begin time: ", "End time: ", "Group: ", "Teacher: ", "Classroom: "});
 
@@ -147,7 +147,12 @@ public class sAgenda extends StandardObject {
                             teacher.getItems().add(teachers.get(i));
                         }
 
-
+                        // Fill in the saved values
+                        beginTime.setText(block.getBeginTime().toString());
+                        endTime.setText(block.getEndTime().toString());
+                        group.getSelectionModel().select(block.getLessonData().studentGroupId);
+                        teacher.getSelectionModel().select(block.getTeacher());
+                        room.getSelectionModel().select(block.getRoomNr());
 
                         popVBoxInformation.getChildren().add(beginTime);
                         popVBoxInformation.getChildren().add(endTime);
@@ -399,9 +404,9 @@ public class sAgenda extends StandardObject {
                     warningLabel.setText("Please enter an age.");
                 } else if (studentID.getText().isEmpty()) {
                     warningLabel.setText("Please enter a studentID");
-                } else if (group.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("Please select a gender.");
                 } else if (gender.getSelectionModel().isEmpty()) {
+                    warningLabel.setText("Please select a gender.");
+                } else if (group.getSelectionModel().isEmpty()) {
                     warningLabel.setText("Please select a group.");
                 } else {
                     StudentData newStudent = new StudentData(name.getText(), group.getValue().name, Integer.parseInt(age.getText()), Integer.parseInt(studentID.getText()), gender.getValue());
@@ -416,7 +421,7 @@ public class sAgenda extends StandardObject {
             });
 
             hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
-            Scene popScene = new Scene(hbox, 400, 400);
+            Scene popScene = new Scene(hbox, 550, 400);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
@@ -438,7 +443,6 @@ public class sAgenda extends StandardObject {
             gender.getItems().add(0, Gender.MALE);
             gender.getItems().add(1, Gender.FEMALE);
 
-
             popVBoxInformation.getChildren().add(name);
             popVBoxInformation.getChildren().add(age);
             popVBoxInformation.getChildren().add(teacherID);
@@ -454,7 +458,7 @@ public class sAgenda extends StandardObject {
                 } else if (teacherID.getText().isEmpty()) {
                     warningLabel.setText("Please enter a teacherID");
                 } else if (gender.getSelectionModel().isEmpty()) {
-                    warningLabel.setText("Please select a group.");
+                    warningLabel.setText("Please select a gender.");
                 } else {
                     TeacherData newTeacher = new TeacherData(name.getText(), Integer.parseInt(age.getText()), Integer.parseInt(teacherID.getText()), gender.getValue());
                     if (canAddTeacher(newTeacher)) {
@@ -468,11 +472,12 @@ public class sAgenda extends StandardObject {
             });
 
             hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
-            Scene popScene = new Scene(hbox, 400, 400);
+            Scene popScene = new Scene(hbox, 550, 400);
             popUpNew.setScene(popScene);
             popUpNew.show();
         });
 
+        /** Opens a PopUp that gives the user the ability to add and delete people from groups */ 
         managePeople.setOnAction(e -> {
             final Stage popUpNew = new Stage();
             popUpNew.initOwner(this.stage);
@@ -486,6 +491,8 @@ public class sAgenda extends StandardObject {
             VBox vBoxLeft = new VBox();
             VBox vBoxRight = new VBox();
 
+            Label warningLabel = new Label("");
+
             vBoxLeft.getChildren().add(addStudent);
 
             vBoxLeft.getChildren().add(new Label("Group A"));
@@ -497,7 +504,10 @@ public class sAgenda extends StandardObject {
             vBoxLeft.getChildren().add(new Label("Group C"));
             vBoxLeft.getChildren().add(buildGroupRow(studentGroups.get(2)));
 
-            vBoxRight.getChildren().add(addTeacher);
+            HBox buttonRow = new HBox();
+            buttonRow.getChildren().add(addTeacher);
+            buttonRow.getChildren().add(warningLabel);
+            vBoxRight.getChildren().add(buttonRow);
 
             vBoxRight.getChildren().add(new Label("Teachers"));
             FlowPane teacherFlowPane = new FlowPane();
@@ -507,7 +517,11 @@ public class sAgenda extends StandardObject {
             teacherFlowPane.getChildren().add(teacherBox);
             Button deleteButton = new Button("Delete");
             deleteButton.setOnAction(event -> {
-                removeTeacherFromData(teacherBox.getValue());
+                if(!removeTeacherFromData(teacherBox.getValue())){
+                    warningLabel.setText("This teacher has a lesson planned.\nPlease remove this lesson first.");
+                } else {
+                    warningLabel.setText("");
+                }
                 updateTeacherBox();
             });
             teacherFlowPane.getChildren().add(deleteButton);
@@ -528,9 +542,6 @@ public class sAgenda extends StandardObject {
             popUpNew.show();
         });
 
-
-
-
         buttonBox.getChildren().addAll(newOne, saveAgenda, managePeople);
         agendaPane.setBottom(buttonBox);
         agendaPane.setTop(this.canvas);
@@ -538,6 +549,7 @@ public class sAgenda extends StandardObject {
         return agendaPane;
     }
 
+    /** Return a FlowPane with a new ComboBox and DeleteButton for a new Studentgroup */
     private FlowPane buildGroupRow(GroupData groupData){
         FlowPane flowPane = new FlowPane();
         ComboBox<String> group = new ComboBox<>();
@@ -552,6 +564,7 @@ public class sAgenda extends StandardObject {
         return flowPane;
     }
 
+    /** Update the teacher ComboBox with all the studentData from the SavedData enum */
     private void updateGroupBox(ComboBox<String> group, GroupData groupData){
         for(StudentData s : savedData.getStudentData()){
             if(s.getGroup().equals(groupData.name))
@@ -560,6 +573,7 @@ public class sAgenda extends StandardObject {
         }
     }
 
+    /** Update the teacher ComboBox with all the teacherData from the SavedData enum */
     private void updateTeacherBox(){
         for(TeacherData t : savedData.getTeacherData()){
             if(!groupBoxes.get(5).getItems().contains(t.getName() + " " + t.getTeacherId()))
@@ -567,6 +581,8 @@ public class sAgenda extends StandardObject {
         }
     }
 
+    /** Remove the person from the savedData.studentData ArrayList
+     *  Remove the person from the correlating ComboBox */
     private void removeStudentFromData(String person){
         while(person.contains(" ")){
             person = person.substring(person.indexOf(" ") + 1);
@@ -585,20 +601,28 @@ public class sAgenda extends StandardObject {
         }
     }
 
-    private void removeTeacherFromData(String person){
+    /** Remove the person from the savedData.teacherData ArrayList
+     *  Remove the person from the ComboBox */
+    private boolean removeTeacherFromData(String person){
         while(person.contains(" ")){
             person = person.substring(person.indexOf(" ") + 1);
         }
         for(TeacherData t : savedData.getTeacherData()){
             if(t.getTeacherId() == Integer.valueOf(person)) {
+                // Check of the teacher has any lessons planned
+                for(HourBlock block : hourBlocks){
+                    if(block.getTeacher().getTeacherId() == Integer.valueOf(person)) { return false; }
+                }
                 savedData.getTeacherData().remove(t);
                 groupBoxes.get(5).getItems().remove(t.getName() + " " + t.getTeacherId());
                 groupBoxes.get(5).getSelectionModel().select("");
                 break;
             }
         }
+        return true;
     }
 
+    /** Create labels from the receiving Strings and return them in a HBox */
     private HBox makeSceneLabelsForPopUp(String[] labels) {
         HBox popHBox = new HBox(20);
 
@@ -612,6 +636,7 @@ public class sAgenda extends StandardObject {
         return popHBox;
     }
 
+    /** Check if we can add the lesson to the agenda */
     private boolean canAddLesson(LessonData lesson) {
         ArrayList<LessonData> teachersavedData = this.savedData.getTeacherLessons(lesson.getTeacher());
         ArrayList<LessonData> classRoomsavedData = this.savedData.getClassroomLessons(lesson.getClassRoom());
@@ -673,6 +698,7 @@ public class sAgenda extends StandardObject {
         return true;
     }
 
+    /** Return true if the student doesn't exist yet */
     private boolean canAddStudent(StudentData newStudent) {
         ArrayList<StudentData> students = this.savedData.getStudentData();
 
@@ -688,6 +714,7 @@ public class sAgenda extends StandardObject {
         return true;
     }
 
+    /** Return true if the teacher doesn't exist yet */
     private boolean canAddTeacher(TeacherData newTeacher) {
         ArrayList<TeacherData> teachers = this.savedData.getTeacherData();
 
