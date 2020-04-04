@@ -1,5 +1,6 @@
 package MainPackage.Simulation.Npc;
 
+import Data.Lesson;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.Simulation.Logic.Direction;
@@ -13,7 +14,10 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Npc extends StandardObject {
     protected LogicalTile currentTile;
@@ -26,7 +30,7 @@ public class Npc extends StandardObject {
     protected Direction direction = Direction.DOWN;
     protected double speed = 100;
     protected double straightspeed = speed;
-    protected double diagonalSpeed = speed/2;
+    protected double diagonalSpeed = speed / 2;
     protected Point2D target = null;
     protected double cycleTime = 0.3;
     protected ArrayList<Npc> npcs = new ArrayList();
@@ -34,6 +38,7 @@ public class Npc extends StandardObject {
 
     protected boolean hasBreak = false;
     protected ArrayList<LessonData> lessons = new ArrayList<>();
+    protected boolean isMoved = false;
 
     protected StudentData studentData;
 
@@ -54,8 +59,8 @@ public class Npc extends StandardObject {
     @Override
     protected void MainLoop(double deltaTime) {
         testCycle(deltaTime);
-        if(target != null){
-            if(moveTo(deltaTime, target)){
+        if (target != null) {
+            if (moveTo(deltaTime, target)) {
                 position.setLocation(target);
             }
         }
@@ -72,7 +77,7 @@ public class Npc extends StandardObject {
 
 
     public BufferedImage getImageToDraw(Direction direction, boolean isWalking) {
-     //   System.out.println("drawing!");
+        //   System.out.println("drawing!");
         int spriteLayer = 0;
         switch (direction) {
 
@@ -131,29 +136,28 @@ public class Npc extends StandardObject {
 
     public boolean moveTo(double deltaTime, Point2D target) {
         int moveDirectionX, moveDirectionY;
-        if((int)target.getX() - (int)position.getX() < 0) {
+        if ((int) target.getX() - (int) position.getX() < 0) {
             moveDirectionX = -1;
             direction = Direction.LEFT;
-        } else if((int)target.getX() - (int)position.getX() > 0) {
+        } else if ((int) target.getX() - (int) position.getX() > 0) {
             moveDirectionX = 1;
             direction = Direction.RIGHT;
         } else {
             moveDirectionX = 0;
         }
 
-        if((int)target.getY() - (int)position.getY() < 0) {
+        if ((int) target.getY() - (int) position.getY() < 0) {
             moveDirectionY = -1;
             direction = Direction.UP;
-        } else if ((int)target.getY() - (int)position.getY() > 0) {
+        } else if ((int) target.getY() - (int) position.getY() > 0) {
             moveDirectionY = 1;
             direction = Direction.DOWN;
         } else {
             moveDirectionY = 0;
         }
 
-        if(moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
+        if (moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
         else this.speed = straightspeed;
-
 
 
         position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
@@ -181,29 +185,29 @@ public class Npc extends StandardObject {
 //            }
 //        }
 
-        if(target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
-            target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10){
+        if (target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
+                target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10) {
             return true;
         }
         return false;
     }
 
-    protected void draw(){
+    protected void draw() {
         graphics2D.drawImage(getImageToDraw(direction, true), getTransform(), null);
     }
 
     private AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
         tx.translate(position.getX() + 8, position.getY() + 8);
-      //  tx.rotate(0, 16, 16);
+        //  tx.rotate(0, 16, 16);
         return tx;
     }
 
-    public void setNpcs(ArrayList<Npc> npcs){
+    public void setNpcs(ArrayList<Npc> npcs) {
         this.npcs = npcs;
     }
 
-    public Point2D getPosition(){
+    public Point2D getPosition() {
         return position;
     }
 
@@ -220,7 +224,7 @@ public class Npc extends StandardObject {
         this.hasBreak = hasBreak;
     }
 
-    public String getNameStudent(){
+    public String getNameStudent() {
         return this.studentData.getName();
     }
 
@@ -233,8 +237,43 @@ public class Npc extends StandardObject {
         this.lessons = lessons;
     }
 
+    public boolean isMoved() {
+        return isMoved;
+    }
+
+    public void setMoved(boolean moved) {
+        isMoved = moved;
+    }
+
+    public void sortList(LocalTime time) {
+
+        Collections.sort(this.lessons, new Comparator<LessonData>() {
+            @Override
+            public int compare(LessonData o1, LessonData o2) {
+                int lesson1 = (o1.getBeginTime().getHour()*60) + o1.getBeginTime().getMinute();
+                int lesson2 = (o2.getBeginTime().getHour()*60) + o2.getBeginTime().getMinute();
 
 
+                return lesson1 - lesson2;
+            }
+        });
 
+        for(LessonData lessonData : this.lessons){
+            if(time.isAfter(lessonData.getEndTime())){
+                this.lessons.remove(lessonData);
+            }
+        }
+
+
+    }
+
+    public boolean hasLessons(){
+        if(this.lessons.size() >= 1){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
 

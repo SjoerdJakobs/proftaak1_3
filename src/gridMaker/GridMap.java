@@ -190,22 +190,6 @@ public class GridMap {
             }
         }
 
-//
-//
-//        if(isInGrid(x1,y1) && isInGrid(x2,y2)){
-//            nextList = new LinkedList<Tile>();
-//
-//            this.tiles[y1][x1].setDestination(true);
-//            this.tiles[y1][x1].getDirections().put(route, Direction.ENDPOINT);
-//            this.tiles[y1][x1].setHasBeenSet(true);
-//
-//            this.tiles[y2][x2].setDestination(true);
-//            this.tiles[y2][x2].getDirections().put(route, Direction.ENDPOINT);
-//            this.tiles[y2][x2].setHasBeenSet(true);
-//
-//
-//            CheckNonDiagonalNeighbours(x1, y1, route);
-//            CheckNonDiagonalNeighbours(x2, y2, route);
 
         while (!nextList.isEmpty()) {
 
@@ -219,9 +203,6 @@ public class GridMap {
 
             this.tiles[x][y].setDestination(false);
         }
-
-//        this.tiles[y1][x1].setDestination(false);
-//        this.tiles[y2][x2].setDestination(false);
 
         for (int yTile = 0; yTile < this.mapHeight; yTile++) {
             for (int xTile = 0; xTile < this.mapWidth; xTile++) {

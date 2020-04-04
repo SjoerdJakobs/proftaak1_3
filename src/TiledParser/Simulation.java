@@ -183,6 +183,10 @@ public class Simulation extends StandardObject {
             }
         }
 
+        for(Npc npc : this.npcs){
+            npc.sortList(this.time);
+        }
+
 
         for (Npc npc : this.npcs) {
 
@@ -205,13 +209,14 @@ public class Simulation extends StandardObject {
                     npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
                 }
             } else {
-                for (LessonData lesson : npc.getLessons()) {
 
-                    if (this.time.isAfter(lesson.getBeginTime()) && this.time.isBefore(lesson.getEndTime())) {
-                        Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("LA" + lesson.getClassRoom().getRoomName());
-                        //  System.out.println(direction);
+                if(npc.hasLessons()){
+                    if (this.time.isAfter(npc.getLessons().get(0).getBeginTime()) && this.time.isBefore(npc.getLessons().get(0).getEndTime())) {
+                        Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("LA" + npc.getLessons().get(0).getClassRoom().getRoomName());
+//                              System.out.println(direction);
                         //System.out.println(lessonData.getClassRoom().getRoomName());
                         if (direction == Direction.ENDPOINT) {
+                            npc.getLessons().remove(0);
                             //         System.out.println("reached destination");
                         } else if (direction == Direction.DOWN) {
                             npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
@@ -224,31 +229,80 @@ public class Simulation extends StandardObject {
                         } else {
                             npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
                         }
-                    }
-                    else {
+                    } else {
+                        //       npc.setMoved(true);
                         Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("canteen");
-                            //  System.out.println(direction);
-                            //System.out.println(lessonData.getClassRoom().getRoomName());
-                            if (direction == Direction.ENDPOINT) {
-                                //         System.out.println("reached destination");
-                                this.goToLesson = false;
-                            } else if (direction == Direction.DOWN) {
-                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
-                            } else if (direction == Direction.UP) {
-                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
-                            } else if (direction == Direction.LEFT) {
-                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
-                            } else if (direction == Direction.RIGHT) {
-                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
-                            } else {
-                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
-                            }
+                        //  System.out.println(direction);
+                        //System.out.println(lessonData.getClassRoom().getRoomName());
+                        if (direction == Direction.ENDPOINT) {
+                            //         System.out.println("reached destination");
+                            this.goToLesson = false;
+                        } else if (direction == Direction.DOWN) {
+                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
+                        } else if (direction == Direction.UP) {
+                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
+                        } else if (direction == Direction.LEFT) {
+                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
+                        } else if (direction == Direction.RIGHT) {
+                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
+                        } else {
+                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
+                        }
                     }
                 }
+
             }
+
+//                for (LessonData lesson : npc.getLessons()) {
+//
+//                    if (!npc.isMoved()) {
+//                        if (this.time.isAfter(lesson.getBeginTime()) && this.time.isBefore(lesson.getEndTime())) {
+//                            npc.setMoved(true);
+//                            Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("LA" + lesson.getClassRoom().getRoomName());
+////                              System.out.println(direction);
+//                            //System.out.println(lessonData.getClassRoom().getRoomName());
+//                            if (direction == Direction.ENDPOINT) {
+//                                //         System.out.println("reached destination");
+//                            } else if (direction == Direction.DOWN) {
+//                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
+//                            } else if (direction == Direction.UP) {
+//                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
+//                            } else if (direction == Direction.LEFT) {
+//                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
+//                            } else if (direction == Direction.RIGHT) {
+//                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
+//                            } else {
+//                                npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
+//                            }
+//                        }
+//                    } else {
+//                        //       npc.setMoved(true);
+//                        Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("canteen");
+//                        //  System.out.println(direction);
+//                        //System.out.println(lessonData.getClassRoom().getRoomName());
+//                        if (direction == Direction.ENDPOINT) {
+//                            //         System.out.println("reached destination");
+//                            this.goToLesson = false;
+//                        } else if (direction == Direction.DOWN) {
+//                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
+//                        } else if (direction == Direction.UP) {
+//                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
+//                        } else if (direction == Direction.LEFT) {
+//                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
+//                        } else if (direction == Direction.RIGHT) {
+//                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
+//                        } else {
+//                            npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
+//                        }
+//                    }
+//
+//                }
+
+
         }
 
         for (Npc npc : this.npcs) {
+            npc.setMoved(false);
             npc.getLessons().clear();
         }
 
