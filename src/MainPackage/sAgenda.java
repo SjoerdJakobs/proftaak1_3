@@ -2,8 +2,10 @@ package MainPackage;
 
 import Data.Gender;
 import Data.Rooms.ClassRoom;
+import Data.Teacher;
 import MainPackage.ReadWriteData.DataClasses.GroupData;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
+import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import MainPackage.ReadWriteData.DataWriter;
 import MainPackage.ReadWriteData.SavedData;
@@ -72,23 +74,20 @@ public class sAgenda extends StandardObject {
         studentGroups = new ArrayList<>();
 
         //Load in teachers, classrooms and studentgroups later for now manual
-        teachers.add(new TeacherData("Johan", 30, 1, Gender.MALE));
-        teachers.add(new TeacherData("Jessica", 30, 2, Gender.FEMALE));
-        teachers.add(new TeacherData("Maurice", 30, 3, Gender.MALE));
-        teachers.add(new TeacherData("Hans", 30, 4, Gender.MALE));
-        teachers.add(new TeacherData("Joep", 30, 5, Gender.MALE));
+        teachers = this.savedData.getTeacherData();
+        studentGroups = this.savedData.getGroupData();
 
-        classrooms.add(new ClassRoom(300));
         classrooms.add(new ClassRoom(301));
         classrooms.add(new ClassRoom(302));
         classrooms.add(new ClassRoom(303));
         classrooms.add(new ClassRoom(304));
+        classrooms.add(new ClassRoom(305));
 
-        studentGroups.add(new GroupData("A"));
-        studentGroups.add(new GroupData("B"));
-        studentGroups.add(new GroupData("C"));
-        studentGroups.add(new GroupData("D"));
-        studentGroups.add(new GroupData("E"));
+//        studentGroups.add(new GroupData("A"));
+//        studentGroups.add(new GroupData("B"));
+//        studentGroups.add(new GroupData("C"));
+//        studentGroups.add(new GroupData("D"));
+//        studentGroups.add(new GroupData("E"));
 
     }
 
@@ -107,7 +106,7 @@ public class sAgenda extends StandardObject {
         super.Start();
         hourBlocks = new ArrayList<HourBlock>();
 
-  }
+    }
 
     @Override
     protected void InputLoop(double deltaTime) {
@@ -125,7 +124,7 @@ public class sAgenda extends StandardObject {
                         popUpEdit.initOwner(this.stage);
                         popUpEdit.initModality(Modality.APPLICATION_MODAL);
 
-                        HBox hbox = makeSceneEditLesson();
+                        HBox hbox = makeSceneLabelsForPopUp(new String[]{"Begin time: ", "End time: ", "Group: ", "Teacher: ", "Classroom: "});
 
                         VBox popVBoxInformation = new VBox(10);
 
@@ -137,21 +136,18 @@ public class sAgenda extends StandardObject {
 
                         Label warning = new Label();
 
-                        //this.groups.clear();
-//                        this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
-//                        for (Lesson lesson : savedData.getLessonData()) {
-//                            this.groups.add(lesson.getStudentGroup());
-//                                      teacher.getItems().add(lesson.getTeacher());
-//                            room.getItems().add(lesson.getClassRoom());
-//                        }
-//                        for (StudentGroup sg : this.groups) {
-//                            group.getItems().add(sg);
-//                        }
-                        for(int i = 0; i<5; i++){
-                            group.getItems().addAll(studentGroups.get(i));
-                            teacher.getItems().add(teachers.get(i));
+                        for (int i = 0; i < this.classrooms.size(); i++) {
                             room.getItems().add(classrooms.get(i));
                         }
+
+                        for (int i = 0; i < this.studentGroups.size(); i++) {
+                            group.getItems().addAll(studentGroups.get(i));
+                        }
+
+                        for (int i = 0; i < this.teachers.size(); i++) {
+                            teacher.getItems().add(teachers.get(i));
+                        }
+
 
 
                         popVBoxInformation.getChildren().add(beginTime);
@@ -176,7 +172,7 @@ public class sAgenda extends StandardObject {
                                 } else {
                                     LessonData clickedBlockLesson = getClickedBlockLesson(block);
                                     savedData.getLessonData().remove(clickedBlockLesson);
-                                    if(canAddLesson(clickedBlockLesson)){
+                                    if (canAddLesson(clickedBlockLesson)) {
                                         System.out.println("Edit");
                                         clickedBlockLesson.setTeacher(teacher.getValue());
                                         clickedBlockLesson.setClassRoom(room.getValue());
@@ -185,22 +181,13 @@ public class sAgenda extends StandardObject {
                                         clickedBlockLesson.setEndTime(LocalTime.parse(endTime.getText()));
                                         this.savedData.getLessonData().add(clickedBlockLesson);
                                         popUpEdit.close();
-                                    }
-                                    else {
+                                    } else {
                                         warning.setText("Cant edit");
                                     }
-//                                    block.getLesson().setBeginTime(LocalTime.parse(beginTime.getText()));
-//                                    block.getLesson().setEndTime(LocalTime.parse(endTime.getText()));
-//                                    block.getLesson().setStudentGroup(group.getValue());
-//                                    block.getLesson().setClassRoom(room.getValue());
-//                                    block.getLesson().setTeacher(teacher.getValue());
-
                                 }
                             } catch (DateTimeParseException dtpe) {
                                 warning.setText("Please enter a valid time in a form of 08:00, not something else!");
                             }
-
-
                         });
 
 
@@ -223,11 +210,9 @@ public class sAgenda extends StandardObject {
                     }
                 }
             }
-
         });
-
-
     }
+
 
     @Override
     protected void MainLoop(double deltaTime) {
@@ -252,7 +237,6 @@ public class sAgenda extends StandardObject {
 
         graphics2D.setColor(Color.white);
         graphics2D.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-//        graphics2D.fillRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
         this.xStepSize = canvas.getWidth() / hours;
         this.yStepSize = canvas.getHeight() / rooms;
@@ -294,11 +278,14 @@ public class sAgenda extends StandardObject {
 
         Button newOne = new Button("NEW");
         Button saveAgenda = new Button("SAVE");
+        Button addStudent = new Button("ADD STUDENT");
+        Button addTeacher = new Button("ADD TEACHER");
 
         Button savePopUp = new Button("SAVE");
         Button delete = new Button("DELETE");
         Button edit = new Button("EDIT");
 
+        /** The save button logic. */
         saveAgenda.setOnAction(event -> {
             try {
                 this.dataWriter.Save();
@@ -309,36 +296,41 @@ public class sAgenda extends StandardObject {
             }
         });
 
+        /** Makes a window pop up to add a Lesson to the program. */
         newOne.setOnAction(e -> {
             final Stage popUpNew = new Stage();
             popUpNew.initOwner(this.stage);
             popUpNew.initModality(Modality.APPLICATION_MODAL);
             popUpNew.setTitle("create a lesson");
 
-            HBox hbox = makeSceneEditLesson();
+            HBox hbox = makeSceneLabelsForPopUp(new String[]{"Begin time: ", "End time: ", "Group: ", "Teacher: ", "Classroom: "});
             VBox popVBoxInformation = new VBox(10);
             TextField beginTime = new TextField();
             TextField endTime = new TextField();
             ComboBox<GroupData> group = new ComboBox();
             ComboBox<TeacherData> teacher = new ComboBox<>();
             ComboBox<ClassRoom> room = new ComboBox<>();
-
-//            this.groups.clear();
-//            this.savedData.getLessonData() = agenda.getsavedData.getLessonData()();
-//            for (Lesson lesson : savedData.getLessonData()) {
-//                this.groups.add(lesson.getStudentGroup());
-//                teachers.getItems().add(lesson.getTeacher());
-//                rooms.getItems().add(lesson.getClassRoom());
+//
+//            for (int i = 0; i < 5; i++) {
+//                group.getItems().addAll(studentGroups.get(i));
+//                room.getItems().add(classrooms.get(i));
 //            }
-//            for (StudentGroup sg : this.groups) {
-//                group.getItems().add(sg);
+//
+//            for (TeacherData t : teachers) {
+//                teacher.getItems().add(t);
 //            }
-
-            for(int i = 0; i<5; i++){
-                group.getItems().addAll(studentGroups.get(i));
-                teacher.getItems().add(teachers.get(i));
+            for (int i = 0; i < this.classrooms.size(); i++) {
                 room.getItems().add(classrooms.get(i));
             }
+
+            for (int i = 0; i < this.studentGroups.size(); i++) {
+                group.getItems().addAll(studentGroups.get(i));
+            }
+
+            for (int i = 0; i < this.teachers.size(); i++) {
+                teacher.getItems().add(teachers.get(i));
+            }
+
 
 
             popVBoxInformation.getChildren().add(beginTime);
@@ -361,12 +353,14 @@ public class sAgenda extends StandardObject {
                         warningLabel.setText("please enter a correct value at teacher.");
                     } else {
                         LessonData newLesson = new LessonData(group.getValue(), teacher.getValue(), LocalTime.parse(beginTime.getText()), LocalTime.parse(endTime.getText()), room.getValue());
-                        if(canAddLesson(newLesson)){
+                        if (canAddLesson(newLesson)) {
                             System.out.println("added new lesson");
+                            System.out.println( newLesson.toString());
+                            System.out.println("de grote van de studenten lijst: " + group.getValue().getStudentData().size());
+
                             this.savedData.getLessonData().add(newLesson);
                             popUpNew.close();
-                        }
-                        else {
+                        } else {
                             System.out.println("not valid");
                             warningLabel.setText("This lesson cannot be added");
                         }
@@ -383,109 +377,227 @@ public class sAgenda extends StandardObject {
             popUpNew.show();
         });
 
-        buttonBox.getChildren().addAll(newOne, saveAgenda);
+
+        /** Makes a window pop up to add a Student to the program. */
+        addStudent.setOnAction(e -> {
+            final Stage popUpNew = new Stage();
+            popUpNew.initOwner(this.stage);
+            popUpNew.initModality(Modality.APPLICATION_MODAL);
+            popUpNew.setTitle("add a student");
+
+            HBox hbox = makeSceneLabelsForPopUp(new String[]{"Name: ", "Age: ", "StudentID: ", "Gender: ", "Group: "});
+            VBox popVBoxInformation = new VBox(10);
+            TextField name = new TextField();
+            TextField age = new TextField();
+            TextField studentID = new TextField();
+            ComboBox<GroupData> group = new ComboBox();
+            ComboBox<Gender> gender = new ComboBox<>();
+
+            gender.getItems().add(0, Gender.MALE);
+            gender.getItems().add(1, Gender.FEMALE);
+            for (int i = 0; i < 5; i++) {
+                group.getItems().addAll(studentGroups.get(i));
+            }
+
+            popVBoxInformation.getChildren().add(name);
+            popVBoxInformation.getChildren().add(age);
+            popVBoxInformation.getChildren().add(studentID);
+            popVBoxInformation.getChildren().add(gender);
+            popVBoxInformation.getChildren().add(group);
+
+            Label warningLabel = new Label();
+
+            savePopUp.setOnAction(ex -> {
+                if (name.getText().isEmpty()) {
+                    warningLabel.setText("Please enter a name.");
+                } else if (age.getText().isEmpty()) {
+                    warningLabel.setText("Please enter an age.");
+                } else if (studentID.getText().isEmpty()) {
+                    warningLabel.setText("Please enter a studentID");
+                } else if (group.getSelectionModel().isEmpty()) {
+                    warningLabel.setText("Please select a gender.");
+                } else if (gender.getSelectionModel().isEmpty()) {
+                    warningLabel.setText("Please select a group.");
+                } else {
+                    StudentData newStudent = new StudentData(name.getText(), group.getValue().name, Integer.parseInt(age.getText()), Integer.parseInt(studentID.getText()), gender.getValue());
+                    if (canAddStudent(newStudent)) {
+                        this.savedData.getStudentData().add(newStudent);
+                        popUpNew.close();
+                    } else {
+                        warningLabel.setText("Student already exists.");
+                    }
+                }
+            });
+
+            hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
+            Scene popScene = new Scene(hbox, 800, 400);
+            popUpNew.setScene(popScene);
+            popUpNew.show();
+        });
+
+        /** Makes a window pop up to add a Teacher to the program. */
+        addTeacher.setOnAction(e -> {
+            final Stage popUpNew = new Stage();
+            popUpNew.initOwner(this.stage);
+            popUpNew.initModality(Modality.APPLICATION_MODAL);
+            popUpNew.setTitle("Add a teacher");
+
+            HBox hbox = makeSceneLabelsForPopUp(new String[]{"Name: ", "Age: ", "TeacherID: ", "Gender: "});
+            VBox popVBoxInformation = new VBox(10);
+            TextField name = new TextField();
+            TextField age = new TextField();
+            TextField teacherID = new TextField();
+            ComboBox<Gender> gender = new ComboBox<>();
+
+            gender.getItems().add(0, Gender.MALE);
+            gender.getItems().add(1, Gender.FEMALE);
+
+
+            popVBoxInformation.getChildren().add(name);
+            popVBoxInformation.getChildren().add(age);
+            popVBoxInformation.getChildren().add(teacherID);
+            popVBoxInformation.getChildren().add(gender);
+
+            Label warningLabel = new Label();
+
+            savePopUp.setOnAction(ex -> {
+                if (name.getText().isEmpty()) {
+                    warningLabel.setText("Please enter a name.");
+                } else if (age.getText().isEmpty()) {
+                    warningLabel.setText("Please enter an age.");
+                } else if (teacherID.getText().isEmpty()) {
+                    warningLabel.setText("Please enter a teacherID");
+                } else if (gender.getSelectionModel().isEmpty()) {
+                    warningLabel.setText("Please select a group.");
+                } else {
+                    TeacherData newTeacher = new TeacherData(name.getText(), Integer.parseInt(age.getText()), Integer.parseInt(teacherID.getText()), gender.getValue());
+                    if (canAddTeacher(newTeacher)) {
+                        System.out.println("Added new student");
+                        this.savedData.getTeacherData().add(newTeacher);
+                        popUpNew.close();
+                    } else {
+                        warningLabel.setText("Teacher already exists.");
+                    }
+                }
+            });
+
+            hbox.getChildren().addAll(popVBoxInformation, savePopUp, warningLabel);
+            Scene popScene = new Scene(hbox, 800, 400);
+            popUpNew.setScene(popScene);
+            popUpNew.show();
+        });
+
+        buttonBox.getChildren().addAll(newOne, saveAgenda, addStudent, addTeacher);
         agendaPane.setBottom(buttonBox);
         agendaPane.setTop(this.canvas);
-
 
         return agendaPane;
     }
 
-
-    private HBox makeSceneEditLesson() {
+    private HBox makeSceneLabelsForPopUp(String[] labels) {
         HBox popHBox = new HBox(20);
 
         VBox popVBoxLabels = new VBox(20);
 
-        popVBoxLabels.getChildren().add(new Label("Begin time: "));
-        popVBoxLabels.getChildren().add(new Label("End time: "));
-        popVBoxLabels.getChildren().add(new Label("Group: "));
-        popVBoxLabels.getChildren().add(new Label("Teacher: "));
-        popVBoxLabels.getChildren().add(new Label("Classroom: "));
+        for (String l : labels) {
+            popVBoxLabels.getChildren().add(new Label(l));
+        }
 
         popHBox.getChildren().addAll(popVBoxLabels);
         return popHBox;
     }
 
-
-    private boolean canAddLesson(LessonData lesson){
+    private boolean canAddLesson(LessonData lesson) {
         ArrayList<LessonData> teachersavedData = this.savedData.getTeacherLessons(lesson.getTeacher());
         ArrayList<LessonData> classRoomsavedData = this.savedData.getClassroomLessons(lesson.getClassRoom());
         ArrayList<LessonData> studentGroupsavedData = this.savedData.getStudentGroupLessons(lesson.getStudentGroup());
 
         //Check if teacher is available
-        if(teachersavedData != null){
+        if (teachersavedData != null) {
 
-        for(LessonData teacherLesson : teachersavedData){
-            //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
-            if((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))){
-                return false;
+            for (LessonData teacherLesson : teachersavedData) {
+                if ((lesson.getBeginTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(teacherLesson.getEndTime())))) {
+                    return false;
+                } else if ((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))) {
+                    return false;
+                } else if ((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime())) && (teacherLesson.getEndTime().isBefore(lesson.getEndTime()))) {
+                    return false;
+                } else if (lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()) == 0) {
+                    return false;
+                } else if (lesson.getEndTime().compareTo(teacherLesson.getEndTime()) == 0) {
+                    return false;
+                }
             }
-            else if((lesson.getEndTime().isAfter(teacherLesson.getBeginTime()) && (lesson.getEndTime().isBefore(teacherLesson.getEndTime())))){
-                return false;
-            }
-            else if((teacherLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(teacherLesson.getEndTime().isBefore(lesson.getEndTime()))){
-                return false;
-            }
-            else if(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime())==0){
-                return false;
-            }
-            else if(lesson.getEndTime().compareTo(teacherLesson.getEndTime())==0){
-                return false;
-            }
-        }
         }
 
         //Check if classroom is available
-        if(classRoomsavedData != null){
+        if (classRoomsavedData != null) {
 
-        for(LessonData classroomLesson : classRoomsavedData){
-            if((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))){
-                return false;
+            for (LessonData classroomLesson : classRoomsavedData) {
+                if ((lesson.getBeginTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(classroomLesson.getEndTime())))) {
+                    return false;
+                } else if ((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))) {
+                    return false;
+                } else if ((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime())) && (classroomLesson.getEndTime().isBefore(lesson.getEndTime()))) {
+                    return false;
+                } else if (lesson.getBeginTime().compareTo(classroomLesson.getBeginTime()) == 0) {
+                    return false;
+                } else if (lesson.getEndTime().compareTo(classroomLesson.getEndTime()) == 0) {
+                    return false;
+                }
             }
-            else if((lesson.getEndTime().isAfter(classroomLesson.getBeginTime()) && (lesson.getEndTime().isBefore(classroomLesson.getEndTime())))){
-                return false;
-            }
-            else if((classroomLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(classroomLesson.getEndTime().isBefore(lesson.getEndTime()))){
-                return false;
-            }
-            else if(lesson.getBeginTime().compareTo(classroomLesson.getBeginTime())==0){
-                return false;
-            }
-            else if(lesson.getEndTime().compareTo(classroomLesson.getEndTime())==0){
-                return false;
-            }
-        }
         }
 
         //Check if StudentGroup is available
-        if(studentGroupsavedData != null){
+        if (studentGroupsavedData != null) {
 
-        for(LessonData studentGroupLesson : studentGroupsavedData){
-            //System.out.println(lesson.getBeginTime().compareTo(teacherLesson.getBeginTime()));
-            if((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))){
-                return false;
-            }
-            else if((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))){
-                return false;
-            }
-            else if((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime()))&&(studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))){
-                return false;
-            }
-            else if(lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime())==0){
-                return false;
-            }
-            else if(lesson.getEndTime().compareTo(studentGroupLesson.getEndTime())==0){
-                return false;
+            for (LessonData studentGroupLesson : studentGroupsavedData) {
+                if ((lesson.getBeginTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getBeginTime().isBefore(studentGroupLesson.getEndTime())))) {
+                    return false;
+                } else if ((lesson.getEndTime().isAfter(studentGroupLesson.getBeginTime()) && (lesson.getEndTime().isBefore(studentGroupLesson.getEndTime())))) {
+                    return false;
+                } else if ((studentGroupLesson.getBeginTime().isAfter(lesson.getBeginTime())) && (studentGroupLesson.getEndTime().isBefore(lesson.getEndTime()))) {
+                    return false;
+                } else if (lesson.getBeginTime().compareTo(studentGroupLesson.getBeginTime()) == 0) {
+                    return false;
+                } else if (lesson.getEndTime().compareTo(studentGroupLesson.getEndTime()) == 0) {
+                    return false;
+                }
             }
         }
-        }
-
         return true;
     }
 
-    private LessonData getClickedBlockLesson(HourBlock block){
-        return block.getLessonData();
+    private boolean canAddStudent(StudentData newStudent) {
+        ArrayList<StudentData> students = this.savedData.getStudentData();
+
+        for (StudentData s : students) {
+            if (s.getName().equals(newStudent.getName())
+                    && s.getAge() == newStudent.getAge()
+                    && s.getStudentID() == newStudent.getStudentID()
+                    && s.getGender().equals(newStudent.getGender())
+                    && s.getGroup().equals(newStudent.getGroup())) {
+                return false;
+            }
+        }
+        return true;
     }
 
+    private boolean canAddTeacher(TeacherData newTeacher) {
+        ArrayList<TeacherData> teachers = this.savedData.getTeacherData();
+
+        for (TeacherData t : teachers) {
+            if (t.getName().equals(newTeacher.getName())
+                    && t.getAge() == newTeacher.getAge()
+                    && t.getTeacherId() == newTeacher.getTeacherId()
+                    && t.getGender().equals(newTeacher.getGender())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private LessonData getClickedBlockLesson(HourBlock block) {
+        return block.getLessonData();
+    }
 }

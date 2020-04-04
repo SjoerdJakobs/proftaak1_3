@@ -6,17 +6,18 @@ import java.io.Serializable;
 
 public class StudentData implements Serializable
 {
-    public String name;
-    public int group;
-    public int age;
-    public int studentID;
-    public Gender gender;
-    public StudentData()
+    private String name;
+    private String group;
+    private int age;
+    private int studentID;
+    private Gender gender;
+
+    private StudentData()
     {
 
     }
 
-    public StudentData(String name, int group, int age, int studentID, Gender gender)
+    public StudentData(String name, String group, int age, int studentID, Gender gender)
     {
         this.name = name;
         this.group = group;
@@ -34,11 +35,11 @@ public class StudentData implements Serializable
         this.name = name;
     }
 
-    public int getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(int group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 
