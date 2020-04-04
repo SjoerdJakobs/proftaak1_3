@@ -1,6 +1,5 @@
 package MainPackage.Simulation.Npc;
 
-import Data.Lesson;
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.Simulation.Logic.Direction;
@@ -14,33 +13,32 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Npc extends StandardObject {
     protected LogicalTile currentTile;
-    protected Point2D position;
+    private Point2D position;
     protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
     protected BufferedImage[] mySprites = new BufferedImage[12];
-    protected FXGraphics2D graphics2D;
-    protected int walkcyle = 0;
-    protected double timePassed = 0;
-    protected Direction direction = Direction.DOWN;
-    protected double speed = 100;
-    protected double straightspeed = speed;
-    protected double diagonalSpeed = speed / 2;
-    protected Point2D target = null;
-    protected double cycleTime = 0.3;
-    protected ArrayList<Npc> npcs = new ArrayList();
+    private FXGraphics2D graphics2D;
+    private int walkcyle = 0;
+    private double timePassed = 0;
+    private Direction direction = Direction.DOWN;
+    private double speed = 100;
+    private double straightspeed = speed;
+    private double diagonalSpeed = speed / 2;
+    private Point2D target = null;
+    private double cycleTime = 0.3;
+    private ArrayList<Npc> npcs = new ArrayList();
     public boolean waiting = false;
+    private Point2D seat = null;
 
-    protected boolean hasBreak = false;
-    protected ArrayList<LessonData> lessons = new ArrayList<>();
-    protected boolean isMoved = false;
+    private boolean hasBreak = false;
+    private ArrayList<LessonData> lessons = new ArrayList<>();
 
-    protected StudentData studentData;
+    private StudentData studentData;
+    private boolean atTarget = false;
+    private int targetRoom;
 
     protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
         super(frameworkProgram);
@@ -131,6 +129,43 @@ public class Npc extends StandardObject {
             if (walkcyle == 4) {
                 walkcyle = 0;
             }
+        }
+    }
+
+    public void setAtTarget(boolean atTarget) {
+        this.atTarget = atTarget;
+    }
+
+    public boolean getAtTarget() {
+        return atTarget;
+    }
+
+    public void goToSeat() {
+        if (this.seat == null) {
+            this.seat = getRandomSeat();
+        } else {
+            position.setLocation(seat);
+        }
+    }
+
+    public void clearSeat(){
+        seat = null;
+    }
+
+    private Point2D getRandomSeat() {
+        switch (targetRoom) {
+            case 301:
+                return SeatsHelper.getRandomSeatLA301();
+            case 302:
+                return SeatsHelper.getRandomSeatLA302();
+            case 303:
+                return SeatsHelper.getRandomSeatLA303();
+            case 304:
+                return SeatsHelper.getRandomSeatLA304();
+            case 305:
+                return SeatsHelper.getRandomSeatLA305();
+            default:
+                return SeatsHelper.getRandomSeatCanteen();
         }
     }
 
@@ -237,43 +272,9 @@ public class Npc extends StandardObject {
         this.lessons = lessons;
     }
 
-    public boolean isMoved() {
-        return isMoved;
-    }
 
-    public void setMoved(boolean moved) {
-        isMoved = moved;
-    }
-
-    public void sortList(LocalTime time) {
-
-        Collections.sort(this.lessons, new Comparator<LessonData>() {
-            @Override
-            public int compare(LessonData o1, LessonData o2) {
-                int lesson1 = (o1.getBeginTime().getHour()*60) + o1.getBeginTime().getMinute();
-                int lesson2 = (o2.getBeginTime().getHour()*60) + o2.getBeginTime().getMinute();
-
-
-                return lesson1 - lesson2;
-            }
-        });
-
-        for(LessonData lessonData : this.lessons){
-            if(time.isAfter(lessonData.getEndTime())){
-                this.lessons.remove(lessonData);
-            }
-        }
-
-
-    }
-
-    public boolean hasLessons(){
-        if(this.lessons.size() >= 1){
-            return true;
-        }
-        else {
-            return false;
-        }
+    public void setTargetRoom(int roomName) {
+        this.targetRoom = roomName;
     }
 }
 
