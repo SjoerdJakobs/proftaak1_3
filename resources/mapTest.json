@@ -185,7 +185,7 @@
                  "y":480
                 }, 
                 {
-                 "height":16,
+                 "height":208,
                  "id":11,
                  "name":"LA305",
                  "properties":[
@@ -197,9 +197,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":64,
-                 "x":768,
-                 "y":192
+                 "width":832,
+                 "x":384,
+                 "y":0
                 }, 
                 {
                  "height":32,

@@ -142,14 +142,20 @@ public class Npc extends StandardObject {
 
     public void goToSeat() {
         if (this.seat == null) {
+            System.out.println("new seat");
             this.seat = getRandomSeat();
         } else {
+            System.out.println("go to seat");
             position.setLocation(seat);
         }
     }
 
-    public void clearSeat(){
-        seat = null;
+    public void clearSeat() {
+        //Todo fix
+        if (seat != null) {
+            seat = null;
+            System.out.println("seat null");
+        }
     }
 
     private Point2D getRandomSeat() {

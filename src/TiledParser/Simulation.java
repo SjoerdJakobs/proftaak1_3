@@ -186,10 +186,8 @@ public class Simulation extends StandardObject {
                 if (this.time.isAfter(LocalTime.of(17, 0))) {
 
                     Direction direction = this.allTiles[(int) (Math.round(npc.getPosition().getX() / 16))][(int) (Math.round(npc.getPosition().getY() / 16))].getDirections().get("entry");
-                    //  System.out.println(direction);
                     //System.out.println(lessonData.getClassRoom().getRoomName());
                     if (direction == Direction.ENDPOINT) {
-                        npc.goToSeat();
                     } else if (direction == Direction.DOWN) {
                         npc.clearSeat();
                         npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
@@ -203,7 +201,6 @@ public class Simulation extends StandardObject {
                         npc.clearSeat();
                         npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
                     } else {
-                        npc.clearSeat();
                         npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
                     }
                 } else {
@@ -217,19 +214,14 @@ public class Simulation extends StandardObject {
                             if (direction == Direction.ENDPOINT) {
                                 npc.goToSeat();
                             } else if (direction == Direction.DOWN) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
                             } else if (direction == Direction.UP) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
                             } else if (direction == Direction.LEFT) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
                             } else if (direction == Direction.RIGHT) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
                             } else {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
                             }
                         } else {
@@ -240,19 +232,14 @@ public class Simulation extends StandardObject {
                                 npc.goToSeat();
                                 this.goToLesson = false;
                             } else if (direction == Direction.DOWN) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() + 16));
                             } else if (direction == Direction.UP) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY() - 16));
                             } else if (direction == Direction.LEFT) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() - 16, npc.getPosition().getY()));
                             } else if (direction == Direction.RIGHT) {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX() + 16, npc.getPosition().getY()));
                             } else {
-                                npc.clearSeat();
                                 npc.moveTo(deltaTime, new Point2D.Double(npc.getPosition().getX(), npc.getPosition().getY()));
                             }
                         }
@@ -389,7 +376,7 @@ public class Simulation extends StandardObject {
         graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
 
         tileMap.draw(graphics, camera);
-        //  this.grid.draw(graphics);
+        this.grid.draw(graphics);
 
     }
 

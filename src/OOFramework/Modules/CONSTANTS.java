@@ -10,7 +10,7 @@ public class CONSTANTS
     public static final String PROGRAM_ICON = "/icon.png"; //Remember to mark resources as "resources root" otherwise it wont work
 
     public static final String MAP_JSONFILE = "resources/mapTest.json";
-    public static final String DIRLAYER_TOSHOW = "canteen";
+    public static final String DIRLAYER_TOSHOW = "LA305";
 
     public static final float CAMERAZOOM_SENSITIVIY = 350.0f; //Sensitivity of the zooming in the simulation. Higher = less zoom per step
 

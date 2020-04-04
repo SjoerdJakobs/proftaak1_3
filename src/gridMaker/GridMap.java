@@ -64,7 +64,7 @@ public class GridMap {
      * the method draw isn't important, its only purpose is to check if the algorithm works
      **/
     public void draw(FXGraphics2D graphics) {
-        if (!DIRLAYER_TOSHOW.equals("")) {
+        if (true) {
             for (int y = 0; y < this.mapHeight; y++) {
                 for (int x = 0; x < this.mapWidth; x++) {
                     int pixelX = x * 16;
@@ -106,59 +106,39 @@ public class GridMap {
         for (int i = 0; i < this.objectLayer.size(); i++) {
 
             JsonObject object = this.objectLayer.getJsonObject(i);
+            String objectName = object.getString("name");
 
-            if (object.getString("name").equals("canteen")) {
-                int width = object.getInt("width");
-
-                while (width != 0) {
-                    width -= 16;
-                    canteen.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
-                }
-
-            } else if (object.getString("name").equals("LA301") || object.getString("name").equals("LA302") || object.getString("name").equals("LA303") || object.getString("name").equals("LA304")) {
-                int height = object.getInt("height");
-
-                String name = object.getString("name");
-
-                while (height != 0) {
-                    height -= 16;
-
-                    switch (name) {
+            for (int width = 0; width < object.getInt("width"); width += 16) {
+                for (int height = 0; height < object.getInt("height"); height++) {
+                    switch (objectName) {
+                        case "canteen":
+                            canteen.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
+                            break;
                         case "LA301":
-                            LA301.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
+                            LA301.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
                             break;
 
                         case "LA302":
-                            LA302.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
+                            LA302.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
                             break;
 
                         case "LA303":
-                            LA303.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
+                            LA303.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
                             break;
 
                         case "LA304":
-                            LA304.add(new Point2D.Double(object.getInt("x"), object.getInt("y") + height));
+                            LA304.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
+                            break;
+                        case "LA305":
+                            LA305.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
+                            break;
+                        case "entry":
+                            entry.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y") + height));
                             break;
                     }
                 }
-            } else if (object.getString("name").equals("LA305")) {
-                int width = object.getInt("width");
-
-                while (width != 0) {
-                    width -= 16;
-                    LA305.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
-                }
-
-            } else if(object.getString("name").equals("entry")){
-                int width = object.getInt("width");
-                while (width != 0){
-                    width -= 16;
-                    entry.add(new Point2D.Double(object.getInt("x") + width, object.getInt("y")));
-
-                }
             }
         }
-
         addRoute(canteen, "canteen");
         addRoute(LA301, "LA301");
         addRoute(LA302, "LA302");
@@ -166,16 +146,14 @@ public class GridMap {
         addRoute(LA304, "LA304");
         addRoute(LA305, "LA305");
         addRoute(entry, "entry");
-
     }
-
 
     private Queue<Tile> nextList;
 
     public void addRoute(ArrayList<Point2D> destinations, String route) {
 
 
-        nextList = new LinkedList<Tile>();
+        nextList = new LinkedList<>();
         for (Point2D point : destinations) {
             int x = (int) (point.getX() / 16);
             int y = (int) (point.getY() / 16);
