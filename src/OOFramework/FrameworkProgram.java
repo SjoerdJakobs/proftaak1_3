@@ -1,14 +1,19 @@
 package OOFramework;
 
+import OOFramework.Modules.CONSTANTS;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,6 +25,7 @@ public abstract class FrameworkProgram extends Application
     private boolean paused  = false;
 
     private ArrayList<BaseObject> objects = new ArrayList<BaseObject>();
+    private double factor;
 
     private ArrayList<StandardObject> inputObjects  = new ArrayList<StandardObject>();
     private ArrayList<StandardObject> mainObjects   = new ArrayList<StandardObject>();
@@ -31,16 +37,30 @@ public abstract class FrameworkProgram extends Application
     protected Canvas canvas;
     protected FXGraphics2D graphics2D;
 
+    protected Canvas canvasSimulation;
+    protected FXGraphics2D graphics2DSimulation;
+
+    protected MenuBar menuBar; // even laten staan voor mezelf, het moet ergens omen te staan waar het makkelijk de heletijd toe gevoegd kan worden
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        this.canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        this.stage.setWidth(1650);
+        this.stage.setHeight(1000);
+
+        this.canvas = new Canvas(this.stage.getWidth(), this.stage.getHeight());
+        this.canvasSimulation = new Canvas(this.stage.getWidth(), this.stage.getHeight());
+
         this.graphics2D = new FXGraphics2D(canvas.getGraphicsContext2D());
-        this.stage.setMaximized(true);
-        //this.stage.setFullScreen(true);
-        this.stage.setResizable(false);
+        this.graphics2DSimulation = new FXGraphics2D(canvasSimulation.getGraphicsContext2D());
+//        this.stage.setMaximized(true);
+//        this.stage.setFullScreen(true);
+//        this.stage.setResizable(false);
+
+
         this.stage.setScene(new Scene(new Group(canvas)));
         this.stage.setTitle(TITLE);
+        this.stage.getIcons().add(new Image(PROGRAM_ICON));
         this.stage.show();
 
         this.Init();
@@ -65,7 +85,7 @@ public abstract class FrameworkProgram extends Application
          * calculate deltatime
          */
         long time = System.nanoTime();
-        deltaTime = ((double) (time - lastTime) / 1000_000_000);//delta time in seconds
+        deltaTime = ((double) (time - lastTime) / 1000_000_000) * factor;//delta time in seconds
         lastTime = time;
 
         //uncomment to print the deltatime in seconds
@@ -168,6 +188,18 @@ public abstract class FrameworkProgram extends Application
     public ArrayList<StandardObject> getRenderObjects()
     {
         return renderObjects;
+    }
+
+    public Canvas getCanvasSimulation() {
+        return canvasSimulation;
+    }
+
+    public FXGraphics2D getGraphics2DSimulation() {
+        return graphics2DSimulation;
+    }
+
+    public void setFactor(double factor){
+        this.factor = factor;
     }
 }
 

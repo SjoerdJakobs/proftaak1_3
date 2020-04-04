@@ -8,11 +8,12 @@ import MainPackage.ReadWriteData.DataClasses.TeacherData;
 import java.io.*;
 import java.util.ArrayList;
 
+import static OOFramework.Modules.ASSERT_MSG.ASSERT_MSG_TERMINATE;
 import static OOFramework.Modules.CONSTANTS.STANDARD_SAVE_FILE_PATH;
 
 public class DataWriter {
 
-    SavedData savedData;
+    private SavedData savedData;
 
     public DataWriter()
     {
@@ -26,15 +27,21 @@ public class DataWriter {
 
     public void WriteToFile() throws IOException, ClassNotFoundException
     {
-        File f = new File(STANDARD_SAVE_FILE_PATH);
+        File file = new File(STANDARD_SAVE_FILE_PATH);
+        if(file.exists())
+        {
+            ASSERT_MSG_TERMINATE(file.delete(),"UNABLE TO DELETE OLD FILE, "+this.getClass());
+        }
 
-        FileOutputStream fos = new FileOutputStream(f);
+        FileOutputStream fos   = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
+        
+        ASSERT_MSG_TERMINATE(file.canWrite(),"UNABLE TO WRITE TO FILE, "+this.getClass());
 
         ArrayList<TeacherData> teacherDatas = savedData.getTeacherData();
         ArrayList<StudentData> studentDatas = savedData.getStudentData();
-        ArrayList<LessonData> lessonDatas = savedData.getLessonData();
-        ArrayList<GroupData> groupDatas = savedData.getGroupData();
+        ArrayList<LessonData>   lessonDatas = savedData.getLessonData();
+        ArrayList<GroupData>     groupDatas = savedData.getGroupData();
 
         for(TeacherData td : teacherDatas)
         {
@@ -52,6 +59,8 @@ public class DataWriter {
         {
             oos.writeObject(gd);
         }
+
+        //this null object lets the data writer know that it is the end of the save file
         oos.writeObject(null);
         oos.close();
     }
