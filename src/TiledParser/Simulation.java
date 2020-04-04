@@ -302,7 +302,7 @@ public class Simulation extends StandardObject {
         }
 
         for (Npc npc : this.npcs) {
-            npc.setMoved(false);
+          //  npc.setMoved(false);
             npc.getLessons().clear();
         }
 

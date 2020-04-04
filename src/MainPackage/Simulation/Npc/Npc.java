@@ -13,7 +13,10 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Npc extends StandardObject {
     protected LogicalTile currentTile;
@@ -148,7 +151,7 @@ public class Npc extends StandardObject {
         }
     }
 
-    public void clearSeat(){
+    public void clearSeat() {
         seat = null;
     }
 
@@ -275,6 +278,37 @@ public class Npc extends StandardObject {
 
     public void setTargetRoom(int roomName) {
         this.targetRoom = roomName;
+    }
+
+    public void sortList(LocalTime time) {
+
+        Collections.sort(this.lessons, new Comparator<LessonData>() {
+            @Override
+            public int compare(LessonData o1, LessonData o2) {
+                int lesson1 = (o1.getBeginTime().getHour() * 60) + o1.getBeginTime().getMinute();
+                int lesson2 = (o2.getBeginTime().getHour() * 60) + o2.getBeginTime().getMinute();
+
+
+                return lesson1 - lesson2;
+            }
+        });
+
+        for (LessonData lessonData : this.lessons) {
+            if (time.isAfter(lessonData.getEndTime())) {
+                this.lessons.remove(lessonData);
+            }
+        }
+
+
+    }
+
+    public boolean hasLessons() {
+        if (this.lessons.size() >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
 
