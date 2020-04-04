@@ -145,28 +145,32 @@ public class Npc extends StandardObject {
 
     public void goToSeat() {
         if (this.seat == null) {
+            System.out.println("new seat");
             this.seat = getRandomSeat();
         } else {
+            System.out.println("go to seat");
             position.setLocation(seat);
         }
     }
 
     public void clearSeat() {
         seat = null;
+        System.out.println("seat null");
     }
 
     private Point2D getRandomSeat() {
+        System.out.println(targetRoom);
         switch (targetRoom) {
             case 301:
-                return SeatsHelper.getRandomSeatLA301();
+                return SeatsHelper.getRandomSeatLA301(this instanceof Teacher);
             case 302:
-                return SeatsHelper.getRandomSeatLA302();
+                return SeatsHelper.getRandomSeatLA302(this instanceof Teacher);
             case 303:
-                return SeatsHelper.getRandomSeatLA303();
+                return SeatsHelper.getRandomSeatLA303(this instanceof Teacher);
             case 304:
-                return SeatsHelper.getRandomSeatLA304();
+                return SeatsHelper.getRandomSeatLA304(this instanceof Teacher);
             case 305:
-                return SeatsHelper.getRandomSeatLA305();
+                return SeatsHelper.getRandomSeatLA305(this instanceof Teacher);
             default:
                 return SeatsHelper.getRandomSeatCanteen();
         }
@@ -277,6 +281,7 @@ public class Npc extends StandardObject {
 
 
     public void setTargetRoom(int roomName) {
+        System.out.println(roomName);
         this.targetRoom = roomName;
     }
 
@@ -293,7 +298,8 @@ public class Npc extends StandardObject {
             }
         });
 
-        for (LessonData lessonData : this.lessons) {
+        ArrayList<LessonData> lessonsCopy = new ArrayList<>(lessons);
+        for (LessonData lessonData : lessonsCopy) {
             if (time.isAfter(lessonData.getEndTime())) {
                 this.lessons.remove(lessonData);
             }
