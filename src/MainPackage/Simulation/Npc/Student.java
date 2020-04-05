@@ -14,8 +14,8 @@ public class Student extends Npc {
     //private BufferedImage[] mySprites = new BufferedImage[12];
 
 
-    public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
-        super(frameworkProgram, graphics2D, position, studentData);
+    public Student(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData, Tile[][] tileGrid) {
+        super(frameworkProgram, graphics2D, position, studentData,tileGrid);
 
     }
 

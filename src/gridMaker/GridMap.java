@@ -233,6 +233,14 @@ public class GridMap {
                 checkTile.setHasBeenSet(true);
                 nextList.add(checkTile);
             }
+            else if(checkTile.isWall())
+            {
+                this.tiles[x][y].setHasWalBelow(true);
+            }
+        }
+        else
+        {
+            this.tiles[x][y].setHasWalBelow(true);
         }
 
         if (isInGrid(x + 1, y)) {
@@ -244,6 +252,14 @@ public class GridMap {
                 checkTile.setHasBeenSet(true);
                 nextList.add(checkTile);
             }
+            else if(checkTile.isWall())
+            {
+                this.tiles[x][y].setHasWalToTheRight(true);
+            }
+        }
+        else
+        {
+            this.tiles[x][y].setHasWalToTheRight(true);
         }
 
         if (isInGrid(x, y - 1)) {
@@ -255,6 +271,14 @@ public class GridMap {
                 checkTile.setHasBeenSet(true);
                 nextList.add(checkTile);
             }
+            else if(checkTile.isWall())
+            {
+                this.tiles[x][y].setHasWalAbove(true);
+            }
+        }
+        else
+        {
+            this.tiles[x][y].setHasWalAbove(true);
         }
 
         if (isInGrid(x - 1, y)) {
@@ -265,7 +289,14 @@ public class GridMap {
                 checkTile.getDirections().put(route, Direction.RIGHT);
                 checkTile.setHasBeenSet(true);
                 nextList.add(checkTile);
+            }else if(checkTile.isWall())
+            {
+                this.tiles[x][y].setHasWalToTheLeft(true);
             }
+        }
+        else
+        {
+            this.tiles[x][y].setHasWalToTheLeft(true);
         }
 
     }

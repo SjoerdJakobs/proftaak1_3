@@ -3,6 +3,7 @@ package MainPackage.Simulation.Npc;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.SavedData;
 import OOFramework.FrameworkProgram;
+import gridMaker.Tile;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.geom.Point2D;
@@ -13,8 +14,8 @@ public class Teacher extends Npc {
 
 
 
-    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
-        super(frameworkProgram,graphics2D, position, studentData);
+    public Teacher(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData, Tile[][] tilegrid) {
+        super(frameworkProgram,graphics2D, position, studentData,tilegrid);
 
     }
 

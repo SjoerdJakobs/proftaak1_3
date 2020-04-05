@@ -1,17 +1,7 @@
 package gridMaker;
 
-import org.jfree.fx.FXGraphics2D;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 public class Tile {
@@ -26,10 +16,10 @@ public class Tile {
     private HashMap<String,Direction> directions;
 
     private boolean isWall = false;
-    private boolean hasTopWall = false;
-    private boolean hasBollomWall = false;
-    private boolean hasRightWall = false;
-    private boolean hasleftWall = false;
+    private boolean hasWalAbove = false;
+    private boolean hasWalBelow = false;
+    private boolean hasWalToTheRight = false;
+    private boolean hasWalToTheLeft = false;
 
     private boolean hasBeenSet = false;
 
@@ -45,14 +35,6 @@ public class Tile {
 
     }
 
-//    public void draw(FXGraphics2D graphics){
-//
-//            graphics.setColor(this.color);
-//            graphics.draw(this.gridRect);
-//
-//            graphics.setColor(Color.black);
-//    }
-
     public boolean isWall() {
         return isWall;
     }
@@ -61,36 +43,36 @@ public class Tile {
         isWall = wall;
     }
 
-    public boolean isHasTopWall() {
-        return hasTopWall;
+    public boolean isHasWalAbove() {
+        return hasWalAbove;
     }
 
-    public void setHasTopWall(boolean hasTopWall) {
-        this.hasTopWall = hasTopWall;
+    public void setHasWalAbove(boolean hasWalAbove) {
+        this.hasWalAbove = hasWalAbove;
     }
 
-    public boolean isHasBollomWall() {
-        return hasBollomWall;
+    public boolean isHasWalBelow() {
+        return hasWalBelow;
     }
 
-    public void setHasBollomWall(boolean hasBollomWall) {
-        this.hasBollomWall = hasBollomWall;
+    public void setHasWalBelow(boolean hasWalBelow) {
+        this.hasWalBelow = hasWalBelow;
     }
 
-    public boolean isHasRightWall() {
-        return hasRightWall;
+    public boolean isHasWalToTheRight() {
+        return hasWalToTheRight;
     }
 
-    public void setHasRightWall(boolean hasRightWall) {
-        this.hasRightWall = hasRightWall;
+    public void setHasWalToTheRight(boolean hasWalToTheRight) {
+        this.hasWalToTheRight = hasWalToTheRight;
     }
 
-    public boolean isHasleftWall() {
-        return hasleftWall;
+    public boolean isHasWalToTheLeft() {
+        return hasWalToTheLeft;
     }
 
-    public void setHasleftWall(boolean hasleftWall) {
-        this.hasleftWall = hasleftWall;
+    public void setHasWalToTheLeft(boolean hasWalToTheLeft) {
+        this.hasWalToTheLeft = hasWalToTheLeft;
     }
 
     public boolean isHasBeenSet() {

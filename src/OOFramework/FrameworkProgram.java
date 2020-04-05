@@ -31,6 +31,20 @@ public abstract class FrameworkProgram extends Application
     private ArrayList<StandardObject> mainObjects   = new ArrayList<StandardObject>();
     private ArrayList<StandardObject> renderObjects = new ArrayList<StandardObject>();
 
+    private ArrayList<StandardObject> inputObjectsToBeAdded = new ArrayList<StandardObject>();
+    private ArrayList<StandardObject> mainObjectsToBeAdded = new ArrayList<StandardObject>();
+    private ArrayList<StandardObject> renderObjectsToBeAdded = new ArrayList<StandardObject>();
+    private boolean shouldAddToInputList = false;
+    private boolean shouldAddToMainGroup = false;
+    private boolean shouldAddToRenderGroup = false;
+
+    private ArrayList<StandardObject> inputObjectsToBeRemoved = new ArrayList<StandardObject>();
+    private ArrayList<StandardObject> mainObjectsToBeRemoved = new ArrayList<StandardObject>();
+    private ArrayList<StandardObject> renderObjectsToBeRemoved = new ArrayList<StandardObject>();
+    private boolean shouldRemoveFromInputList = false;
+    private boolean shouldRemoveFromMainGroup = false;
+    private boolean shouldRemoveFromRenderGroup = false;
+
     private double deltaTime = 0;
 
     protected Stage stage;
@@ -126,9 +140,59 @@ public abstract class FrameworkProgram extends Application
             }
         }
 
-        //here lies the thread.sleep
-        //if we have above 60 frames in the end of the project, it will be added here to save battery
-        //Etienne/Joep if you see this, Sjoerd stopped the group from adding it in the begin..... fite me
+        if(shouldAddToInputList) {
+            for(StandardObject ro : inputObjectsToBeAdded) {
+                inputObjects.add(ro);
+            }
+            inputObjectsToBeAdded.clear();
+            shouldAddToInputList = false;
+        }
+
+        if(shouldRemoveFromInputList) {
+            for(StandardObject ro : inputObjectsToBeRemoved) {
+                inputObjects.remove(ro);
+            }
+            inputObjectsToBeRemoved.clear();
+            shouldRemoveFromInputList = false;
+        }
+
+        if(shouldAddToMainGroup) {
+            for(StandardObject ro : mainObjectsToBeAdded) {
+                mainObjects.add(ro);
+            }
+            mainObjectsToBeAdded.clear();
+            shouldAddToMainGroup = false;
+        }
+
+        if(shouldRemoveFromMainGroup) {
+            for(StandardObject ro : mainObjectsToBeRemoved) {
+                mainObjects.remove(ro);
+            }
+            mainObjectsToBeRemoved.clear();
+            shouldRemoveFromMainGroup = false;
+        }
+
+        if(shouldAddToRenderGroup) {
+            for(StandardObject ro : renderObjectsToBeAdded) {
+                renderObjects.add(ro);
+            }
+            renderObjectsToBeAdded.clear();
+            shouldAddToRenderGroup = false;
+        }
+
+        if(shouldRemoveFromRenderGroup) {
+            for(StandardObject ro : renderObjectsToBeAdded) {
+                renderObjects.remove(ro);
+            }
+            renderObjectsToBeAdded.clear();
+            shouldRemoveFromRenderGroup = false;
+        }
+
+        try {
+            Thread.sleep(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void Init()
@@ -200,6 +264,126 @@ public abstract class FrameworkProgram extends Application
 
     public void setFactor(double factor){
         this.factor = factor;
+    }
+
+    public ArrayList<StandardObject> getInputObjectsToBeAdded()
+    {
+        return inputObjectsToBeAdded;
+    }
+
+    public void setInputObjectsToBeAdded(ArrayList<StandardObject> inputObjectsToBeAdded)
+    {
+        this.inputObjectsToBeAdded = inputObjectsToBeAdded;
+    }
+
+    public ArrayList<StandardObject> getMainObjectsToBeAdded()
+    {
+        return mainObjectsToBeAdded;
+    }
+
+    public void setMainObjectsToBeAdded(ArrayList<StandardObject> mainObjectsToBeAdded)
+    {
+        this.mainObjectsToBeAdded = mainObjectsToBeAdded;
+    }
+
+    public ArrayList<StandardObject> getRenderObjectsToBeAdded()
+    {
+        return renderObjectsToBeAdded;
+    }
+
+    public void setRenderObjectsToBeAdded(ArrayList<StandardObject> renderObjectsToBeAdded)
+    {
+        this.renderObjectsToBeAdded = renderObjectsToBeAdded;
+    }
+
+    public boolean isShouldAddToInputList()
+    {
+        return shouldAddToInputList;
+    }
+
+    public void setShouldAddToInputList(boolean shouldAddToInputList)
+    {
+        this.shouldAddToInputList = shouldAddToInputList;
+    }
+
+    public boolean isShouldAddToMainGroup()
+    {
+        return shouldAddToMainGroup;
+    }
+
+    public void setShouldAddToMainGroup(boolean shouldAddToMainGroup)
+    {
+        this.shouldAddToMainGroup = shouldAddToMainGroup;
+    }
+
+    public boolean isShouldAddToRenderGroup()
+    {
+        return shouldAddToRenderGroup;
+    }
+
+    public void setShouldAddToRenderGroup(boolean shouldAddToRenderGroup)
+    {
+        this.shouldAddToRenderGroup = shouldAddToRenderGroup;
+    }
+
+    public ArrayList<StandardObject> getInputObjectsToBeRemoved()
+    {
+        return inputObjectsToBeRemoved;
+    }
+
+    public void setInputObjectsToBeRemoved(ArrayList<StandardObject> inputObjectsToBeRemoved)
+    {
+        this.inputObjectsToBeRemoved = inputObjectsToBeRemoved;
+    }
+
+    public ArrayList<StandardObject> getMainObjectsToBeRemoved()
+    {
+        return mainObjectsToBeRemoved;
+    }
+
+    public void setMainObjectsToBeRemoved(ArrayList<StandardObject> mainObjectsToBeRemoved)
+    {
+        this.mainObjectsToBeRemoved = mainObjectsToBeRemoved;
+    }
+
+    public ArrayList<StandardObject> getRenderObjectsToBeRemoved()
+    {
+        return renderObjectsToBeRemoved;
+    }
+
+    public void setRenderObjectsToBeRemoved(ArrayList<StandardObject> renderObjectsToBeRemoved)
+    {
+        this.renderObjectsToBeRemoved = renderObjectsToBeRemoved;
+    }
+
+    public boolean isShouldRemoveFromInputList()
+    {
+        return shouldRemoveFromInputList;
+    }
+
+    public void setShouldRemoveFromInputList(boolean shouldRemoveFromInputList)
+    {
+        this.shouldRemoveFromInputList = shouldRemoveFromInputList;
+    }
+
+    public boolean isShouldRemoveFromMainGroup()
+    {
+        return shouldRemoveFromMainGroup;
+    }
+
+    public void setShouldRemoveFromMainGroup(boolean shouldRemoveFromMainGroup)
+    {
+        this.shouldRemoveFromMainGroup = shouldRemoveFromMainGroup;
+    }
+
+    public boolean isShouldRemoveFromRenderGroup()
+    {
+        return shouldRemoveFromRenderGroup;
+    }
+
+    public void setShouldRemoveFromRenderGroup(boolean shouldRemoveFromRenderGroup)
+    {
+        this.shouldRemoveFromRenderGroup = shouldRemoveFromRenderGroup;
     }
 }
 

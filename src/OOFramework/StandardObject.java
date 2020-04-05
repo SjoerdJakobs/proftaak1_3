@@ -42,13 +42,19 @@ public abstract class StandardObject extends BaseObject
     {
         super.RemoveFromLists();
         if (usesInput) {
-            getFrameworkProgram().getInputObjects().remove(this);
+            getFrameworkProgram().getInputObjectsToBeRemoved().add(this);
+            getFrameworkProgram().setShouldRemoveFromInputList(true);
         }
-        if (usesMain) {
-            getFrameworkProgram().getMainObjects().remove(this);
+
+        if (usesMain)
+        {
+            getFrameworkProgram().getMainObjectsToBeRemoved().add(this);
+            getFrameworkProgram().setShouldRemoveFromMainGroup(true);
         }
+
         if (usesRenderer) {
-            getFrameworkProgram().getRenderObjects().remove(this);
+            getFrameworkProgram().getRenderObjectsToBeRemoved().add(this);
+            getFrameworkProgram().setShouldRemoveFromRenderGroup(true);
         }
     }
 
@@ -57,13 +63,19 @@ public abstract class StandardObject extends BaseObject
     {
         super.AddToLists();
         if (usesInput) {
-            getFrameworkProgram().getInputObjects().add(this);
+            getFrameworkProgram().getInputObjectsToBeAdded().add(this);
+            getFrameworkProgram().setShouldAddToInputList(true);
         }
-        if (usesMain) {
-            getFrameworkProgram().getMainObjects().add(this);
+
+        if (usesMain)
+        {
+            getFrameworkProgram().getMainObjectsToBeAdded().add(this);
+            getFrameworkProgram().setShouldAddToMainGroup(true);
         }
+
         if (usesRenderer) {
-            getFrameworkProgram().getRenderObjects().add(this);
+            getFrameworkProgram().getRenderObjectsToBeAdded().add(this);
+            getFrameworkProgram().setShouldAddToRenderGroup(true);
         }
     }
 

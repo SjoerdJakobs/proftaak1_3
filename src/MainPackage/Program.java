@@ -7,6 +7,7 @@ import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.DataReader;
 import MainPackage.ReadWriteData.DataWriter;
 import MainPackage.ReadWriteData.SavedData;
+import OOFramework.Collision2D.CollisionSystem;
 import OOFramework.FrameworkProgram;
 import TiledParser.Simulation;
 import javafx.scene.Group;
@@ -24,6 +25,7 @@ import java.util.Random;
 public class Program extends FrameworkProgram {
 
     private Random random;
+    private CollisionSystem collisionSystem;
 
     sAgenda agenda;
     Simulation simulation;
@@ -51,6 +53,7 @@ public class Program extends FrameworkProgram {
 
         agenda = new sAgenda(this, dataWriter);
         simulation = new Simulation(this);
+        collisionSystem = new CollisionSystem(this);
 
 
         this.random = new Random();
@@ -170,6 +173,16 @@ public class Program extends FrameworkProgram {
         } else {
             return Gender.FEMALE;
         }
+    }
+
+    public CollisionSystem getCollisionSystem()
+    {
+        return collisionSystem;
+    }
+
+    public void setCollisionSystem(CollisionSystem collisionSystem)
+    {
+        this.collisionSystem = collisionSystem;
     }
 }
 

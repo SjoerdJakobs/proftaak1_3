@@ -2,14 +2,16 @@ package MainPackage.Simulation.Npc;
 
 import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
-import MainPackage.Simulation.Logic.Direction;
 import MainPackage.Simulation.Logic.LogicalTile;
 
+import OOFramework.Collision2D.Colliders.CircleCollider;
+import OOFramework.Collision2D.Colliders.Collider2D;
 import OOFramework.FrameworkProgram;
 import OOFramework.StandardObject;
+import gridMaker.Direction;
+import gridMaker.Tile;
 import org.jfree.fx.FXGraphics2D;
 
-import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -20,7 +22,6 @@ import java.util.Comparator;
 
 public class Npc extends StandardObject {
     protected LogicalTile currentTile;
-    private Point2D position;
     protected BufferedImage[] spriteSheet = SPRITESHEET.Sprites;
     protected BufferedImage[] mySprites = new BufferedImage[12];
     private FXGraphics2D graphics2D;
@@ -28,8 +29,6 @@ public class Npc extends StandardObject {
     private double timePassed = 0;
     private Direction direction = Direction.DOWN;
     private double speed = 100;
-    private double straightspeed = speed;
-    private double diagonalSpeed = speed / 2;
     private Point2D target = null;
     private double cycleTime = 0.3;
     private ArrayList<Npc> npcs = new ArrayList();
@@ -43,12 +42,134 @@ public class Npc extends StandardObject {
     private boolean atTarget = false;
     private int targetRoom;
 
-    protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData) {
+    ////////////////////// added for movement
+    private CircleCollider collider;
+    private Point2D position;
+    private int gridPosX = 0;
+    private int gridPosY = 0;
+    private int nextGridPosX = 0;
+    private int nextGridPosY = 0;
+    private double turnDelay;
+    private double radius;
+    private Point2D movDirection;
+    private Point2D avoidUnitAdjustment;
+    private Point2D avoidWallAdjustment;
+    private String routeName = "canteen";
+
+    private Tile[][] movementGrid;
+    private boolean startCheckingForWallCollision;
+    private int movSpeed = 100;
+    /////////////////////////////////////////
+
+
+
+
+
+    protected Npc(FrameworkProgram frameworkProgram, FXGraphics2D graphics2D, Point2D position, StudentData studentData, Tile[][] movementGrid) {
         super(frameworkProgram);
         this.graphics2D = graphics2D;
         this.position = position;
         this.studentData = studentData;
+        this.movementGrid = movementGrid;
         initializeSprites();
+
+        movDirection = new Point2D.Double();
+        avoidUnitAdjustment = new Point2D.Double();
+        avoidWallAdjustment = new Point2D.Double();
+
+        //this is all the collision code you need to set it up/
+        this.collider = new CircleCollider(this.position,0);      //
+        this.collider.collisionCallback = this::OnCollision; //
+        this.collider.setOwnerObject(this);                  //
+        ///////////////////////////////////////////////////////
+        AlignWithGridPos(100);
+        turnDelay = 0;
+    }
+
+
+    private boolean hasAllteredDirection = false;
+    private double alignCounter = 0;
+
+    public void AlignWithGridPos(double deltaTime)
+    {
+        nextGridPosX = (int)Math.floor(position.getX()/16);
+        nextGridPosY = (int)Math.floor(position.getY()/16);
+
+        if(nextGridPosY != gridPosY || gridPosX != nextGridPosX|| hasAllteredDirection)
+        {
+            alignCounter += deltaTime;
+            if(alignCounter >= turnDelay)
+            {
+                gridPosY = nextGridPosY;
+                gridPosX = nextGridPosX;
+                if(gridPosX < 0)
+                {
+                    gridPosX = 0;
+                }
+                if(gridPosY < 0)
+                {
+                    gridPosY = 0;
+                }
+                hasAllteredDirection = false;
+                alignCounter = 0;
+            }
+        }
+    }
+
+    public void AvoidWalls()
+    {
+        nextGridPosX = (int)Math.round((position.getX()-16)/16);
+        nextGridPosY = (int)Math.round((position.getY()-16)/16);
+        avoidWallAdjustment.setLocation(0,0);
+        if(movementGrid[nextGridPosX][nextGridPosY].isHasWalToTheLeft())
+        {
+            if(position.getX() < nextGridPosX*16 + 32*0.6)
+            {
+                avoidWallAdjustment.setLocation(10+ avoidWallAdjustment.getX(),0+ avoidWallAdjustment.getY());
+            }
+        }
+        if(movementGrid[nextGridPosX][nextGridPosY].isHasWalToTheRight())
+        {
+            if(position.getX() > nextGridPosX*16+ 32*0.6)
+            {
+                avoidWallAdjustment.setLocation(-10+ avoidWallAdjustment.getX(),0+ avoidWallAdjustment.getY());
+            }
+        }
+        if(movementGrid[nextGridPosX][nextGridPosY].isHasWalBelow())
+        {
+            if(position.getY() > nextGridPosY*16+ 32*0.6)
+            {
+                avoidWallAdjustment.setLocation(0+ avoidWallAdjustment.getX(),-10+ avoidWallAdjustment.getY());
+            }
+        }
+        if(movementGrid[nextGridPosX][nextGridPosY].isHasWalAbove())
+        {
+            if(position.getY() < nextGridPosY*16+ 32*0.6)
+            {
+                avoidWallAdjustment.setLocation(0+ avoidWallAdjustment.getX(),10+ avoidWallAdjustment.getY());
+            }
+        }
+    }
+
+    public void OnCollision(Collider2D other)
+    {
+            double newX = this.position.getX() - other.getPos().getX();
+            double newY = this.position.getY() - other.getPos().getY();
+            if(newX == 0)
+            {
+                newX = 0.1;
+            }
+            if (newY == 0)
+            {
+                newY = 0.1;
+            }
+
+            double magnitude = Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2));
+            newX /= magnitude;
+            newY /= magnitude;
+            avoidUnitAdjustment.setLocation(newX,newY);
+            hasAllteredDirection = true;
+            alignCounter += turnDelay*0.5;
     }
 
 
@@ -60,13 +181,61 @@ public class Npc extends StandardObject {
     @Override
     protected void MainLoop(double deltaTime) {
         testCycle(deltaTime);
-        if (target != null) {
-            if (moveTo(deltaTime, target)) {
-                position.setLocation(target);
-            }
-        }
+        //AvoidWalls();
+        if(movementGrid[gridPosX][gridPosY].getDirections().get(routeName) != null)
+        {
+            direction = movementGrid[gridPosX][gridPosY].getDirections().get(routeName);
 
+            double newX = 0;
+            double newY = 0;
+            switch (direction) {
+                case UP:
+                    newY = -1;
+                    break;
+                case DOWN:
+                    newY = 1;
+                    break;
+                case LEFT:
+                    newX = -1;
+                    break;
+                case RIGHT:
+                    newX = 1;
+                    break;
+                case ENDPOINT:
+                    newX = 0;
+                    newY = 0;
+                    break;
+            }
+
+            newX += avoidUnitAdjustment.getX();
+            newY += avoidUnitAdjustment.getY();
+            newX += avoidWallAdjustment.getX();
+            newY += avoidWallAdjustment.getY();
+
+            double magnitude = Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2));
+            newX /= magnitude;
+            newY /= magnitude;
+            if (direction == Direction.ENDPOINT){
+                movDirection.setLocation(0, 0);
+            }
+            else{
+                movDirection.setLocation(newX, newY);
+            }
+            position.setLocation(position.getX() + movDirection.getX() * deltaTime*movSpeed,position.getY() + movDirection.getY() * deltaTime*movSpeed);
+            collider.setPos(position);
+            AlignWithGridPos(deltaTime);
+            movDirection.setLocation(0,0);
+            avoidUnitAdjustment.setLocation(0,0);
+
+
+        }
+        else
+        {
+            System.out.println("out of range" + routeName);
+        }
     }
+
+    //////////////////
 
     @Override
     protected void RenderLoop(double deltaTime) {
@@ -172,63 +341,6 @@ public class Npc extends StandardObject {
         }
     }
 
-    public boolean moveTo(double deltaTime, Point2D target) {
-        int moveDirectionX, moveDirectionY;
-        if ((int) target.getX() - (int) position.getX() < 0) {
-            moveDirectionX = -1;
-            direction = Direction.LEFT;
-        } else if ((int) target.getX() - (int) position.getX() > 0) {
-            moveDirectionX = 1;
-            direction = Direction.RIGHT;
-        } else {
-            moveDirectionX = 0;
-        }
-
-        if ((int) target.getY() - (int) position.getY() < 0) {
-            moveDirectionY = -1;
-            direction = Direction.UP;
-        } else if ((int) target.getY() - (int) position.getY() > 0) {
-            moveDirectionY = 1;
-            direction = Direction.DOWN;
-        } else {
-            moveDirectionY = 0;
-        }
-
-        if (moveDirectionX != 0 && moveDirectionY != 0) this.speed = diagonalSpeed;
-        else this.speed = straightspeed;
-
-
-        position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
-//        Point2D.Double newPosition = new Point2D.Double(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
-//
-//        boolean collided = false;
-//
-//        for(Npc npc : npcs){
-//            if(npc != this && newPosition.distance(npc.position) < 32){
-//                collided = true;
-//                if(npc.waiting){
-//                    waiting = false;
-//                }
-//                else {
-//                    waiting = true;
-//                }
-//            }
-//        }
-//        if(!collided){
-//            position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
-//        }
-//        else {
-//            if(!waiting){
-//                position.setLocation(position.getX() + moveDirectionX * deltaTime * speed, position.getY() + moveDirectionY * deltaTime * speed);
-//            }
-//        }
-
-        if (target.getX() - position.getX() < 10 && target.getX() - position.getX() > -10 &&
-                target.getY() - position.getY() < 10 && target.getY() - position.getY() > -10) {
-            return true;
-        }
-        return false;
-    }
 
     protected void draw() {
         graphics2D.drawImage(getImageToDraw(direction, true), getTransform(), null);
@@ -236,7 +348,7 @@ public class Npc extends StandardObject {
 
     private AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
-        tx.translate(position.getX() + 8, position.getY() + 8);
+        tx.translate(position.getX(), position.getY());
         //  tx.rotate(0, 16, 16);
         return tx;
     }
@@ -309,6 +421,16 @@ public class Npc extends StandardObject {
             return false;
         }
 
+    }
+
+    public String getRouteName()
+    {
+        return routeName;
+    }
+
+    public void setRouteName(String routeName)
+    {
+        this.routeName = routeName;
     }
 }
 
