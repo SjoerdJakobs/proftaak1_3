@@ -153,6 +153,7 @@ public class Npc extends StandardObject {
 
     public void OnCollision(Collider2D other)
     {
+            //get the opposite direction of the other collider
             double newX = this.position.getX() - other.getPos().getX();
             double newY = this.position.getY() - other.getPos().getY();
             if(newX == 0)
@@ -164,11 +165,17 @@ public class Npc extends StandardObject {
                 newY = 0.1;
             }
 
+            //make the opposite direction value have a length of 1 when they would be put in a vector2d
             double magnitude = Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2));
             newX /= magnitude;
             newY /= magnitude;
+
+            //set the avoidUnitAdjustment point2d(vector2d)
             avoidUnitAdjustment.setLocation(newX,newY);
+
+            //set that the direction has beel altered
             hasAllteredDirection = true;
+            //make sure the alignment happens sooner
             alignCounter += turnDelay*0.5;
     }
 
@@ -237,8 +244,6 @@ public class Npc extends StandardObject {
             //reset the direction and unit adjustment
             movDirection.setLocation(0,0);
             avoidUnitAdjustment.setLocation(0,0);
-
-
         }
         else
         {
