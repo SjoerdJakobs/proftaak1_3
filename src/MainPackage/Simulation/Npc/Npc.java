@@ -148,18 +148,16 @@ public class Npc extends StandardObject {
             System.out.println("new seat");
             this.seat = getRandomSeat();
         } else {
-            System.out.println("go to seat");
-            position.setLocation(seat);
+
+            this.position.setLocation(seat);
         }
     }
 
     public void clearSeat() {
         seat = null;
-        System.out.println("seat null");
     }
 
     private Point2D getRandomSeat() {
-        System.out.println(targetRoom);
         switch (targetRoom) {
             case 301:
                 return SeatsHelper.getRandomSeatLA301(this instanceof Teacher);
@@ -281,7 +279,6 @@ public class Npc extends StandardObject {
 
 
     public void setTargetRoom(int roomName) {
-        System.out.println(roomName);
         this.targetRoom = roomName;
     }
 
