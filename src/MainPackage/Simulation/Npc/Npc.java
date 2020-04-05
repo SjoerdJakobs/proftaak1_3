@@ -238,7 +238,7 @@ public class Npc extends StandardObject {
 
     private AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
-        tx.translate(position.getX() + 8, position.getY() + 8);
+        tx.translate(position.getX() - 16, position.getY() - 16);
         //  tx.rotate(0, 16, 16);
         return tx;
     }
