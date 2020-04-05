@@ -186,6 +186,7 @@ public class Npc extends StandardObject {
         {
             direction = movementGrid[gridPosX][gridPosY].getDirections().get(routeName);
 
+            //get initial direction
             double newX = 0;
             double newY = 0;
             switch (direction) {
@@ -207,11 +208,13 @@ public class Npc extends StandardObject {
                     break;
             }
 
+            //add adjustments to direction
             newX += avoidUnitAdjustment.getX();
             newY += avoidUnitAdjustment.getY();
             newX += avoidWallAdjustment.getX();
             newY += avoidWallAdjustment.getY();
 
+            //normalize adjusted direction (make it a vector2 with the length of 1)
             double magnitude = Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2));
             newX /= magnitude;
             newY /= magnitude;
@@ -221,9 +224,17 @@ public class Npc extends StandardObject {
             else{
                 movDirection.setLocation(newX, newY);
             }
+
+            //add direction to the position
             position.setLocation(position.getX() + movDirection.getX() * deltaTime*movSpeed,position.getY() + movDirection.getY() * deltaTime*movSpeed);
+
+            //set collider pos
             collider.setPos(position);
+
+            //realign with grid
             AlignWithGridPos(deltaTime);
+
+            //reset the direction and unit adjustment
             movDirection.setLocation(0,0);
             avoidUnitAdjustment.setLocation(0,0);
 
