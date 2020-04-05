@@ -459,12 +459,17 @@ public class Simulation extends StandardObject {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-        graphics.setColor(Color.white);
-        graphics.drawString(time.toString(), 100, 100);
-        graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
 
+        graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
         tileMap.draw(graphics, camera);
-        this.grid.draw(graphics);
+      //  this.grid.draw(graphics);
+
+        graphics.setTransform(new AffineTransform());
+        graphics.setColor(Color.white);
+        graphics.setFont(new Font("time-Font", Font.PLAIN | Font.BOLD, 30));
+        graphics.drawString(time.toString(), 100, 100);
+
+        graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
 
     }
 
