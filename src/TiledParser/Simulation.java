@@ -6,6 +6,7 @@ import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.SavedData;
 import MainPackage.Simulation.Npc.Npc;
+import MainPackage.Simulation.Npc.SeatsHelper;
 import MainPackage.Simulation.Npc.Student;
 import OOFramework.FrameworkProgram;
 import OOFramework.Modules.CONSTANTS;
@@ -456,13 +457,14 @@ public class Simulation extends StandardObject {
     }
 
     public void draw(FXGraphics2D graphics) {
+        
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(new Color(17, 17, 17));
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
 
         graphics.setTransform(camera.getTransform((int) canvas.getWidth(), (int) canvas.getHeight()));
         tileMap.draw(graphics, camera);
-      //  this.grid.draw(graphics);
+        //  this.grid.draw(graphics);
 
         graphics.setTransform(new AffineTransform());
         graphics.setColor(Color.white);

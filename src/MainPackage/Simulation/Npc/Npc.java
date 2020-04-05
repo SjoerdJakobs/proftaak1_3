@@ -157,6 +157,7 @@ public class Npc extends StandardObject {
         seat = null;
     }
 
+
     private Point2D getRandomSeat() {
         switch (targetRoom) {
             case 301:
