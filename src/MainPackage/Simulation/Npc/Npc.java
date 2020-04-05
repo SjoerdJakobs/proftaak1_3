@@ -145,9 +145,11 @@ public class Npc extends StandardObject {
 
     public void goToSeat() {
         if (this.seat == null) {
+            System.out.println("new seat");
             this.seat = getRandomSeat();
         } else {
-            position.setLocation(seat);
+
+            this.position.setLocation(seat);
         }
     }
 
@@ -158,15 +160,15 @@ public class Npc extends StandardObject {
     private Point2D getRandomSeat() {
         switch (targetRoom) {
             case 301:
-                return SeatsHelper.getRandomSeatLA301();
+                return SeatsHelper.getRandomSeatLA301(this instanceof Teacher);
             case 302:
-                return SeatsHelper.getRandomSeatLA302();
+                return SeatsHelper.getRandomSeatLA302(this instanceof Teacher);
             case 303:
-                return SeatsHelper.getRandomSeatLA303();
+                return SeatsHelper.getRandomSeatLA303(this instanceof Teacher);
             case 304:
-                return SeatsHelper.getRandomSeatLA304();
+                return SeatsHelper.getRandomSeatLA304(this instanceof Teacher);
             case 305:
-                return SeatsHelper.getRandomSeatLA305();
+                return SeatsHelper.getRandomSeatLA305(this instanceof Teacher);
             default:
                 return SeatsHelper.getRandomSeatCanteen();
         }
@@ -236,7 +238,7 @@ public class Npc extends StandardObject {
 
     private AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
-        tx.translate(position.getX() + 8, position.getY() + 8);
+        tx.translate(position.getX() - 16, position.getY() - 16);
         //  tx.rotate(0, 16, 16);
         return tx;
     }
@@ -293,7 +295,8 @@ public class Npc extends StandardObject {
             }
         });
 
-        for (LessonData lessonData : this.lessons) {
+        ArrayList<LessonData> lessonsCopy = new ArrayList<>(lessons);
+        for (LessonData lessonData : lessonsCopy) {
             if (time.isAfter(lessonData.getEndTime())) {
                 this.lessons.remove(lessonData);
             }

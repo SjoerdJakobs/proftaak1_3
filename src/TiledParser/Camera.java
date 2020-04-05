@@ -13,7 +13,6 @@ import java.awt.geom.Point2D;
 public class Camera {
     private Point2D centerPoint = new Point2D.Double(-800,-800);
     private double zoom = 0.6;
-    private double rotation = 0;
     private Point2D lastMousePos;
     private Canvas canvas;
     private Resizable resizable;
@@ -34,7 +33,6 @@ public class Camera {
         tx.translate(windowWidth/2, windowHeight/2);
         tx.scale(zoom, zoom);
         tx.translate(centerPoint.getX(), centerPoint.getY());
-        tx.rotate(rotation);
         return tx;
     }
 
