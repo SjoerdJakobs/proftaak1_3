@@ -1,11 +1,12 @@
 package MainPackage.Simulation.Npc;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 //Succes
-
 public class SeatsHelper {
+    private static ArrayList<Point2D> takenSeats = new ArrayList<>();
+
     public static Point2D getRandomSeatLA301(boolean isTeacher) {
         if (isTeacher) return new Point2D.Double(45 ,60);
         int[] seatXs = {26, 28, 30, 32, 34, 36};
@@ -47,9 +48,19 @@ public class SeatsHelper {
         return getPoint2D(seatXs, seatYs);
     }
 
+    public static void clearTakenSeats(){
+        takenSeats.clear();
+    }
+
     private static Point2D getPoint2D(int[] seatXs, int[] seatYs) {
         int seatX = seatXs[(int) (Math.random() * seatXs.length)];
         int seatY = seatYs[(int) (Math.random() * seatYs.length)];
-        return new Point2D.Double(seatX * 16, seatY * 16);
+        Point2D seat = new Point2D.Double(seatX * 16, seatY * 16);
+        for (Point2D takenSeat : takenSeats) {
+            if (takenSeat.equals(seat)){
+                return getPoint2D(seatXs, seatYs);
+            }
+        }
+        return seat;
     }
 }
