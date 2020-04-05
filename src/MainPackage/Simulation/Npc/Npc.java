@@ -83,7 +83,7 @@ public class Npc extends StandardObject {
         this.collider.setOwnerObject(this);                  //
         ///////////////////////////////////////////////////////
         AlignWithGridPos(100);
-        turnDelay = 0;
+        turnDelay = 0.1;
     }
 
 
@@ -348,7 +348,7 @@ public class Npc extends StandardObject {
 
     private AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
-        tx.translate(position.getX(), position.getY());
+        tx.translate(position.getX()-16, position.getY()-16);
         //  tx.rotate(0, 16, 16);
         return tx;
     }
