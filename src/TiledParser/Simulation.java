@@ -6,6 +6,7 @@ import MainPackage.ReadWriteData.DataClasses.LessonData;
 import MainPackage.ReadWriteData.DataClasses.StudentData;
 import MainPackage.ReadWriteData.SavedData;
 import MainPackage.Simulation.Npc.Npc;
+import MainPackage.Simulation.Npc.SeatsHelper;
 import MainPackage.Simulation.Npc.Student;
 import OOFramework.FrameworkProgram;
 import OOFramework.Modules.CONSTANTS;

@@ -155,8 +155,8 @@ public class Npc extends StandardObject {
 
     public void clearSeat() {
         seat = null;
-        SeatsHelper.clearTakenSeats();
     }
+
 
     private Point2D getRandomSeat() {
         switch (targetRoom) {
