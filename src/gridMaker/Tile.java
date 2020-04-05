@@ -35,13 +35,14 @@ public class Tile {
 
     private boolean isDestination;
 
-
+    private Point2D middle;
 
     public Tile(int x, int y){
 
         directions = new HashMap<>();
         this.gridPos = new Point2D.Double(x, y);
         gridRect = new Rectangle2D.Double(this.gridPos.getX(), this.gridPos.getY(), tileWidth, tileHeight);
+        this.middle = new Point2D.Double((int)(this.gridPos.getX() + (tileWidth/2)), (int)(this.gridPos.getY() + (tileHeight/2)));
 
     }
 
@@ -136,6 +137,7 @@ public class Tile {
         this.gridPos = gridPos;
     }
 
-
-
+    public Point2D getMiddle() {
+        return middle;
+    }
 }
