@@ -229,8 +229,8 @@ public class sAgenda extends StandardObject {
         for (LessonData lesson : savedData.getLessonData()) {
             double begin = (lesson.getBeginTime().getHour() - 8) + (lesson.getBeginTime().getMinute() / 60.0);
             double width = (lesson.getEndTime().getHour() - 8) + (lesson.getEndTime().getMinute() / 60.0) - begin;
-            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300));
-            Shape shape = new Rectangle2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 300), width * xStepSize, yStepSize);
+            Point2D point = new Point2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 301));
+            Shape shape = new Rectangle2D.Double(begin * xStepSize, yStepSize * (lesson.getClassRoom().getRoomName() - 301), width * xStepSize, yStepSize);
             hourBlocks.add(new HourBlock(shape, point, lesson, Color.CYAN));
         }
     }
@@ -258,7 +258,7 @@ public class sAgenda extends StandardObject {
             graphics2D.drawString(((i + 8) + ":00"), (int) (xStepSize * i + xStepSize), 10);
         }
         for (int i = 0; i < rooms; i++) {
-            graphics2D.drawString("LA:" + (i + 300), 0, (int) (yStepSize * i + yStepSize + 10));
+            graphics2D.drawString("LA:" + (1 + i + 300), 0, (int) (yStepSize * i + yStepSize + 10));
         }
 
         graphics2D.translate(xStepSize, yStepSize);
